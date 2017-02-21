@@ -20,7 +20,7 @@ class Example1 extends React.Component {
     return (
       <div>
         <Button onClick={this.toggle} text="Toggle message" />
-        { this.state.showMessage ? <Message text="Hello world!" /> : null }
+        { this.state.showMessage ? <Message>Hello world!!!</Message> : null }
       </div>
     );
   }

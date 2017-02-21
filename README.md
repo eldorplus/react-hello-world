@@ -136,7 +136,7 @@ And here is the code for `src/example1.js`:
         return (
           <div>
             <Button onClick={this.toggle} text="Toggle message" />
-            { this.state.showMessage ? <Message text="Hello world!" /> : null }
+            { this.state.showMessage ? <Message>Hello world!!!</Message> : null }
           </div>
         );
       }
@@ -181,26 +181,15 @@ The contents of our `src/components/Message.js` file look like this:
     // stateless component
     const Message = (props) => {
       return (
-        <p>{props.text}</p>
+        <p>{props.children}</p>
       );
-    };
-    
-    Message.propTypes = {
-      text: React.PropTypes.string,
-    };
-    
-    Message.defaultProps = {
-      text: 'Hello World',
     };
     
     module.exports = Message;
     
-As you can see, we have another stateless component, which only allos to set some text in a paragraph tag.
+As you can see, we have another stateless component, which passes the child components for rendering. This can be either a string of text or any other components.
 
 This makes for a simple hello world application with a button that toggles the message.
-
-You can use `webpack --watch` to transpile the application as you are making changes and working on it. 
-You can also run `webpack-dev-server` to serve the application locally on port 8080.
 
 ## Production
 
@@ -328,7 +317,7 @@ Now lets add some scripts to `package.json` to run these commands and tools easi
 
     "scripts": {
         "build": "webpack",
-        "dev": "webpack-dev-server",
+        "dev": "webpack-dev-server --content-base ./static",
         "start:server": "http-server -p 3000 ./static",
         "lint": "eslint src test",
         "test": "./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js",
@@ -458,6 +447,8 @@ Eg:
 
 ## Rationale
 
+##### code
+
 To have a application that renders a button a message and keeps state for message shown or hidden.
 
 1. Using `webpack` to prepare code and resources to serve to the browser, `index.html` uses he prepared `bundle.js` file.
@@ -466,3 +457,7 @@ To have a application that renders a button a message and keeps state for messag
 4. Bind the toggle method to `onClick` event, since the browser sends a event on button click, when that event fires, the `showMessage` variable is toggled.
 5. Define the `Button` component and `Message` component as stateless, since there is no need for them to keep state because the parent component already does that with `showMessage`.
 6. `Button` and `Message` both have defaultProps in case the developer doesn't pass in a text property, wanting to use a default value.
+
+##### workflow
+
+When making updates to the code(working on the application), we run `npm run dev`, this command executed `webpack-dev-server --content-base ./static` to transpile the code and hot-reload these changes into the web browser. If you run this command and make some changes the browser window will refresh and they will show up immediately.
