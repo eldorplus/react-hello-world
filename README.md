@@ -198,7 +198,7 @@ We should install `http-server` to serve the application from a Docker container
     npm install --save http-server
     
     
- Now let's create a `Dockerfile` with these contents:
+ Now let's create a `Dockerfile` with these contents, let's call this file `Dockerfile.production`:
  
     FROM node:6.9.5
     
@@ -460,4 +460,5 @@ To have a application that renders a button a message and keeps state for messag
 
 ##### workflow
 
-When making updates to the code(working on the application), we run `npm run dev`, this command executed `webpack-dev-server --content-base ./static` to transpile the code and hot-reload these changes into the web browser. If you run this command and make some changes the browser window will refresh and they will show up immediately.
+When making updates to the code(working on the application), we run `npm run dev`, this command executed `webpack-dev-server --content-base ./static` to transpile the code and hot-reload these changes into the web browser. 
+If you run this command and make some changes the browser window will refresh and they will show up immediately.
