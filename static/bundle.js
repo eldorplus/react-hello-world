@@ -21833,19 +21833,7 @@ var _app2 = _interopRequireDefault(_app);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Invariant Violation: _registerComponent(...): Target container is not a DOM element.
-
-function run() {
-  _reactDom2.default.render(_react2.default.createElement(_app2.default, null), document.getElementById('root'));
-}
-
-var loadedStates = ['complete', 'loaded', 'interactive'];
-
-if (loadedStates.includes(document.readyState) && document.body) {
-  run();
-} else {
-  window.addEventListener('DOMContentLoaded', run, false);
-}
+_reactDom2.default.render(_react2.default.createElement(_app2.default, null), document.querySelector('#root'));
 
 /***/ })
 /******/ ]);

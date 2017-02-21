@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "webpack",
+    "start:server": "http-server -p 3000 ./static",
     "lint": "eslint src test",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js 'test/**/*.@(js)'"
   },
@@ -26,6 +28,7 @@
     "webpack-dev-server": "^2.4.1"
   },
   "dependencies": {
+    "http-server": "^0.9.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   }

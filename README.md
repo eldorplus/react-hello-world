@@ -21,6 +21,10 @@ Let's create a `.babelrc` file so babel-knows how to parse our files, this is di
      "presets": [ "es2015", "react" ]
     }
     
+We should add a command to `package.json` to build all application code with webpack, this will allow us to run `npm run build` to build the app.
+
+    "build": "webpack",
+    
 With the project initialized and `webpack` installed, create the project `src/` and `static/` directories:
     
     mkdir src static
@@ -178,7 +182,64 @@ As you can see, we have another stateless component, which only allos to set som
 This makes for a simple hello world application with a button that toggles the message.
 
 You can use `webpack --watch` to transpile the application as you are making changes and working on it. 
-You can also install `webpack-dev-server` to serve the application locally on port 8080.
+You can also run `webpack-dev-server` to serve the application locally on port 8080.
+
+## Production
+
+We should install `http-server` to serve the application from a Docker container.
+
+    npm install --save http-server
+    
+    
+ Now let's create a `Dockerfile` with these contents:
+ 
+    FROM node:6.9.5
+    
+    # Create app directory
+    RUN mkdir -p /src/app
+    WORKDIR /src/app
+    
+    # Install app dependencies
+    COPY package.json /src/app/
+    RUN npm install
+    
+    # Bundle app source
+    COPY . /src/app
+    
+    # Check code quality with lint and test the app
+    RUN npm run lint && npm run test
+        
+    # Build and optimize react app
+    RUN npm run build
+    
+    EXPOSE 3000
+    
+    # defined in package.json
+    CMD [ "npm", "run", "start:server" ]
+
+If we have `docker` installed, we can run `docker-compose up` and it will bring up the application running in a docker container.
+As you can see, this file creates the app directory and copies `package.json` into the app directory, which is inside the container.
+Then it installs the application dependencies with `npm install`, and copies all of the application source(Bundle) into the container.
+Now run lint and test to check the quality fo the code, using our tests and eslint configuration we have in place. 
+If these don't pass, then the app shouldn't run, the container should fail to come up because the application can't run. 
+If all tests pass though, then the app is allowed to build, run and serve the files on port 3000, you can connect to it and access the app from your favorite browser.
+
+It's no fun having a `Dockerfile` without having a `docker-compose.yml` file, so let's add one having these lines:
+
+    version: "2"
+    
+    services:
+      app:
+        build: .
+        ports:
+          - '3000:3000'
+        volumes:
+          - .:/src/app
+
+The `docker-compose.yml` file just simplifies the process of creating containers with `docker` by introducing the `docker-compose` command to do it.
+
+With these files, in place we can now run `docker-compose up` and it will bring up the app, all tested and running, accessible from a browser on port 3000.
+It's a good alternative in case you don't want to install all these libraries on your machine and have docker installed.
 
 ## Testing
 
@@ -237,7 +298,7 @@ After the modification the file should look like this:
             "arrow-body-style": ["error", "always"],
         }
     };
-        
+
 Now lets add some scripts to `package.json` to run these commands and tools easier from the commandline.
 
     "scripts": {
