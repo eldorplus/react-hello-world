@@ -321,6 +321,12 @@ Now lets add some scripts to `package.json` to run these commands and tools easi
         "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
     },
     
+We should add `jest` to our `package.json` file:
+
+      "jest": {
+        "testEnvironment": "node"
+      }
+      
 Let's create a `test/` directory to place all tests in there.
 
     mkdir test
