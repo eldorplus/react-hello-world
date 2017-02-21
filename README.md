@@ -316,7 +316,6 @@ Now lets add some scripts to `package.json` to run these commands and tools easi
         "start:server": "http-server -p 3000 ./static",
         "lint": "eslint src test",
         "test": "./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js",
-        "coverage": "jest --coverage --setupTestFrameworkScriptFile test/test_helper.js --verbose",
         "lint-and-test": "npm run lint && npm run test",
         "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
         "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
