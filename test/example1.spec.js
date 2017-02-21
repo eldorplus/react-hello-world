@@ -1,0 +1,19 @@
+import React from 'react';
+import Example1 from '../src/example1';
+import renderer from 'react-test-renderer';
+
+test('Example1 toggles Message on each click', () => {
+  const component = renderer.create(
+    <Example1 />
+  );
+  let tree = component.toJSON();
+
+  tree.children[1].props.onClick();
+  tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
+
+  tree.children[1].props.onClick();
+  tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
+
+});

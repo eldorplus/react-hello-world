@@ -362,21 +362,51 @@ Since our files use the `.js` extension for files with `jsx` code, eslint will c
 After the modification the `.eslintrc.js` file should look like this:
     
     module.exports = {
-        "extends": "airbnb",
-        "plugins": [
-            "react",
-            "jsx-a11y",
-            "import"
-        ],
-        "env": {
-            "browser": true,
-            "jasmine": true,
-        },
-        "rules": {
-            "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-            "arrow-body-style": ["error", "always"],
-        }
+      "extends": "airbnb",
+      "plugins": [
+        "react",
+        "jsx-a11y",
+        "import",
+      ],
+      "env": {
+        "browser": true,
+        "jasmine": true,
+      },
+      "rules": {
+        "react/jsx-filename-extension": [1, {"extensions": [".js", ".jsx"]}],
+        "arrow-body-style": ["error", "always"],
+      }
     };
+
+Install [eslint-loader](https://www.npmjs.com/package/eslint-loader) and configure it in the `webpack.config.js` file:
+
+    npm install eslint-loader --save-dev
+    
+Add the configuration for `eslint-loader` to `webpack.config.js` o that it looks like this:
+
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react']
+        }
+      },
+      {
+        test: /\.jsx?$/,
+        loader: "eslint-loader",
+        exclude: /(node_modules|bower_components)/
+      },
+    ]
+    
+Make sure that you add the `eslint-loader` after the `babel-loader` otherwise you will get all kinds of errors about the project code that don't make sense. For example, the error below:
+
+    ...
+    error  'use strict' is unnecessary inside of modules
+    ...
+
+The above webpack.config execute eslint over our source code after compiling all the code with webpack babel-loader. neat huh!
 
 Now lets add some scripts to `package.json` to run these commands and tools easier from the commandline.
 
@@ -397,6 +427,10 @@ We should add `jest` to our `package.json` file:
         "testEnvironment": "node"
       }
       
+Install `babel-preset-jest` and add it to `.babelrc` `"presets": ["jest"]`, I've also added it to `babel-loader` in `webpack.config.js`:
+
+    npm install babel-preset-jest --save-dev
+    
 Let's create a `test/` directory to place all tests in there.
 
     mkdir test
@@ -482,6 +516,81 @@ You can run the test container in docker like this:
     # or with
     
     npm run testing
+
+During development you'd run the `npm run test` or `npm run dev` command as you work on the project.
+
+That's all great and all but we want to add more tests to make sure everything works fine. 
+
+Let's install one more package, for testing: 
+
+    npm install react-test-renderer --save-dev
+    
+Now we can add another test in `test/app.spec.js`:
+
+    import React from 'react';
+    import App from '../src/app';
+    import renderer from 'react-test-renderer';
+    
+    test('App renders components', () => {
+      const component = renderer.create(
+        <App />
+      );
+      let tree = component.toJSON();
+      expect(tree).toMatchSnapshot();
+    });
+    
+Go ahead and add another test in `test/example1.spec.js`:
+
+    import React from 'react';
+    import Example1 from '../src/example1';
+    import renderer from 'react-test-renderer';
+    
+    test('Example1 toggles Message on each click', () => {
+      const component = renderer.create(
+        <Example1 />
+      );
+      let tree = component.toJSON();
+    
+      tree.children[1].props.onClick();
+      tree = component.toJSON();
+      expect(tree).toMatchSnapshot();
+    
+      tree.children[1].props.onClick();
+      tree = component.toJSON();
+      expect(tree).toMatchSnapshot();
+    
+    });
+
+Let's add `test/example2.spec.js`:
+
+    import React from 'react';
+    import Example2 from '../src/example2';
+    import renderer from 'react-test-renderer';
+    
+    test('Example2 toggles Message after 3 clicks', () => {
+      const component = renderer.create(
+        <Example2 numClicks={3} />
+      );
+      let tree = component.toJSON();
+    
+      tree.children[1].props.onClick();
+      tree.children[1].props.onClick();
+      tree.children[1].props.onClick();
+      tree = component.toJSON();
+      expect(tree).toMatchSnapshot();
+    
+      tree.children[1].props.onClick();
+      tree.children[1].props.onClick();
+      tree.children[1].props.onClick();
+      tree = component.toJSON();
+      expect(tree).toMatchSnapshot();
+    
+    });
+
+As you can see both of the example tests are similar, example1 makes a single click and compares the rendered output of the component to a snapshot.
+
+When you are developing the code and you have some tests fail, you need to update the snapshot by passing param `-u` to `jest`, npm will pass all the arguments after the -- directly to your script. `npm run test -- -u` in this case.
+
 
 ## The Project
 

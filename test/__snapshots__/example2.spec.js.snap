@@ -1,0 +1,33 @@
+exports[`test Example2 toggles Message after 3 clicks 1`] = `
+<div>
+  <h2>
+    Example 2 - 
+    <small>
+      click 
+      3
+       times to toggle
+    </small>
+  </h2>
+  <input
+    onClick={[Function]}
+    type="submit"
+    value="Toggle message" />
+</div>
+`;
+
+exports[`test Example2 toggles Message after 3 clicks 2`] = `
+<div>
+  <h2>
+    Example 2 - 
+    <small>
+      click 
+      3
+       times to toggle
+    </small>
+  </h2>
+  <input
+    onClick={[Function]}
+    type="submit"
+    value="Toggle message" />
+</div>
+`;
