@@ -135,6 +135,7 @@ And here is the code for `src/example1.js`:
       render() {
         return (
           <div>
+            <h2>Example 1 - <small>click once to toggle</small></h2>
             <Button onClick={this.toggle} text="Toggle message" />
             { this.state.showMessage ? <Message>Hello world!!!</Message> : null }
           </div>
@@ -185,11 +186,70 @@ The contents of our `src/components/Message.js` file look like this:
       );
     };
     
+    Message.propTypes = {
+      children: React.PropTypes.node,
+    };
+    
+    Message.defaultProps = {
+      children: 'Hello World',
+    };
+    
     module.exports = Message;
     
 As you can see, we have another stateless component, which passes the child components for rendering. This can be either a string of text or any other components.
 
 This makes for a simple hello world application with a button that toggles the message.
+
+Let's go ahead and make another example `src/example2.js` with these contents:
+
+    import React from 'react';
+    import Button from './components/Button';
+    import Message from './components/Message';
+    
+    class Example2 extends React.Component {
+      constructor(props) {
+        super(props);
+    
+        this.state = {
+          showMessage: true,
+          clickedCount: 1,
+        };
+        this.toggle = this.toggle.bind(this);
+      }
+    
+      toggle() {
+        this.setState({ clickedCount: this.state.clickedCount + 1 });
+        if (this.state.clickedCount >= this.props.numClicks) {
+          this.setState({
+            showMessage: !this.state.showMessage,
+            clickedCount: 1,
+          });
+        }
+      }
+    
+      render() {
+        return (
+          <div>
+            <h2>Example 2 - <small>click {this.props.numClicks} times to toggle</small></h2>
+            <Button onClick={this.toggle} text="Toggle message" />
+            { this.state.showMessage ? <Message>Hello world!!!</Message> : null }
+          </div>
+        );
+      }
+    }
+    
+    Example2.propTypes = {
+      numClicks: React.PropTypes.number,
+    };
+    
+    Example2.defaultProps = {
+      numClicks: 2,
+    };
+    
+    export default Example2;
+
+As you can see this file looks very similar to `example1.js` the only difference is we now have a clickedCount variable tracking the number of times the button has been clicked. 
+This value gets updated each time the user clicks the button, `toggle` is called, incremeting the value until it reaches `numClicks` and resets the value while alternating the `showMessage` value.
 
 ## Production
 

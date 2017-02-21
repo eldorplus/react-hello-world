@@ -7,4 +7,12 @@ const Message = (props) => {
   );
 };
 
+Message.propTypes = {
+  children: React.PropTypes.node,
+};
+
+Message.defaultProps = {
+  children: 'Hello World',
+};
+
 module.exports = Message;

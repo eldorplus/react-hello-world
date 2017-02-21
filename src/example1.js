@@ -19,6 +19,7 @@ class Example1 extends React.Component {
   render() {
     return (
       <div>
+        <h2>Example 1 - <small>click once to toggle</small></h2>
         <Button onClick={this.toggle} text="Toggle message" />
         { this.state.showMessage ? <Message>Hello world!!!</Message> : null }
       </div>
