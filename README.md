@@ -453,8 +453,8 @@ To have a application that renders a button a message and keeps state for messag
 
 1. Using `webpack` to prepare code and resources to serve to the browser, `index.html` uses he prepared `bundle.js` file.
 2. Keep `src/index.js` as a thin wrapper to load the application into the root dom node, could then use other wrappers to load the application in different dom node.
-3. The `src/app.js` application keeps a boolean state for `showMessage` variable used to show or hide the `Message` component, and defines a `toggle` method which sets the variable to true if false and false if true, updating the state.
-4. Bind the toggle method to `onClick` event, since the browser sends a event on button click, when that event fires, the `showMessage` variable is toggled.
+3. The `src/app.js` application keeps a boolean state for `showMessage` variable used to show or hide the `Message` component, and defines a `toggle` method which sets the variable to true if false and false if true, updating the state. [stackoverflow/questions/24502898/show-or-hide-element](http://stackoverflow.com/questions/24502898/show-or-hide-element#24534492)
+4. Bind the `toggle` method to `onClick` event, since the browser sends a event on button click, when that event fires, the `showMessage` variable is toggled.
 5. Define the `Button` component and `Message` component as stateless, since there is no need for them to keep state because the parent component already does that with `showMessage`.
 6. `Button` and `Message` both have defaultProps in case the developer doesn't pass in a text property, wanting to use a default value.
 
