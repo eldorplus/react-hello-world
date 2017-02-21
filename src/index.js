@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app';
 
-// Invariant Violation: _registerComponent(...): Target container is not a DOM element.
-
 function run() {
   ReactDOM.render(<App />, document.getElementById('root'));
 }
