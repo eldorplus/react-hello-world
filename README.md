@@ -3,6 +3,7 @@ react-hello-world
 
 In this tutorial we will create a button which shows and hides a message that says "Hello World".
 
+## Writing a "Hello World" application 
 Firstly, create the project directory and cd into it:
 
     mkdir react-hello-world && cd react-hello-world
@@ -12,13 +13,19 @@ Initialize the project with `npm init` and Install:
  - [babel](https://babeljs.io/) (to use newer javascript coding syntax and coding styles)
     
     npm init
-    npm install babel-core babel-loader babel-preset-es2015 babel-preset-react webpack --save-dev
+    npm install babel-core babel-loader babel-preset-es2015 babel-preset-react webpack webpack-dev-server --save-dev
     
-With the project initialized and `webpack` installed create the project `src` and `static` directories:
+Let's create a `.babelrc` file so babel-knows how to parse our files, this is different than what we have in our `webpack.config.js` file.
+
+    {
+     "presets": [ "es2015", "react" ]
+    }
+    
+With the project initialized and `webpack` installed, create the project `src/` and `static/` directories:
     
     mkdir src static
     
-Inside of `src/` we will place all of our project code and inside of `static/` we will place our index.html file and webpack will generate `bundle.js` in `static`.
+Inside of `src/` we will place all of our project code and inside of `static/` we will place our `index.html` file and `webpack` will generate `bundle.js` in `static`.
 
 Let's create a `index.html` file in `static/` directory with these contents:
 
@@ -27,16 +34,17 @@ Let's create a `index.html` file in `static/` directory with these contents:
     <head>
         <meta charset="utf-8">
         <title>Hello World</title>
+        <script async src="bundle.js"></script>
     </head>
     <body>
         <div id='root'></div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
-        <script src="bundle.js"></script>
     </body>
     </html>
     
 The project code(which the browser doesn't understand all the way) will be transpiled and compressed into a `bundle.js` file
     and downloaded by the browser. Once the project loads it will render the application the the `root` div.
+    
+Note: Having <script async src="..."></script> in the header ensures that the browser will start downloading JavaScript bundle before HTML content is loaded. (IE9+) [source](http://stackoverflow.com/questions/26566317/invariant-violation-registercomponent-target-container-is-not-a-dom-elem#26566330)
     
 We need to create a [webpack.config.js](https://webpack.js.org/concepts/#loaders) file so `webpack` knows how to transpile the react application components.
 
@@ -74,12 +82,13 @@ Let's install `React.js`:
 
 Now we are ready to start writing the application code, lets add this content to `src/index.js`:
 
+    import React from 'react';
     import ReactDOM from 'react-dom';
     import App from './app';
     
-    ReactDOM.render(<App/>, document.querySelector('#root'));
+    ReactDOM.render(<App />, document.querySelector('#root'));
 
-The `index.js` file above, loads the application into the `root` div element using react-dom library.
+The `index.js` file above, loads the application into the `root` div element using react-dom library. Because we `import React` we don't need to load it with a `<script />` tag in the browser from `index.html`.
 
 We can add `src/app.js` with these contents:
 
@@ -88,24 +97,27 @@ We can add `src/app.js` with these contents:
     import Message from './components/Message';
     
     class App extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                showMessage: true,
-            };
-            this.toggle = this.toggle.bind(this)
-        }
-        toggle() {
-            this.setState({showMessage: !this.state.showMessage})
-        }
-        render() {
-            return (
-                <div>
-                    <Button onClick={this.toggle} text="Toggle message"/>
-                    { this.state.showMessage ? <Message text="Hello world!"/> : null }
-                </div>
-            );
-        }
+      constructor(props) {
+        super(props);
+    
+        this.state = {
+          showMessage: true,
+        };
+        this.toggle = this.toggle.bind(this);
+      }
+    
+      toggle() {
+        this.setState({ showMessage: !this.state.showMessage });
+      }
+    
+      render() {
+        return (
+          <div>
+            <Button onClick={this.toggle} text="Toggle message" />
+            { this.state.showMessage ? <Message text="Hello world!" /> : null }
+          </div>
+        );
+      }
     }
     
     export default App;
@@ -121,14 +133,18 @@ The contents of our `src/components/Button.js` file are as follows:
     import React from 'react';
     
     // stateless component
-    const Button = (props) => <input type="submit" value={props.text} onClick={props.onClick} />
+    const Button = (props) => {
+      return <input type="submit" value={props.text} onClick={props.onClick} />;
+    };
     
     Button.propTypes = {
-        text: React.PropTypes.string,
+      text: React.PropTypes.string,
+      onClick: React.PropTypes.func,
     };
     
     Button.defaultProps = {
-        text: 'Toggle',
+      text: 'Toggle',
+      onClick: () => {},
     };
     
     export default Button;
@@ -142,17 +158,17 @@ The contents of our `src/components/Message.js` file look like this:
     
     // stateless component
     const Message = (props) => {
-        return (
-            <p>{props.text}</p>
-        )
+      return (
+        <p>{props.text}</p>
+      );
     };
     
     Message.propTypes = {
-        text: React.PropTypes.string,
+      text: React.PropTypes.string,
     };
     
     Message.defaultProps = {
-        text: 'Hello World',
+      text: 'Hello World',
     };
     
     module.exports = Message;
@@ -163,6 +179,122 @@ This makes for a simple hello world application with a button that toggles the m
 
 You can use `webpack --watch` to transpile the application as you are making changes and working on it. 
 You can also install `webpack-dev-server` to serve the application locally on port 8080.
+
+## Testing
+
+To make sure everything is working as expected before we deploy things to production we should add unit tests.
+
+Run this command to install `eslint` `eslint-config-airbnb` `eslint-plugin-import` `eslint-plugin-jsx-a11y` `eslint-plugin-react`:
+
+    export PKG=eslint-config-airbnb;
+    npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install --save-dev "$PKG@latest"
+
+Let's also install some dependencies for testing (jsdom, mocha, chai):
+
+    npm install --save-dev mocha chai jsdom
+    
+Let's initialize eslint so it knows how to parse our code, type `eslint --init` and answer the questions like below:
+
+    eslint --init
+    ? How would you like to configure ESLint? Use a popular style guide
+    ? Which style guide do you want to follow? Airbnb
+    ? Do you use React? Yes
+    ? What format do you want your config file to be in? JavaScript
+    
+Edit the `.eslintrc.js` file to add `browser: true` so `eslint` won't complain about `document` not being defined.
+
+    "env": {
+        "browser": true,
+        "jasmine": true,
+    }
+
+    # error  'document' is not defined                      no-undef
+    
+Since our files use the `.js` extension for files with `jsx` code, eslint will complain unless we add these rules:
+
+    "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "arrow-body-style": ["error", "always"],
+    }
+    
+    # error  JSX not allowed in files with extension '.js'  react/jsx-filename-extension
+        
+After the modification the file should look like this:
+    
+    module.exports = {
+        "extends": "airbnb",
+        "plugins": [
+            "react",
+            "jsx-a11y",
+            "import"
+        ],
+        "env": {
+            "browser": true,
+            "jasmine": true,
+        },
+        "rules": {
+            "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+            "arrow-body-style": ["error", "always"],
+        }
+    };
+        
+Now lets add some scripts to `package.json` to run these commands and tools easier from the commandline.
+
+    "scripts": {
+        "lint": "eslint src test",
+        "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js 'test/**/*.@(js)'"
+    },
+    
+Let's create a `test/` directory to place all tests in there.
+
+    mkdir test
+    
+Now add a `test/test_helper.js` file, it makes use of `jsdom` to make the code think it's running in a browser.
+    
+    /* globals global, window */
+    
+    import jsdom from 'jsdom';
+    
+    const doc = jsdom.jsdom('<!doctype html><html><body><div id="root"></div></body></html>', {
+      url: 'http://localhost',
+    });
+    
+    const win = doc.defaultView;
+    
+    win.sessionStorage = {
+      getItem: (key) => {
+        return this[key];
+      },
+      setItem: (key, value) => {
+        this[key] = value;
+      },
+    };
+    win.localStorage = win.sessionStorage;
+    
+    global.document = doc;
+    global.window = win;
+    
+    Object.keys(window).forEach((key) => {
+      if (!(key in global)) {
+        global[key] = window[key];
+      }
+    });
+
+This file prepares the unit tests to run as if it were running the code in a browser window.
+
+Now we can add our first unit test, all it does is verify that the app gets rendered, rather the render function gets called.
+
+    import ReactDOM, { render } from 'react-dom';
+    import { expect } from 'chai';
+    import '../src/index';
+    
+    describe('index', () => {
+      it('calls render', () => {
+        expect(ReactDOM, render).to.have.been.called; // eslint-disable-line no-unused-expressions
+      });
+    });
+    
+With these files in their places, now we can run `npm run test` and `npm run lint`
 
 ## The Project
 
