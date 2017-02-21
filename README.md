@@ -80,23 +80,13 @@ Let's install `React.js`:
 
     npm install react react-dom --save
 
-Now we are ready to start writing the application code, lets add this content to `src/index.js`: [source](http://stackoverflow.com/questions/26566317/invariant-violation-registercomponent-target-container-is-not-a-dom-elem#26566330)
+Now we are ready to start writing the application code, lets add this content to `src/index.js`:
 
     import React from 'react';
     import ReactDOM from 'react-dom';
     import App from './app';
     
-    function run() {
-      ReactDOM.render(<App />, document.getElementById('root'));
-    }
-    
-    const loadedStates = ['complete', 'loaded', 'interactive'];
-    
-    if (loadedStates.includes(document.readyState) && document.body) {
-      run();
-    } else {
-      window.addEventListener('DOMContentLoaded', run, false);
-    }
+    ReactDOM.render(<App />, document.querySelector('#root'));
 
 The `index.js` file above, loads the application into the `root` div element using react-dom library. Because we `import React` we don't need to load it with a `<script />` tag in the browser from `index.html`.
 
