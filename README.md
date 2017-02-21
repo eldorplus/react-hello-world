@@ -9,12 +9,14 @@ Firstly, create the project directory and cd into it:
     mkdir react-hello-world && cd react-hello-world
     
 Initialize the project with `npm init` and Install:
- - [webpack](https://webpack.js.org/) (to prepare our application for browsers)
- - [babel](https://babeljs.io/) (to use newer javascript coding syntax and coding styles)
+- [webpack](https://webpack.js.org/) (to prepare our application for browsers)
+- [babel](https://babeljs.io/) (to use newer javascript coding syntax and coding styles)
 
-    npm init
-    npm install babel-core babel-loader babel-preset-es2015 babel-preset-react webpack webpack-dev-server --save-dev
-    
+```
+npm init
+npm install babel-core babel-loader babel-preset-es2015 babel-preset-react webpack webpack-dev-server --save-dev
+```
+
 Let's create a `.babelrc` file so babel-knows how to parse our files, this is different than what we have in our `webpack.config.js` file.
 
     {
