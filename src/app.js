@@ -1,29 +1,12 @@
 import React from 'react';
-import Button from './components/Button';
-import Message from './components/Message';
+import Example1 from './example1';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showMessage: true,
-    };
-    this.toggle = this.toggle.bind(this);
-  }
-
-  toggle() {
-    this.setState({ showMessage: !this.state.showMessage });
-  }
-
-  render() {
-    return (
-      <div>
-        <Button onClick={this.toggle} text="Toggle message" />
-        { this.state.showMessage ? <Message text="Hello world!" /> : null }
-      </div>
-    );
-  }
-}
+const App = () => {
+  return (
+    <div>
+      <Example1 />
+    </div>
+  );
+};
 
 export default App;

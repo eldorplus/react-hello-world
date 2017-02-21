@@ -1,9 +1,15 @@
 version: "2"
 
 services:
-  app:
-    build: .
+  react-hello-world:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
     ports:
       - '3000:3000'
     volumes:
       - .:/src/app
+  react-hello-world-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.testing

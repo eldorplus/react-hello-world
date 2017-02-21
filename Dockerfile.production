@@ -12,7 +12,7 @@ RUN npm install
 COPY . /src/app
 
 # Check code quality with lint and test the app
-RUN npm run lint && npm run test
+RUN npm run lint-and-test
 
 # Build and optimize react app
 RUN npm run build

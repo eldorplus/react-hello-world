@@ -229,8 +229,10 @@ It's no fun having a `Dockerfile` without having a `docker-compose.yml` file, so
     version: "2"
     
     services:
-      app:
-        build: .
+      react-hello-world:
+        build:
+          context: .
+          dockerfile: Dockerfile.production
         ports:
           - '3000:3000'
         volumes:
@@ -250,9 +252,14 @@ Run this command to install `eslint` `eslint-config-airbnb` `eslint-plugin-impor
     export PKG=eslint-config-airbnb;
     npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install --save-dev "$PKG@latest"
 
-Let's also install some dependencies for testing (jsdom, mocha, chai):
+Let's also install some dependencies for testing (jsdom, mocha, chai, jest-cli):
 
-    npm install --save-dev mocha chai jsdom
+- jsdom mimics a web browser by providing the global variables found in a web browser. (A JavaScript implementation of the WHATWG DOM and HTML standards, for use with Node.js.)
+- mocha is a feature-rich JavaScript test framework running on Node.js and the browser.
+- chai BDD / TDD assertion library, for writing the tests.
+- jest-cli Painless JavaScript Testing
+
+    npm install --save-dev mocha chai jsdom jest-cli
     
 Let's initialize eslint so it knows how to parse our code, type `eslint --init` and answer the questions like below:
 
@@ -302,8 +309,14 @@ After the modification the file should look like this:
 Now lets add some scripts to `package.json` to run these commands and tools easier from the commandline.
 
     "scripts": {
+        "build": "webpack",
+        "dev": "webpack-dev-server",
+        "start:server": "http-server -p 3000 ./static",
         "lint": "eslint src test",
-        "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js 'test/**/*.@(js)'"
+        "test": "./node_modules/jest-cli/bin/jest.js --setupTestFrameworkScriptFile test/test_helper.js",
+        "lint-and-test": "npm run lint && npm run test",
+        "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
+        "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
     },
     
 Let's create a `test/` directory to place all tests in there.
@@ -355,7 +368,42 @@ Now we can add our first unit test, all it does is verify that the app gets rend
       });
     });
     
-With these files in their places, now we can run `npm run test` and `npm run lint`
+With these files in their places, now we can run `npm run lint-and-test`
+
+Just for fun, let's add a new `Dockerfile.testing` file with these contents:
+
+    FROM node:6.9.5
+    
+    # Create app directory
+    RUN mkdir -p /src/app
+    WORKDIR /src/app
+    
+    # Install app dependencies
+    COPY package.json /src/app/
+    RUN npm install
+    
+    # Bundle app source
+    COPY . /src/app
+    
+    # defined in package.json
+    CMD [ "npm", "run", "lint-and-test" ]
+
+It only runs the tests and doesn't build the app or try to serve it.
+
+We should add this to the `docker-compose.yml` file:
+
+    react-hello-world-test:
+        build:
+          context: .
+          dockerfile: Dockerfile.testing
+
+You can run the test container in docker like this:
+
+    docker-compose up react-hello-world-test
+    
+    # or with
+    
+    npm run testing
 
 ## The Project
 
