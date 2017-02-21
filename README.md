@@ -163,3 +163,28 @@ This makes for a simple hello world application with a button that toggles the m
 
 You can use `webpack --watch` to transpile the application as you are making changes and working on it. 
 You can also install `webpack-dev-server` to serve the application locally on port 8080.
+
+## The Project
+
+To begin, I'd like you to make something simple with javascript. The app should:
+
+- show a button, and a "Hello World" message
+- when you click the button it toggles the visibility of the message. So 1 click hides the message, 2 clicks makes it visible again.
+
+Even though it's a very simple example, I'd like you to code it in a way that, to the best of your knowledge:
+
+- will be a good experience for other devs (if this were a team project)
+- would run efficiently in production.
+
+Finally, please make notes on all of this stuff so we can go through it together.
+
+## Rationale
+
+To have a application that renders a button a message and keeps state for message shown or hidden.
+
+1. Using `webpack` to prepare code and resources to serve to the browser, `index.html` uses he prepared `bundle.js` file.
+2. Keep `src/index.js` as a thin wrapper to load the application into the root dom node, could then use other wrappers to load the application in different dom node.
+3. The `src/app.js` application keeps a boolean state for `showMessage` variable used to show or hide the `Message` component, and defines a `toggle` method which sets the variable to true if false and false if true, updating the state.
+4. Bind the toggle method to `onClick` event, since the browser sends a event on button click, when that event fires, the `showMessage` variable is toggled.
+5. Define the `Button` component and `Message` component as stateless, since there is no need for them to keep state because the parent component already does that with `showMessage`.
+6. `Button` and `Message` both have defaultProps in case the developer doesn't pass in a text property, wanting to use a default value.
