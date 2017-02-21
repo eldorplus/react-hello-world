@@ -10,8 +10,8 @@ Firstly, create the project directory and cd into it:
     mkdir react-hello-world && cd react-hello-world
     
 Initialize the project with `npm init` and Install:
-- [webpack](https://webpack.js.org/) (to prepare our application for browsers)
-- [babel](https://babeljs.io/) (to use newer javascript coding syntax and coding styles)
+- [webpack](https://webpack.js.org/) (to prepare our application for browsers) [webpack-dev-server](https://github.com/webpack/docs/wiki/webpack-dev-server)
+- [babel](https://babeljs.io/) (to use newer javascript coding syntax and coding styles) [babel-loader](http://npm.taobao.org/package/babel-loader)
 
 ```
 npm init
@@ -26,7 +26,7 @@ Let's create a `.babelrc` file so babel-knows how to parse our files, this is di
     
 We should add a command to `package.json` to build all application code with webpack, this will allow us to run `npm run build` to build the app.
 
-    "build": "webpack",
+    "build": "webpack -p",
     
 With the project initialized and `webpack` installed, create the project `src/` and `static/` directories:
     
@@ -310,6 +310,10 @@ The `docker-compose.yml` file just simplifies the process of creating containers
 With these files, in place we can now run `docker-compose up` and it will bring up the app, all tested and running, accessible from a browser on port 3000.
 It's a good alternative in case you don't want to install all these libraries on your machine and have docker installed.
 
+Ideally for production we would upload the application frontend files to Amazon S3 bucket and configure that bucket to host website. Webpack is a great tool to integrate into our workflow to achieve a smooth deployment system to the cloud.
+
+https://webpack.js.org/guides/production-build/
+
 ## Testing
 
 To make sure everything is working as expected before we deploy things to production we should add unit tests.
@@ -354,7 +358,7 @@ Since our files use the `.js` extension for files with `jsx` code, eslint will c
     
     # error  JSX not allowed in files with extension '.js'  react/jsx-filename-extension
         
-After the modification the file should look like this:
+After the modification the `.eslintrc.js` file should look like this:
     
     module.exports = {
         "extends": "airbnb",
@@ -376,7 +380,7 @@ After the modification the file should look like this:
 Now lets add some scripts to `package.json` to run these commands and tools easier from the commandline.
 
     "scripts": {
-        "build": "webpack",
+        "build": "webpack -p",
         "dev": "webpack-dev-server --content-base ./static",
         "start:server": "http-server -p 3000 ./static",
         "lint": "eslint src test",
@@ -385,7 +389,7 @@ Now lets add some scripts to `package.json` to run these commands and tools easi
         "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
         "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
     },
-    
+      
 We should add `jest` to our `package.json` file:
 
       "jest": {

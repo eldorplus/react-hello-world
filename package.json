@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack -p",
     "dev": "webpack-dev-server --content-base ./static",
     "start:server": "http-server -p 3000 ./static",
     "lint": "eslint src test",
@@ -17,7 +17,9 @@
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.23.1",
+    "babel-jest": "^19.0.0",
     "babel-loader": "^6.3.2",
+    "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "chai": "^3.5.0",
