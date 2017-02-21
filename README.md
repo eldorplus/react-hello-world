@@ -3,7 +3,8 @@ react-hello-world
 
 In this tutorial we will create a button which shows and hides a message that says "Hello World".
 
-## Writing a "Hello World" application 
+## Writing a "Hello World" application
+
 Firstly, create the project directory and cd into it:
 
     mkdir react-hello-world && cd react-hello-world
@@ -96,13 +97,28 @@ Now we are ready to start writing the application code, lets add this content to
 
 The `index.js` file above, loads the application into the `root` div element using react-dom library. Because we `import React` we don't need to load it with a `<script />` tag in the browser from `index.html`.
 
-We can add `src/app.js` with these contents:
+We can add `src/app.js` with these contents, we will have a few Examples loading from here:
+
+    import React from 'react';
+    import Example1 from './example1';
+    
+    const App = () => {
+      return (
+        <div>
+          <Example1 />
+        </div>
+      );
+    };
+    
+    export default App;
+
+And here is the code for `src/example1.js`:
 
     import React from 'react';
     import Button from './components/Button';
     import Message from './components/Message';
     
-    class App extends React.Component {
+    class Example1 extends React.Component {
       constructor(props) {
         super(props);
     
@@ -126,7 +142,7 @@ We can add `src/app.js` with these contents:
       }
     }
     
-    export default App;
+    export default Example1;
     
 - Firstly, import React and our custom Button and Message components.
 - create App class that extends React.Component so to manage state, either show message or don't show.
@@ -415,6 +431,7 @@ You can run the test container in docker like this:
 
 ## The Project
 
+#### Day 1
 To begin, I'd like you to make something simple with javascript. The app should:
 
 - show a button, and a "Hello World" message
@@ -426,6 +443,18 @@ Even though it's a very simple example, I'd like you to code it in a way that, t
 - would run efficiently in production.
 
 Finally, please make notes on all of this stuff so we can go through it together.
+
+#### Day 2
+1) update it so that visibility only changes after every 3 clicks.
+
+Eg:
+
+- click, click, click -> visible
+- click, click, click -> hidden
+
+2) think about other areas of the code or workflow that you'd need to consider if you were deploying this to production
+
+3) add some more to the Rationale section that cover things like tools or workflows you chose to use
 
 ## Rationale
 
