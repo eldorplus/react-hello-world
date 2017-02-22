@@ -727,7 +727,7 @@ Eg:
 
 ## Rationale
 
-##### code
+#### code
 
 To have a application that renders a button a message and keeps state for message shown or hidden.
 
@@ -738,7 +738,21 @@ To have a application that renders a button a message and keeps state for messag
 5. Define the `Button` component and `Message` component as stateless, since there is no need for them to keep state because the parent component already does that with `showMessage`.
 6. `Button` and `Message` both have defaultProps in case the developer doesn't pass in a text property, wanting to use a default value.
 
-##### workflow
+#### Workflow
+
+##### Run
+
+To run the project execute this command `npm run production`, it will take a while to build the docker container, but once it's running you can connect to [http://localhost:3000/](http://localhost:3000/) to view the project from a web browser.
+
+##### Develop
 
 When making updates to the code(working on the application), we run `npm run dev`, this command executed `webpack-dev-server --content-base ./static` to transpile the code and hot-reload these changes into the web browser. 
 If you run this command and make some changes the browser window will refresh and they will show up immediately.
+
+- The rationale behind using React, is simple, React is awesome! ReactDOM is just a dependency so obviously we install it.
+- WebPack simplifies our workflow by compiling our content for us, and is easier to configure than Grunt or Gulp for this task.
+- 
+##### Test
+
+When making updates to the tests, we run `npm run test`, this command executes `./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js` to run the tests and check that all the use cases we have defined meet to our expected results. 
+This is why we need to make sure our tests cover all the scenarios, good and bad. Then we can sleep easy at night knowing everything is working as expected, because we have tested for it and this way it makes it easy to automate so you don't stay up all night testing it manually.
