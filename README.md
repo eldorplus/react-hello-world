@@ -746,6 +746,10 @@ We also have a test for our `Message` component which looks like this `src/compo
       expect(tree).toMatchSnapshot();
     });
 
+Let's install `istanbul` to get coe coverage:
+
+    npm install --save istanbul
+    
 ## The Project
 
 #### Day 1
