@@ -8,19 +8,21 @@ import Example2 from '../src/example2';
 
 const Renderer = ReactTestUtils.createRenderer();
 
-test('App renders components', () => {
+test('App matches rendered snapshot', () => {
   const component = renderer.create(
-    <App />
+    <App />,
   );
-  let tree = component.toJSON();
+  const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
+});
 
+test('App renders examples', () => {
   Renderer.render(<App />);
   const result = Renderer.getRenderOutput();
 
   expect(result.type).toBe('div');
   expect(result.props.children).toEqual([
     <Example1 />,
-    <Example2 numClicks={3} />
+    <Example2 numClicks={3} />,
   ]);
 });

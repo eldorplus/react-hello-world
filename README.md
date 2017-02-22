@@ -233,7 +233,7 @@ Let's go ahead and make another example `src/example2.js` with these contents:
       render() {
         return (
           <div>
-            <h2>Example 2 - <small>{'click ' + this.props.numClicks + ' times to toggle'}</small></h2>
+            <h2>Example 2 - <small>{`click ${this.props.numClicks} times to toggle`}</small></h2>
             <Button onClick={this.toggle} text="Toggle message" />
             { this.state.showMessage ? <Message>Hello world!!!</Message> : null }
           </div>
@@ -557,20 +557,22 @@ Now we can add another test in `test/app.spec.js`:
     
     const Renderer = ReactTestUtils.createRenderer();
     
-    test('App renders components', () => {
+    test('App matches rendered snapshot', () => {
       const component = renderer.create(
-        <App />
+        <App />,
       );
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
+    });
     
+    test('App renders examples', () => {
       Renderer.render(<App />);
       const result = Renderer.getRenderOutput();
     
       expect(result.type).toBe('div');
       expect(result.props.children).toEqual([
         <Example1 />,
-        <Example2 numClicks={2} />
+        <Example2 numClicks={3} />,
       ]);
     });
     
@@ -599,7 +601,9 @@ Go ahead and add another test in `test/example1.spec.js`:
       tree.children[1].props.onClick();
       tree = component.toJSON();
       expect(tree).toMatchSnapshot();
+    });
     
+    test('Example1 renders correctly', () => {
       Renderer.render(<Example1 />);
       const result = Renderer.getRenderOutput();
     
@@ -607,7 +611,7 @@ Go ahead and add another test in `test/example1.spec.js`:
       expect(result.props.children).toEqual([
         <h2>Example 1 - <small>click once to toggle</small></h2>,
         <Button onClick={result.props.children[1].props.onClick} text="Toggle message" />,
-        <Message>Hello world!!!</Message>
+        <Message>Hello world!!!</Message>,
       ]);
     });
 
@@ -650,7 +654,7 @@ Let's add `test/example2.spec.js`:
       expect(result.props.children).toEqual([
         <h2>Example 2 - <small>click 3 times to toggle</small></h2>,
         <Button onClick={result.props.children[1].props.onClick} text="Toggle message" />,
-        <Message>Hello world!!!</Message>
+        <Message>Hello world!!!</Message>,
       ]);
     });
 
