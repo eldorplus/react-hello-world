@@ -317,6 +317,11 @@ Ideally for production we would upload the application frontend files to Amazon 
 
 https://webpack.js.org/guides/production-build/
 
+At some point after starting working on the project, and adding some tests, you can goto https://travis-ci.org and add the project there, so it can run tests when you push your changes to git. This project is also managed on codeship. 
+
+- https://app.codeship.com/projects/203832
+- https://travis-ci.org/gxela/react-hello-world
+
 ## Testing
 
 To make sure everything is working as expected before we deploy things to production we should add unit tests.
