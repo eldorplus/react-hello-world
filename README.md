@@ -751,7 +751,7 @@ If you run this command and make some changes the browser window will refresh an
 
 - The rationale behind using React, is simple, React is awesome! ReactDOM is just a dependency so obviously we install it.
 - WebPack simplifies our workflow by compiling our content for us, and is easier to configure than Grunt or Gulp for this task.
-- 
+
 ##### Test
 
 When making updates to the tests, we run `npm run test`, this command executes `./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js` to run the tests and check that all the use cases we have defined meet to our expected results. 
