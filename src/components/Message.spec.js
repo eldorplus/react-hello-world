@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React from 'react';
-import { expect as chaixpect } from 'chai';
 import renderer from 'react-test-renderer';
 import Message from './Message';
 
@@ -14,7 +13,7 @@ test('Message with defaults', () => {
     <Message />,
   );
   const tree = component.toJSON();
-  chaixpect(tree.children[0]).to.be.eql(defaults.children);
+  expect(tree.children[0]).toEqual(defaults.children);
   expect(tree).toMatchSnapshot();
 });
 
@@ -23,7 +22,7 @@ test('Message with children: Hello World!!!', () => {
     <Message>Hello World!!!</Message>,
   );
   const tree = component.toJSON();
-  chaixpect(tree.children[0]).to.be.eql('Hello World!!!');
+  expect(tree.children[0]).toEqual('Hello World!!!');
   expect(tree).toMatchSnapshot();
 });
 
@@ -32,7 +31,7 @@ test('Message with children: <p>Hello World!!!</p>', () => {
     <Message><p>Hello World!!!</p></Message>,
   );
   const tree = component.toJSON();
-  chaixpect(tree.children[0].children[0]).to.be.eql('Hello World!!!');
+  expect(tree.children[0].children[0]).toEqual('Hello World!!!');
   expect(tree).toMatchSnapshot();
 });
 
@@ -41,9 +40,9 @@ test('Message with children: <ul><li>Hello</li><li>World!!!</li></ul>', () => {
     <Message><ul><li>Hello</li><li>World!!!</li></ul></Message>,
   );
   const tree = component.toJSON();
-  chaixpect(tree.children[0].children[0].type).to.be.eql('li');
-  chaixpect(tree.children[0].children[1].type).to.be.eql('li');
-  chaixpect(tree.children[0].children[0].children[0]).to.be.eql('Hello');
-  chaixpect(tree.children[0].children[1].children[0]).to.be.eql('World!!!');
+  expect(tree.children[0].children[0].type).toEqual('li');
+  expect(tree.children[0].children[1].type).toEqual('li');
+  expect(tree.children[0].children[0].children[0]).toEqual('Hello');
+  expect(tree.children[0].children[1].children[0]).toEqual('World!!!');
   expect(tree).toMatchSnapshot();
 });

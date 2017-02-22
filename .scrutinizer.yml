@@ -1,3 +1,10 @@
 checks:
   javascript: true
 
+build:
+  tests:
+    override:
+      - command: 'istanbul cover --report clover test.js'
+        coverage:
+          file: 'coverage/clover.xml'
+          format: 'clover'

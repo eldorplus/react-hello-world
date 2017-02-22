@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React from 'react';
-import { expect as chaixpect } from 'chai';
 import renderer from 'react-test-renderer';
 import Button from './Button';
 
@@ -10,7 +9,7 @@ test('Button with defaults', () => {
     <Button />,
   );
   const tree = component.toJSON();
-  chaixpect(tree.props.value).to.be.eql('Toggle');
+  expect(tree.props.value).toEqual('Toggle');
   expect(tree).toMatchSnapshot();
 });
 
@@ -19,7 +18,7 @@ test('Button with text: Toggle message', () => {
     <Button text="Toggle message" />,
   );
   const tree = component.toJSON();
-  chaixpect(tree.props.value).to.be.eql('Toggle message');
+  expect(tree.props.value).toEqual('Toggle message');
   expect(tree).toMatchSnapshot();
 });
 
@@ -28,6 +27,6 @@ test('Button with a onClick callback returning "Button clicked!"', () => {
     <Button onClick={() => { return 'Button clicked!'; }} />,
   );
   const tree = component.toJSON();
-  chaixpect(tree.props.onClick()).to.be.eql('Button clicked!');
+  expect(tree.props.onClick()).toEqual('Button clicked!');
   expect(tree).toMatchSnapshot();
 });

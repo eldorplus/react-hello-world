@@ -605,15 +605,11 @@ As you can see both of the example tests are similar, example1 makes a single cl
 
 When you are developing the code and you have some tests fail, you need to update the snapshot by passing param `-u` to `jest`, npm will pass all the arguments after the -- directly to your script. `npm run test -- -u` in this case.
 
-We should also test our components, since jest has it's own expect, we import chai expect as chaixpect and use that alongside the one provided by jest.
-
-
 Let's create a test for our `Button` in `src/components/Button.spec.js` with these contents:
 
     /* eslint-disable import/no-extraneous-dependencies */
     
     import React from 'react';
-    import { expect as chaixpect } from 'chai';
     import renderer from 'react-test-renderer';
     import Button from './Button';
     
@@ -622,7 +618,7 @@ Let's create a test for our `Button` in `src/components/Button.spec.js` with the
         <Button />,
       );
       const tree = component.toJSON();
-      chaixpect(tree.props.value).to.be.eql('Toggle');
+      expect(tree.props.value).toEqual('Toggle');
       expect(tree).toMatchSnapshot();
     });
     
@@ -631,7 +627,7 @@ Let's create a test for our `Button` in `src/components/Button.spec.js` with the
         <Button text="Toggle message" />,
       );
       const tree = component.toJSON();
-      chaixpect(tree.props.value).to.be.eql('Toggle message');
+      expect(tree.props.value).toEqual('Toggle message');
       expect(tree).toMatchSnapshot();
     });
     
@@ -640,7 +636,7 @@ Let's create a test for our `Button` in `src/components/Button.spec.js` with the
         <Button onClick={() => { return 'Button clicked!'; }} />,
       );
       const tree = component.toJSON();
-      chaixpect(tree.props.onClick()).to.be.eql('Button clicked!');
+      expect(tree.props.onClick()).toEqual('Button clicked!');
       expect(tree).toMatchSnapshot();
     });
 
@@ -651,7 +647,6 @@ We also have a test for our `Message` component which looks like this `src/compo
     /* eslint-disable import/no-extraneous-dependencies */
     
     import React from 'react';
-    import { expect as chaixpect } from 'chai';
     import renderer from 'react-test-renderer';
     import Message from './Message';
     
@@ -664,7 +659,7 @@ We also have a test for our `Message` component which looks like this `src/compo
         <Message />,
       );
       const tree = component.toJSON();
-      chaixpect(tree.children[0]).to.be.eql(defaults.children);
+      expect(tree.children[0]).toEqual(defaults.children);
       expect(tree).toMatchSnapshot();
     });
     
@@ -673,7 +668,7 @@ We also have a test for our `Message` component which looks like this `src/compo
         <Message>Hello World!!!</Message>,
       );
       const tree = component.toJSON();
-      chaixpect(tree.children[0]).to.be.eql('Hello World!!!');
+      expect(tree.children[0]).toEqual('Hello World!!!');
       expect(tree).toMatchSnapshot();
     });
     
@@ -682,7 +677,7 @@ We also have a test for our `Message` component which looks like this `src/compo
         <Message><p>Hello World!!!</p></Message>,
       );
       const tree = component.toJSON();
-      chaixpect(tree.children[0].children[0]).to.be.eql('Hello World!!!');
+      expect(tree.children[0].children[0]).toEqual('Hello World!!!');
       expect(tree).toMatchSnapshot();
     });
     
@@ -691,10 +686,10 @@ We also have a test for our `Message` component which looks like this `src/compo
         <Message><ul><li>Hello</li><li>World!!!</li></ul></Message>,
       );
       const tree = component.toJSON();
-      chaixpect(tree.children[0].children[0].type).to.be.eql('li');
-      chaixpect(tree.children[0].children[1].type).to.be.eql('li');
-      chaixpect(tree.children[0].children[0].children[0]).to.be.eql('Hello');
-      chaixpect(tree.children[0].children[1].children[0]).to.be.eql('World!!!');
+      expect(tree.children[0].children[0].type).toEqual('li');
+      expect(tree.children[0].children[1].type).toEqual('li');
+      expect(tree.children[0].children[0].children[0]).toEqual('Hello');
+      expect(tree.children[0].children[1].children[0]).toEqual('World!!!');
       expect(tree).toMatchSnapshot();
     });
 
