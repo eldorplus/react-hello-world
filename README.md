@@ -440,7 +440,9 @@ Now lets add some scripts to `package.json` to run these commands and tools easi
         "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
     },
 
-We should add `jest` to our `package.json` file:
+We are using `eslint --ignore-path .gitignore .` for `lint` run-script because it uses our ignore file to ignore static and coverage. Alternative is `eslint --ignore-pattern "/coverage/" --ignore-pattern "/static/" .`
+
+We should add `jest` configuration to our `package.json` file:
 
       "jest": {
         "testEnvironment": "node"
