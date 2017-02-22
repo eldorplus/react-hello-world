@@ -1,7 +1,7 @@
 react-hello-world
 =================
 
-[![Travis](https://img.shields.io/travis/gxela/react-hello-world/master.svg)](https://travis-ci.org/gxela/react-hello-world) [![Codeship](https://img.shields.io/codeship/c1bab050-dacf-0134-662d-4a7ecfb8dfa8/master.svg)](https://app.codeship.com/projects/203832)
+[![THIS](https://img.shields.io/badge/React%20Hello%20World-Tutorial-blue.svg)]() [![Travis](https://img.shields.io/travis/gxela/react-hello-world/master.svg)](https://travis-ci.org/gxela/react-hello-world) [![Codeship](https://img.shields.io/codeship/c1bab050-dacf-0134-662d-4a7ecfb8dfa8/master.svg)](https://app.codeship.com/projects/203832) [![CircleCI](https://img.shields.io/circleci/project/github/gxela/react-hello-world/master.svg)](https://circleci.com/gh/gxela/react-hello-world) [![Coveralls](https://img.shields.io/coveralls/gxela/react-hello-world/master.svg)](https://coveralls.io/github/gxela/react-hello-world) [![Shippable](https://img.shields.io/shippable/58ad0a23a0f1360f009ffd50/master.svg)](https://app.shippable.com/projects/58ad0a23a0f1360f009ffd50) [![Scrutinizer](https://img.shields.io/scrutinizer/g/gxela/react-hello-world.svg)]() [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/gxela/react-hello-world.svg)]() 
 
 In this tutorial we will create a button which shows and hides a message that says "Hello World".
 
@@ -321,6 +321,10 @@ At some point after starting working on the project, and adding some tests, you 
 
 - https://app.codeship.com/projects/203832
 - https://travis-ci.org/gxela/react-hello-world
+- https://circleci.com/gh/gxela/react-hello-world
+- https://coveralls.io/github/gxela/react-hello-world
+- https://app.shippable.com/projects/58ad0a23a0f1360f009ffd50
+- https://scrutinizer-ci.com/g/gxela/react-hello-world/
 - http://shields.io/ for more badges to add to your projects.
 
 ## Testing
