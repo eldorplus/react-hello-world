@@ -321,6 +321,7 @@ At some point after starting working on the project, and adding some tests, you 
 
 - https://app.codeship.com/projects/203832
 - https://travis-ci.org/gxela/react-hello-world
+- http://shields.io/ for more badges to add to your projects.
 
 ## Testing
 
