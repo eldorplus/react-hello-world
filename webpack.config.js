@@ -4,7 +4,7 @@ const config = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'static'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   module: {
     loaders: [
@@ -13,17 +13,17 @@ const config = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
-          presets: ['es2015', 'react', 'jest']
-        }
+          presets: ['es2015', 'react', 'jest'],
+        },
       },
       {
         test: /\.jsx?$/,
-        loader: "eslint-loader",
-        exclude: /(node_modules|bower_components)/
+        loader: 'eslint-loader',
+        exclude: /(node_modules|bower_components)/,
       },
-    ]
+    ],
   },
-  devtool: "source-map"
+  devtool: 'source-map',
 };
 
 module.exports = config;

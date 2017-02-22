@@ -66,7 +66,7 @@ Create a `webpack.config.js` file in the root of the project directory with thes
       entry: './src/index.js',
       output: {
         path: path.resolve(__dirname, 'static'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
       },
       module: {
         loaders: [
@@ -75,12 +75,17 @@ Create a `webpack.config.js` file in the root of the project directory with thes
             exclude: /(node_modules|bower_components)/,
             loader: 'babel-loader',
             query: {
-              presets: ['es2015', 'react']
-            }
+              presets: ['es2015', 'react', 'jest'],
+            },
           },
-        ]
+          {
+            test: /\.jsx?$/,
+            loader: 'eslint-loader',
+            exclude: /(node_modules|bower_components)/,
+          },
+        ],
       },
-      devtool: "source-map"
+      devtool: 'source-map',
     };
     
     module.exports = config;
@@ -428,13 +433,13 @@ Now lets add some scripts to `package.json` to run these commands and tools easi
         "build": "webpack -p",
         "dev": "webpack-dev-server --content-base ./static",
         "start:server": "http-server -p 3000 ./static",
-        "lint": "eslint src test",
+        "lint": "eslint --ignore-path .gitignore .",
         "test": "./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js",
         "lint-and-test": "npm run lint && npm run test",
         "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
         "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
     },
-      
+
 We should add `jest` to our `package.json` file:
 
       "jest": {
