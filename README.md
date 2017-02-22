@@ -431,6 +431,10 @@ Install `babel-preset-jest` and add it to `.babelrc` `"presets": ["jest"]`, I've
 
     npm install babel-preset-jest --save-dev
     
+Also install `eslint-plugin-jest` like this `npm install --save-dev eslint-plugin-jest` and update `.eslintrc.js` to have `"jest"` in `plugins`:
+
+    "jest"
+    
 Let's create a `test/` directory to place all tests in there.
 
     mkdir test
@@ -542,12 +546,12 @@ Now we can add another test in `test/app.spec.js`:
 Go ahead and add another test in `test/example1.spec.js`:
 
     import React from 'react';
-    import Example1 from '../src/example1';
     import renderer from 'react-test-renderer';
+    import Example1 from '../src/example1';
     
     test('Example1 toggles Message on each click', () => {
       const component = renderer.create(
-        <Example1 />
+        <Example1 />,
       );
       let tree = component.toJSON();
     
@@ -558,18 +562,17 @@ Go ahead and add another test in `test/example1.spec.js`:
       tree.children[1].props.onClick();
       tree = component.toJSON();
       expect(tree).toMatchSnapshot();
-    
     });
 
 Let's add `test/example2.spec.js`:
 
     import React from 'react';
-    import Example2 from '../src/example2';
     import renderer from 'react-test-renderer';
+    import Example2 from '../src/example2';
     
     test('Example2 toggles Message after 3 clicks', () => {
       const component = renderer.create(
-        <Example2 numClicks={3} />
+        <Example2 numClicks={3} />,
       );
       let tree = component.toJSON();
     
@@ -584,7 +587,6 @@ Let's add `test/example2.spec.js`:
       tree.children[1].props.onClick();
       tree = component.toJSON();
       expect(tree).toMatchSnapshot();
-    
     });
 
 As you can see both of the example tests are similar, example1 makes a single click and compares the rendered output of the component to a snapshot.
@@ -596,55 +598,50 @@ We should also test our components, since jest has it's own expect, we import ch
 
 Let's create a test for our `Button` in `src/components/Button.spec.js` with these contents:
 
+    /* eslint-disable import/no-extraneous-dependencies */
+    
     import React from 'react';
-    import Button from './Button';
     import { expect as chaixpect } from 'chai';
     import renderer from 'react-test-renderer';
+    import Button from './Button';
     
     test('Button with defaults', () => {
       const component = renderer.create(
-        <Button />
+        <Button />,
       );
-      let tree = component.toJSON();
-      chaixpect(tree.props.value).to.be.eql('Toggle');
-      expect(tree).toMatchSnapshot();
-    });
-    
-    test('Button with defaults', () => {
-      const component = renderer.create(
-        <Button></Button>
-      );
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       chaixpect(tree.props.value).to.be.eql('Toggle');
       expect(tree).toMatchSnapshot();
     });
     
     test('Button with text: Toggle message', () => {
       const component = renderer.create(
-        <Button text="Toggle message"/>
+        <Button text="Toggle message" />,
       );
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       chaixpect(tree.props.value).to.be.eql('Toggle message');
       expect(tree).toMatchSnapshot();
     });
     
     test('Button with a onClick callback returning "Button clicked!"', () => {
       const component = renderer.create(
-        <Button onClick={() => { return 'Button clicked!' }}/>
+        <Button onClick={() => { return 'Button clicked!'; }} />,
       );
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       chaixpect(tree.props.onClick()).to.be.eql('Button clicked!');
       expect(tree).toMatchSnapshot();
     });
 
 This test just tests the defaults, we will add more use cases to this later, you can look at the file in the folder.
 
-We also have a test for our `Message` component which looks like this:
+We also have a test for our `Message` component which looks like this `src/components/Message.spec.js:
 
+    /* eslint-disable import/no-extraneous-dependencies */
+    
     import React from 'react';
-    import Message from './Message';
     import { expect as chaixpect } from 'chai';
     import renderer from 'react-test-renderer';
+    import Message from './Message';
     
     const defaults = {
       children: 'Hello World',
@@ -652,45 +649,36 @@ We also have a test for our `Message` component which looks like this:
     
     test('Message with defaults', () => {
       const component = renderer.create(
-        <Message />
+        <Message />,
       );
-      let tree = component.toJSON();
-      chaixpect(tree.children[0]).to.be.eql(defaults.children);
-      expect(tree).toMatchSnapshot();
-    });
-    
-    test('Message with defaults', () => {
-      const component = renderer.create(
-        <Message></Message>
-      );
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       chaixpect(tree.children[0]).to.be.eql(defaults.children);
       expect(tree).toMatchSnapshot();
     });
     
     test('Message with children: Hello World!!!', () => {
       const component = renderer.create(
-        <Message>Hello World!!!</Message>
+        <Message>Hello World!!!</Message>,
       );
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       chaixpect(tree.children[0]).to.be.eql('Hello World!!!');
       expect(tree).toMatchSnapshot();
     });
     
     test('Message with children: <p>Hello World!!!</p>', () => {
       const component = renderer.create(
-        <Message><p>Hello World!!!</p></Message>
+        <Message><p>Hello World!!!</p></Message>,
       );
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       chaixpect(tree.children[0].children[0]).to.be.eql('Hello World!!!');
       expect(tree).toMatchSnapshot();
     });
     
     test('Message with children: <ul><li>Hello</li><li>World!!!</li></ul>', () => {
       const component = renderer.create(
-        <Message><ul><li>Hello</li><li>World!!!</li></ul></Message>
+        <Message><ul><li>Hello</li><li>World!!!</li></ul></Message>,
       );
-      let tree = component.toJSON();
+      const tree = component.toJSON();
       chaixpect(tree.children[0].children[0].type).to.be.eql('li');
       chaixpect(tree.children[0].children[1].type).to.be.eql('li');
       chaixpect(tree.children[0].children[0].children[0]).to.be.eql('Hello');

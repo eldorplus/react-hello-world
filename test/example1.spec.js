@@ -1,10 +1,10 @@
 import React from 'react';
-import Example1 from '../src/example1';
 import renderer from 'react-test-renderer';
+import Example1 from '../src/example1';
 
 test('Example1 toggles Message on each click', () => {
   const component = renderer.create(
-    <Example1 />
+    <Example1 />,
   );
   let tree = component.toJSON();
 
@@ -15,5 +15,4 @@ test('Example1 toggles Message on each click', () => {
   tree.children[1].props.onClick();
   tree = component.toJSON();
   expect(tree).toMatchSnapshot();
-
 });
