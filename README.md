@@ -233,7 +233,7 @@ Let's go ahead and make another example `src/example2.js` with these contents:
       render() {
         return (
           <div>
-            <h2>Example 2 - <small>click {this.props.numClicks} times to toggle</small></h2>
+            <h2>Example 2 - <small>{'click ' + this.props.numClicks + ' times to toggle'}</small></h2>
             <Button onClick={this.toggle} text="Toggle message" />
             { this.state.showMessage ? <Message>Hello world!!!</Message> : null }
           </div>
@@ -484,6 +484,10 @@ Now add a `test/test_helper.js` file, it makes use of `jsdom` to make the code t
 
 This file prepares the unit tests to run as if it were running the code in a browser window.
 
+Let's install [react-addons-test-utils](https://facebook.github.io/react/docs/test-utils.html) so we can use to to write better tests easier:
+
+    npm install --save-dev react-addons-test-utils
+
 Now we can add our first unit test, all it does is verify that the app gets rendered, rather the render function gets called.
 
     import ReactDOM, { render } from 'react-dom';
@@ -544,8 +548,14 @@ Let's install one more package, for testing:
 Now we can add another test in `test/app.spec.js`:
 
     import React from 'react';
-    import App from '../src/app';
     import renderer from 'react-test-renderer';
+    import ReactTestUtils from 'react-addons-test-utils';
+    
+    import App from '../src/app';
+    import Example1 from '../src/example1';
+    import Example2 from '../src/example2';
+    
+    const Renderer = ReactTestUtils.createRenderer();
     
     test('App renders components', () => {
       const component = renderer.create(
@@ -553,13 +563,28 @@ Now we can add another test in `test/app.spec.js`:
       );
       let tree = component.toJSON();
       expect(tree).toMatchSnapshot();
+    
+      Renderer.render(<App />);
+      const result = Renderer.getRenderOutput();
+    
+      expect(result.type).toBe('div');
+      expect(result.props.children).toEqual([
+        <Example1 />,
+        <Example2 numClicks={2} />
+      ]);
     });
     
 Go ahead and add another test in `test/example1.spec.js`:
 
     import React from 'react';
     import renderer from 'react-test-renderer';
+    import ReactTestUtils from 'react-addons-test-utils';
+    
     import Example1 from '../src/example1';
+    import Button from '../src/components/Button';
+    import Message from '../src/components/Message';
+    
+    const Renderer = ReactTestUtils.createRenderer();
     
     test('Example1 toggles Message on each click', () => {
       const component = renderer.create(
@@ -574,13 +599,29 @@ Go ahead and add another test in `test/example1.spec.js`:
       tree.children[1].props.onClick();
       tree = component.toJSON();
       expect(tree).toMatchSnapshot();
+    
+      Renderer.render(<Example1 />);
+      const result = Renderer.getRenderOutput();
+    
+      expect(result.type).toBe('div');
+      expect(result.props.children).toEqual([
+        <h2>Example 1 - <small>click once to toggle</small></h2>,
+        <Button onClick={result.props.children[1].props.onClick} text="Toggle message" />,
+        <Message>Hello world!!!</Message>
+      ]);
     });
 
 Let's add `test/example2.spec.js`:
 
     import React from 'react';
     import renderer from 'react-test-renderer';
+    import ReactTestUtils from 'react-addons-test-utils';
+    
     import Example2 from '../src/example2';
+    import Button from '../src/components/Button';
+    import Message from '../src/components/Message';
+    
+    const Renderer = ReactTestUtils.createRenderer();
     
     test('Example2 toggles Message after 3 clicks', () => {
       const component = renderer.create(
@@ -599,6 +640,18 @@ Let's add `test/example2.spec.js`:
       tree.children[1].props.onClick();
       tree = component.toJSON();
       expect(tree).toMatchSnapshot();
+    });
+    
+    test('Example2 renders correctly', () => {
+      Renderer.render(<Example2 numClicks={3} />);
+      const result = Renderer.getRenderOutput();
+    
+      expect(result.type).toBe('div');
+      expect(result.props.children).toEqual([
+        <h2>Example 2 - <small>click 3 times to toggle</small></h2>,
+        <Button onClick={result.props.children[1].props.onClick} text="Toggle message" />,
+        <Message>Hello world!!!</Message>
+      ]);
     });
 
 As you can see both of the example tests are similar, example1 makes a single click and compares the rendered output of the component to a snapshot.
