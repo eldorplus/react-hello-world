@@ -1,7 +1,7 @@
 {
   "name": "react-hello-world",
   "version": "1.0.0",
-  "description": "",
+  "description": "React hello world tutorial",
   "main": "index.js",
   "scripts": {
     "build": "webpack -p",
@@ -44,7 +44,6 @@
     "react-dom": "^15.4.2"
   },
   "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": ["/node_modules/"]
+    "testEnvironment": "node"
   }
 }
