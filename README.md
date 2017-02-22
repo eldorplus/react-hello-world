@@ -591,6 +591,112 @@ As you can see both of the example tests are similar, example1 makes a single cl
 
 When you are developing the code and you have some tests fail, you need to update the snapshot by passing param `-u` to `jest`, npm will pass all the arguments after the -- directly to your script. `npm run test -- -u` in this case.
 
+We should also test our components, since jest has it's own expect, we import chai expect as chaixpect and use that alongside the one provided by jest.
+
+
+Let's create a test for our `Button` in `src/components/Button.spec.js` with these contents:
+
+    import React from 'react';
+    import Button from './Button';
+    import { expect as chaixpect } from 'chai';
+    import renderer from 'react-test-renderer';
+    
+    test('Button with defaults', () => {
+      const component = renderer.create(
+        <Button />
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.props.value).to.be.eql('Toggle');
+      expect(tree).toMatchSnapshot();
+    });
+    
+    test('Button with defaults', () => {
+      const component = renderer.create(
+        <Button></Button>
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.props.value).to.be.eql('Toggle');
+      expect(tree).toMatchSnapshot();
+    });
+    
+    test('Button with text: Toggle message', () => {
+      const component = renderer.create(
+        <Button text="Toggle message"/>
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.props.value).to.be.eql('Toggle message');
+      expect(tree).toMatchSnapshot();
+    });
+    
+    test('Button with a onClick callback returning "Button clicked!"', () => {
+      const component = renderer.create(
+        <Button onClick={() => { return 'Button clicked!' }}/>
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.props.onClick()).to.be.eql('Button clicked!');
+      expect(tree).toMatchSnapshot();
+    });
+
+This test just tests the defaults, we will add more use cases to this later, you can look at the file in the folder.
+
+We also have a test for our `Message` component which looks like this:
+
+    import React from 'react';
+    import Message from './Message';
+    import { expect as chaixpect } from 'chai';
+    import renderer from 'react-test-renderer';
+    
+    const defaults = {
+      children: 'Hello World',
+    };
+    
+    test('Message with defaults', () => {
+      const component = renderer.create(
+        <Message />
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.children[0]).to.be.eql(defaults.children);
+      expect(tree).toMatchSnapshot();
+    });
+    
+    test('Message with defaults', () => {
+      const component = renderer.create(
+        <Message></Message>
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.children[0]).to.be.eql(defaults.children);
+      expect(tree).toMatchSnapshot();
+    });
+    
+    test('Message with children: Hello World!!!', () => {
+      const component = renderer.create(
+        <Message>Hello World!!!</Message>
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.children[0]).to.be.eql('Hello World!!!');
+      expect(tree).toMatchSnapshot();
+    });
+    
+    test('Message with children: <p>Hello World!!!</p>', () => {
+      const component = renderer.create(
+        <Message><p>Hello World!!!</p></Message>
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.children[0].children[0]).to.be.eql('Hello World!!!');
+      expect(tree).toMatchSnapshot();
+    });
+    
+    test('Message with children: <ul><li>Hello</li><li>World!!!</li></ul>', () => {
+      const component = renderer.create(
+        <Message><ul><li>Hello</li><li>World!!!</li></ul></Message>
+      );
+      let tree = component.toJSON();
+      chaixpect(tree.children[0].children[0].type).to.be.eql('li');
+      chaixpect(tree.children[0].children[1].type).to.be.eql('li');
+      chaixpect(tree.children[0].children[0].children[0]).to.be.eql('Hello');
+      chaixpect(tree.children[0].children[1].children[0]).to.be.eql('World!!!');
+      expect(tree).toMatchSnapshot();
+    });
 
 ## The Project
 
