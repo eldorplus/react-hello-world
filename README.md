@@ -1,7 +1,7 @@
 react-hello-world
 =================
 
-[![Build Status](https://travis-ci.org/gxela/react-hello-world.svg?branch=master)](https://travis-ci.org/gxela/react-hello-world)
+[![Travis](https://img.shields.io/travis/gxela/react-hello-world/master.svg)](https://travis-ci.org/gxela/react-hello-world) [![Codeship](https://img.shields.io/codeship/c1bab050-dacf-0134-662d-4a7ecfb8dfa8/master.svg)](https://app.codeship.com/projects/203832)
 
 In this tutorial we will create a button which shows and hides a message that says "Hello World".
 
