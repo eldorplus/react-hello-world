@@ -332,14 +332,14 @@ Run this command to install `eslint` `eslint-config-airbnb` `eslint-plugin-impor
     export PKG=eslint-config-airbnb;
     npm info "$PKG@latest" peerDependencies --json | command sed 's/[\{\},]//g ; s/: /@/g' | xargs npm install --save-dev "$PKG@latest"
 
-Let's also install some dependencies for testing (jsdom, mocha, chai, jest-cli):
+Let's also install some dependencies for testing (jsdom, mocha, chai, jest):
 
-- jsdom mimics a web browser by providing the global variables found in a web browser. (A JavaScript implementation of the WHATWG DOM and HTML standards, for use with Node.js.)
-- mocha is a feature-rich JavaScript test framework running on Node.js and the browser.
-- chai BDD / TDD assertion library, for writing the tests.
-- jest-cli Painless JavaScript Testing
+- jsdom - mimics a web browser by providing the global variables found in a web browser. (A JavaScript implementation of the WHATWG DOM and HTML standards, for use with Node.js.)
+- mocha - feature-rich JavaScript test framework running on Node.js and the browser.
+- chai - BDD / TDD assertion library, for writing the tests.
+- jest - Painless JavaScript Testing
 
-    npm install --save-dev mocha chai jsdom jest-cli
+    npm install --save-dev mocha chai jsdom jest
     
 Let's initialize eslint so it knows how to parse our code, type `eslint --init` and answer the questions like below:
 

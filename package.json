@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --content-base ./static",
     "start:server": "http-server -p 3000 ./static",
     "lint": "eslint src test",
-    "test": "./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js",
+    "test": "./node_modules/jest/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js",
     "lint-and-test": "npm run lint && npm run test",
     "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
     "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
@@ -31,7 +31,7 @@
     "eslint-plugin-jest": "^19.0.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
-    "jest-cli": "^18.1.0",
+    "jest": "^19.0.0",
     "jsdom": "^9.11.0",
     "mocha": "^3.2.0",
     "react-test-renderer": "^15.4.2",
