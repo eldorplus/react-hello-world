@@ -7,7 +7,7 @@
     "build": "webpack -p",
     "dev": "webpack-dev-server --content-base ./static",
     "start:server": "http-server -p 3000 ./static",
-    "lint": "eslint src test",
+    "lint": "eslint --ignore-path .gitignore .",
     "test": "./node_modules/jest/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js",
     "lint-and-test": "npm run lint && npm run test",
     "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
