@@ -434,7 +434,7 @@ Now lets add some scripts to `package.json` to run these commands and tools easi
         "dev": "webpack-dev-server --content-base ./static",
         "start:server": "http-server -p 3000 ./static",
         "lint": "eslint --ignore-path .gitignore .",
-        "test": "./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js",
+        "test": "./node_modules/jest-cli/bin/jest.js --coverage --verbose --setupTestFrameworkScriptFile test/test_helper.js",
         "lint-and-test": "npm run lint && npm run test",
         "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
         "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
@@ -456,6 +456,15 @@ Also install `eslint-plugin-jest` like this `npm install --save-dev eslint-plugi
 
     "jest"
     
+We should install `karma-coverage`:
+
+    npm install karma karma-coverage --save-dev
+    
+We are going to need coverage and the best tool out there for that is `istanbul`, `nyc` - the Istanbul command line interface. Let's install this to work with our workflow.
+
+    npm install babel-plugin-istanbul nyc --save-dev
+    
+
 Let's create a `test/` directory to place all tests in there.
 
     mkdir test
@@ -802,6 +811,21 @@ To have a application that renders a button a message and keeps state for messag
 4. Bind the `toggle` method to `onClick` event, since the browser sends a event on button click, when that event fires, the `showMessage` variable is toggled.
 5. Define the `Button` component and `Message` component as stateless, since there is no need for them to keep state because the parent component already does that with `showMessage`.
 6. `Button` and `Message` both have defaultProps in case the developer doesn't pass in a text property, wanting to use a default value.
+
+#### tools
+
+Since we are building a ReactJS application with ES6, we want to use WebPack to bundle the source code. We are trying to create a workflow that covers all the uses cases and allows us to produce a production ready application, to do this we want to make sure we tests everything, and to have separate environments, one for development, one for testing and one for production.
+ 
+For production all we need is to run all tests and bundle the project code. Then upload it to a server that runs this project.
+
+For development we want it all, run the lint and tests as we make changes and bundle the code and serve it in a browser with hot reloading.
+
+For testing we have a lot of different options. 
+
+- jest
+- 
+For this project we are using jest for the snapshots functionality and all the snapshots tests are located in `__tests__` directory.
+
 
 #### Workflow
 
