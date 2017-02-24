@@ -250,7 +250,9 @@ Now add some `run-scripts` to `package.json`:
     "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
     "test": "./node_modules/jest-cli/bin/jest.js --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
-    "lint-and-test": "npm run lint && npm run test -- -u",
+    "karma": "./node_modules/karma/bin/karma start karma.conf.js --auto-watch --no-single-run",
+    "jest": "./node_modules/jest/bin/jest.js --setupTestFrameworkScriptFile test/jest_helper.js --watchAll",
+    "lint-and-test": "npm run lint; npm run test -- -u",
 
 
 With the project initialized, we have testing tools and `webpack` installed, create the project `src/` and `static/` directories:
