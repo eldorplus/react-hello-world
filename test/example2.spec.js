@@ -1,23 +1,25 @@
 import React from 'react';
-import ReactTestUtils from 'react-addons-test-utils';
+import renderer from 'react-test-renderer';
 
 import Example2 from '../src/example2';
-import Button from '../src/components/Button';
-import Message from '../src/components/Message';
 
-const Renderer = ReactTestUtils.createRenderer();
+describe('Example2 snapshot', () => {
+  it('should toggle Message after 3 clicks', () => {
+    const component = renderer.create(
+      <Example2 numClicks={3} />,
+    );
+    let tree = component.toJSON();
 
-describe('Example2', () => {
-  it('should render correctly', () => {
-    Renderer.render(<Example2 numClicks={3} />);
-    const result = Renderer.getRenderOutput();
+    tree.children[1].props.onClick();
+    tree.children[1].props.onClick();
+    tree.children[1].props.onClick();
+    tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
 
-    expect(result.type).toBe('div');
-    expect(result.props.children).toEqual([
-      <h2>Example 2 - <small>click 3 times to toggle</small></h2>,
-      <Button onClick={result.props.children[1].props.onClick} text="Toggle message" />,
-      <Message>Hello world!!!</Message>,
-    ]);
+    tree.children[1].props.onClick();
+    tree.children[1].props.onClick();
+    tree.children[1].props.onClick();
+    tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });
-

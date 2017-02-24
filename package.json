@@ -4,15 +4,18 @@
   "description": "React hello world tutorial",
   "main": "index.js",
   "scripts": {
-    "build": "webpack -p",
-    "dev": "webpack-dev-server --content-base ./static",
-    "start:server": "http-server -p 3000 ./static",
-    "lint": "eslint --ignore-path .gitignore .",
-    "test": "./node_modules/jest/bin/jest.js --coverage --verbose --setupTestFrameworkScriptFile test/test_helper.js",
-    "test:coverage": "NODE_ENV=test nyc --show-process-tree --require babel-core/register ./node_modules/karma/bin/karma start karma.conf.js",
-    "lint-and-test": "npm run lint && npm run test",
-    "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
-    "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
+    "build": "./node_modules/webpack/bin/webpack.js -p",
+    "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
+    "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js; ./node_modules/jest/bin/jest.js --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
+    "lint-and-test": "npm run lint && npm run test -- -u",
+    "start": "./node_modules/pm2/bin/pm2 start --env production process.yml",
+    "restart": "./node_modules/pm2/bin/pm2 restart \"react-hello-world\"",
+    "stop": "./node_modules/pm2/bin/pm2 stop \"react-hello-world\"",
+    "kill": "./node_modules/pm2/bin/pm2 kill",
+    "list": "./node_modules/pm2/bin/pm2 list",
+    "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
+    "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
   },
   "author": "Alex Goretoy",
   "license": "MIT",
@@ -29,7 +32,6 @@
     "brfs": "^1.4.3",
     "browserify": "^14.1.0",
     "browserify-shim": "^3.8.13",
-    "chai": "^3.5.0",
     "chance": "^1.0.6",
     "eslint": "^3.16.0",
     "eslint-config-airbnb": "^14.1.0",
@@ -38,45 +40,28 @@
     "eslint-plugin-jest": "^19.0.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
+    "expect": "^1.20.2",
     "jasmine": "^2.5.3",
     "jest": "^19.0.0",
     "jsdom": "^9.11.0",
     "karma": "^1.5.0",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-browserify": "^5.1.1",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-coverage-istanbul-reporter": "^0.2.3",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.2",
     "mocha": "^3.2.0",
-    "mocha-webpack": "^0.7.0",
-    "nyc": "^10.1.2",
     "phantomjs": "^2.1.7",
     "react-addons-test-utils": "^15.4.2",
     "react-test-renderer": "^15.4.2",
-    "tls": "0.0.1",
     "watchify": "^3.9.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
   },
   "dependencies": {
-    "http-server": "^0.9.0",
-    "istanbul": "^0.4.5",
+    "express": "^4.14.1",
+    "pm2": "^2.4.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
-  },
-  "jest": {
-    "testEnvironment": "node"
-  },
-  "nyc": {
-    "reporter": [
-      "lcov",
-      "text-summary"
-    ],
-    "exclude": [
-      ".tmp",
-      "test"
-    ]
   },
   "browserify-shim": {}
 }
