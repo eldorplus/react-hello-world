@@ -8,9 +8,8 @@
     "dev": "webpack-dev-server --content-base ./static",
     "start:server": "http-server -p 3000 ./static",
     "lint": "eslint --ignore-path .gitignore .",
-    "test": "./node_modules/jest/bin/jest.js --coverage --verbose --setupTestFrameworkScriptFile test/test_helper.js",
-    "test:coverage": "NODE_ENV=test nyc --show-process-tree --require babel-core/register ./node_modules/karma/bin/karma start karma.conf.js",
-    "lint-and-test": "npm run lint && npm run test",
+    "test": "./node_modules/jest/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js",
+    "lint-and-test": "npm run lint && npm run test -- -u",
     "production": "docker-compose build react-hello-world && docker-compose up react-hello-world",
     "testing": "docker-compose build react-hello-world-test && docker-compose up react-hello-world-test"
   },
