@@ -1,58 +1,49 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 import React from 'react';
-import ReactTestUtils from 'react-addons-test-utils';
+import renderer from 'react-test-renderer';
 import Message from './../../src/components/Message';
 
-const Renderer = ReactTestUtils.createRenderer();
-
+const defaults = {
+  children: 'Hello World',
+};
 describe('Message component', () => {
-  it('should have defaults', () => {
-    Renderer.render(<Message />);
-    const result = Renderer.getRenderOutput();
-
-    expect(result.type).toBe('p');
-    expect(result.props.children).toBe('Hello World');
-    expect(result).toEqual(
-      <p>Hello World</p>,
+  it('should render with defaults', () => {
+    const component = renderer.create(
+      <Message />,
     );
+    const tree = component.toJSON();
+    expect(tree.children[0]).toEqual(defaults.children);
+    expect(tree).toMatchSnapshot();
   });
 
-  it('should have children: Hello World!!!', () => {
-    Renderer.render(<Message>Hello World!!!</Message>);
-    const result = Renderer.getRenderOutput();
-
-    expect(result.type).toBe('p');
-    expect(result.props.children).toBe('Hello World!!!');
-    expect(result).toEqual(
-      <p>Hello World!!!</p>,
+  it('should render with children: Hello World!!!', () => {
+    const component = renderer.create(
+      <Message>Hello World!!!</Message>,
     );
+    const tree = component.toJSON();
+    expect(tree.children[0]).toEqual('Hello World!!!');
+    expect(tree).toMatchSnapshot();
   });
 
   it('should render with children: <p>Hello World!!!</p>', () => {
-    Renderer.render(<Message><p>Hello World!!!</p></Message>);
-    const result = Renderer.getRenderOutput();
-
-    expect(result.type).toBe('p');
-    expect(result.props.children.type).toBe('p');
-    expect(result.props.children.props.children).toBe('Hello World!!!');
-    expect(result).toEqual(
-      <p><p>Hello World!!!</p></p>,
+    const component = renderer.create(
+      <Message><p>Hello World!!!</p></Message>,
     );
+    const tree = component.toJSON();
+    expect(tree.children[0].children[0]).toEqual('Hello World!!!');
+    expect(tree).toMatchSnapshot();
   });
 
   it('should render with children: <ul><li>Hello</li><li>World!!!</li></ul>', () => {
-    Renderer.render(<Message><ul><li>Hello</li><li>World!!!</li></ul></Message>);
-    const result = Renderer.getRenderOutput();
-
-    expect(result.type).toBe('p');
-    expect(result.props.children.type).toBe('ul');
-    expect(result.props.children.props.children[0].type).toBe('li');
-    expect(result.props.children.props.children[1].type).toBe('li');
-    expect(result.props.children.props.children[0].props.children).toBe('Hello');
-    expect(result.props.children.props.children[1].props.children).toBe('World!!!');
-    expect(result).toEqual(
-      <p><ul><li>Hello</li><li>World!!!</li></ul></p>,
+    const component = renderer.create(
+      <Message><ul><li>Hello</li><li>World!!!</li></ul></Message>,
     );
+    const tree = component.toJSON();
+    expect(tree.children[0].children[0].type).toEqual('li');
+    expect(tree.children[0].children[1].type).toEqual('li');
+    expect(tree.children[0].children[0].children[0]).toEqual('Hello');
+    expect(tree.children[0].children[1].children[0]).toEqual('World!!!');
+    expect(tree).toMatchSnapshot();
   });
 });
