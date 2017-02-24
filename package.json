@@ -9,13 +9,13 @@
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
     "test": "./node_modules/karma/bin/karma start karma.conf.js; ./node_modules/jest/bin/jest.js --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
     "lint-and-test": "npm run lint && npm run test -- -u",
-    "start": "./node_modules/pm2/bin/pm2 start --env production process.yml", 
+    "start": "./node_modules/pm2/bin/pm2 start --env production process.yml",
     "restart": "./node_modules/pm2/bin/pm2 restart react-hello-world",
-     "stop": "./node_modules/pm2/bin/pm2 stop react-hello-world", 
-    "show": "./node_modules/pm2/bin/pm2 show react-hello-world", 
-    "kill": "./node_modules/pm2/bin/pm2 kill", 
-    "list": "./node_modules/pm2/bin/pm2 list", 
-    "monit": "./node_modules/pm2/bin/pm2 monit", 
+    "stop": "./node_modules/pm2/bin/pm2 stop react-hello-world",
+    "show": "./node_modules/pm2/bin/pm2 show react-hello-world",
+    "kill": "./node_modules/pm2/bin/pm2 kill",
+    "list": "./node_modules/pm2/bin/pm2 list",
+    "monit": "./node_modules/pm2/bin/pm2 monit",
     "logs": "./node_modules/pm2/bin/pm2 logs",
     "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
     "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
@@ -49,6 +49,7 @@
     "karma": "^1.5.0",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-browserify": "^5.1.1",
+    "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.2",
     "mocha": "^3.2.0",

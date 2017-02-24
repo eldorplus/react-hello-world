@@ -42,6 +42,7 @@ Here is a list of some of the packages we will be installing and configuring for
 - **[karma](https://github.com/karma-runner/karma)** - Spectacular Test Runner for JavaScript.
 - **[karma-babel-preprocessor](https://www.npmjs.com/package/karma-babel-preprocessor)** - Preprocessor to compile ES6 on the fly with babel.
 - **[karma-browserify](https://www.npmjs.com/package/karma-browserify)** - A fast browserify integration for Karma that handles large projects with ease.
+- **[karma-coverage](https://www.npmjs.com/package/karma-coverage)** - A Karma plugin. Generate code coverage.
 - **[karma-jasmine](https://www.npmjs.com/package/karma-jasmine)** - A Karma plugin - adapter for Jasmine testing framework.
 - **[karma-phantomjs-launcher](https://www.npmjs.com/package/karma-phantomjs-launcher)** - A Karma plugin. Launcher for PhantomJS.
 - **[mocha](http://mochajs.org/)** - Mocha is a feature-rich JavaScript test framework running on Node.js and in the browser, making asynchronous testing simple and fun.
@@ -280,20 +281,20 @@ Create a new directory `src/server/`:
     
 Create a new file `src/server/index.js` with these contents:
 
-    const express = require('express');  
+    const express = require('express');
     
-    const app = express();  
+    const app = express();
     
     app.use(express.static('static'));
     
-      const port = process.env.PORT || 8000; 
+    const port = process.env.PORT || 8000;
     const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
-     const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
-     const name = process.env.name || 'node';  
+    const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
+    const name = process.env.name || 'node';
     
-    app.listen(port, () => { 
+    app.listen(port, () => {
       console.log(`${name}${instances} listening on port ${port}`); // eslint-disable-line no-console
-     });
+    });
     
 Inside of `package.json` add a few commands to `scripts`:
 
@@ -688,7 +689,7 @@ In `App` we add `Example2` component with override for default propTypes `numCli
 
 Let's install `karma` and all of its dependencies, to get it all working side-by-side with `jest`.
 
-    npm install --save-dev karma babelify brfs browserify browserify-shim karma-babel-preprocessor watchify karma-browserify karma-jasmine karma-firefox-launcher karma-chrome-launcher react-addons-test-utils
+    npm install --save-dev karma babelify brfs browserify browserify-shim karma-babel-preprocessor watchify karma-browserify karma-jasmine karma-coverage karma-firefox-launcher karma-chrome-launcher react-addons-test-utils
     
 We need to add `browserify-shim` object to `package.json` or we will get an error:
 
@@ -710,7 +711,7 @@ Now lets configure `karma` by creating a file called `karma.conf.js` in the root
         reporters: ['dots'],
     
         preprocessors: {
-          'src/**/*.spec.js': ['babel', 'browserify'],
+          'src/**/*.spec.js': ['babel', 'browserify', 'coverage'],
         },
     
         browsers: ['PhantomJS'],
@@ -725,6 +726,7 @@ Now lets configure `karma` by creating a file called `karma.conf.js` in the root
         },
       });
     };
+
     
 We are ready to start adding `jasmine` tests that will be run by `karma` to the `test/` folder.
 
