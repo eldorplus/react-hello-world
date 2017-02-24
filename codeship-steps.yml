@@ -1,6 +1,6 @@
 - type: parallel
   steps:
-    - service: react_hello_world_production
-      command: npm run start:server
-    - service: react_hello_world_testing
+    - service: app
+      command: npm run start
+    - service: test
       command: npm run lint-and-test

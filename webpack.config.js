@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 
 const config = {
   entry: './src/index.js',
@@ -14,7 +13,7 @@ const config = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
-          presets: ['es2015', 'react', 'jest'],
+          presets: ['es2015', 'react'],
         },
       },
       {
@@ -24,13 +23,6 @@ const config = {
       },
     ],
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('test'),
-      },
-    }),
-  ],
   devtool: 'source-map',
 };
 

@@ -1,15 +1,27 @@
 version: "2"
 
 services:
-  react-hello-world:
+  app:
     build:
       context: .
       dockerfile: Dockerfile.production
     ports:
-      - '3000:3000'
+      - '8000:8000'
     volumes:
       - .:/src/app
-  react-hello-world-test:
+  test:
     build:
       context: .
       dockerfile: Dockerfile.testing
+    environment:
+      SELENIUM_HOST: http://selenium:4444/wd/hub
+      TEST_SELENIUM: 'yes'
+    depends_on:
+      - phantomjs
+  selenium:
+    container_name: selenium
+    image: selenium/hub
+  phantomjs:
+    image: selenium/node-phantomjs
+    links:
+      - selenium

@@ -11,13 +11,9 @@ RUN npm install
 # Bundle app source
 COPY . /src/app
 
-# Check code quality with lint and test the app
-RUN npm run lint-and-test
-
 # Build and optimize react app
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 8000
 
-# defined in package.json
-CMD [ "npm", "run", "start:server" ]
+CMD ["./node_modules/pm2/bin/pm2-docker", "start", "--auto-exit", "--env", "production", "process.yml"]

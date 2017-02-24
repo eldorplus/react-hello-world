@@ -1,14 +1,14 @@
-react_hello_world_production:
+app:
   build:
-    image: react-hello-world
+    image: app
     dockerfile_path: ./Dockerfile.production
   cached: false
   environment:
     NODE_ENV: 'production'
 
-react_hello_world_testing:
+test:
   build:
-    image: react-hello-world-test
+    image: test
     dockerfile_path: ./Dockerfile.testing
   cached: false
   environment:
