@@ -15,45 +15,45 @@ Initialize the project by running `npm init` in the command prompt to generate a
 
 Here is a list of some of the packages we will be installing and configuring for this project:
 
-- [babel-core](https://www.npmjs.com/package/babel-core) - Babel compiler core.
-- [babel-jest](https://www.npmjs.com/package/babel-jest) - Babel jest plugin.
-- [babel-loader](https://www.npmjs.com/package/babel-loader) - babel module loader for webpack.
-- [babel-polyfill](https://www.npmjs.com/package/babel-polyfill) - Provides polyfills necessary for a full ES2015+ environment.
-- [babel-preset-es2015](https://www.npmjs.com/package/babel-preset-es2015) - Babel preset for all es2015 plugins.
-- [babel-preset-jest](https://www.npmjs.com/package/babel-preset-jest) - Babel preset for all Jest plugins. This preset is automatically included when using babel-jest.
-- [babel-preset-react](https://www.npmjs.com/package/babel-preset-react) - Babel preset for all React plugins.
-- [babelify](https://www.npmjs.com/package/babelify) - Babel browserify transform.
-- [brfs](https://www.npmjs.com/package/brfs) - browserify fs.readFileSync() static asset inliner.
-- [browserify](https://www.npmjs.com/package/browserify) - browser-side require() the node way.
-- [browserify-shim](https://www.npmjs.com/package/browserify-shim) - Makes CommonJS-incompatible modules browserifyable.
-- [chance](https://www.npmjs.com/package/chance) - Utility library to generate anything random.
-- [eslint](https://www.npmjs.com/package/eslint) - An AST-based pattern checker for JavaScript.
-- [eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb) - Airbnb's ESLint config, following our styleguide.
-- [eslint-loader](https://www.npmjs.com/package/eslint-loader) - eslint loader (for webpack).
-- [eslint-plugin-import](https://www.npmjs.com/package/eslint-plugin-import) - This plugin intends to support linting of ES2015+ (ES6+) import/export syntax, and prevent issues with misspelling of file paths and import names.
-- [eslint-plugin-jest](https://www.npmjs.com/package/eslint-plugin-jest) - Eslint rules for Jest.
-- [eslint-plugin-jsx-a11y](https://www.npmjs.com/package/eslint-plugin-jsx-a11y) - Static AST checker for accessibility rules on JSX elements.
-- [eslint-plugin-react](https://www.npmjs.com/package/eslint-plugin-react) - React specific linting rules for ESLint.
-- [expect](https://github.com/mjackson/expect) - Lets you write better assertions.
-- [express](http://expressjs.com) - To run a production server for serving the application with [pm2](http://pm2.keymetrics.io/).
-- [jasmine](https://jasmine.github.io/) - Jasmine is a behavior-driven development framework for testing JavaScript code. It does not depend on any other JavaScript frameworks. It does not require a DOM. And it has a clean, obvious syntax so that you can easily write tests.
-- [jest](https://github.com/facebook/jest) - Painless JavaScript Testing.
-- [jsdom](https://github.com/tmpvar/jsdom) - A JavaScript implementation of the WHATWG DOM and HTML standards, for use with Node.js.
-- [karma](https://github.com/karma-runner/karma) - Spectacular Test Runner for JavaScript.
-- [karma-babel-preprocessor](https://www.npmjs.com/package/karma-babel-preprocessor) - Preprocessor to compile ES6 on the fly with babel.
-- [karma-browserify](https://www.npmjs.com/package/karma-browserify) - A fast browserify integration for Karma that handles large projects with ease.
-- [karma-jasmine](https://www.npmjs.com/package/karma-jasmine) - A Karma plugin - adapter for Jasmine testing framework.
-- [karma-phantomjs-launcher](https://www.npmjs.com/package/karma-phantomjs-launcher) - A Karma plugin. Launcher for PhantomJS.
-- [mocha](http://mochajs.org/) - Mocha is a feature-rich JavaScript test framework running on Node.js and in the browser, making asynchronous testing simple and fun.
-- [phantomjs](https://www.npmjs.com/package/phantomjs) - Headless WebKit with JS API.
-- [pm2](http://pm2.keymetrics.io/) - Production process manager for Node.JS applications with a built-in load balancer.
-- [react](https://facebook.github.io/react/) - A declarative, efficient, and flexible JavaScript library for building user interfaces.
-- [react-dom](https://www.npmjs.com/package/react-dom) - React package for working with the DOM.
-- [react-addons-test-utils](https://www.npmjs.com/package/react-addons-test-utils) - This package provides the React TestUtils add-on.
-- [react-test-renderer](https://www.npmjs.com/package/react-test-renderer) - React package for snapshot testing. This package provides an experimental React renderer that can be used to render React components to pure JavaScript objects, without depending on the DOM or a native mobile environment.
-- [watchify](https://www.npmjs.com/package/watchify) - watch mode for browserify builds.
-- [webpack](https://webpack.js.org/) - To prepare our application for browsers and [webpack-dev-server](https://github.com/webpack/docs/wiki/webpack-dev-server) to develop our app with hot reloading enabled.
-- [webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server) - Serves a webpack app. Updates the browser on changes.
+- **[babel-core](https://www.npmjs.com/package/babel-core)** - Babel compiler core.
+- **[babel-jest](https://www.npmjs.com/package/babel-jest)** - Babel jest plugin.
+- **[babel-loader](https://www.npmjs.com/package/babel-loader)** - babel module loader for webpack.
+- **[babel-polyfill](https://www.npmjs.com/package/babel-polyfill)** - Provides polyfills necessary for a full ES2015+ environment.
+- **[babel-preset-es2015](https://www.npmjs.com/package/babel-preset-es2015)** - Babel preset for all es2015 plugins.
+- **[babel-preset-jest](https://www.npmjs.com/package/babel-preset-jest)** - Babel preset for all Jest plugins. This preset is automatically included when using babel-jest.
+- **[babel-preset-react](https://www.npmjs.com/package/babel-preset-react)** - Babel preset for all React plugins.
+- **[babelify](https://www.npmjs.com/package/babelify)** - Babel browserify transform.
+- **[brfs](https://www.npmjs.com/package/brfs)** - browserify fs.readFileSync() static asset inliner.
+- **[browserify](https://www.npmjs.com/package/browserify)** - browser-side require() the node way.
+- **[browserify-shim](https://www.npmjs.com/package/browserify-shim)** - Makes CommonJS-incompatible modules browserifyable.
+- **[chance](https://www.npmjs.com/package/chance)** - Utility library to generate anything random.
+- **[eslint](https://www.npmjs.com/package/eslint)** - An AST-based pattern checker for JavaScript.
+- **[eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb)** - Airbnb's ESLint config, following our styleguide.
+- **[eslint-loader](https://www.npmjs.com/package/eslint-loader)** - eslint loader (for webpack).
+- **[eslint-plugin-import](https://www.npmjs.com/package/eslint-plugin-import)** - This plugin intends to support linting of ES2015+ (ES6+) import/export syntax, and prevent issues with misspelling of file paths and import names.
+- **[eslint-plugin-jest](https://www.npmjs.com/package/eslint-plugin-jest)** - Eslint rules for Jest.
+- **[eslint-plugin-jsx-a11y](https://www.npmjs.com/package/eslint-plugin-jsx-a11y)** - Static AST checker for accessibility rules on JSX elements.
+- **[eslint-plugin-react](https://www.npmjs.com/package/eslint-plugin-react)** - React specific linting rules for ESLint.
+- **[expect](https://github.com/mjackson/expect)** - Lets you write better assertions.
+- **[express](http://expressjs.com)** - To run a production server for serving the application with [pm2](http://pm2.keymetrics.io/).
+- **[jasmine](https://jasmine.github.io/)** - Jasmine is a behavior-driven development framework for testing JavaScript code. It does not depend on any other JavaScript frameworks. It does not require a DOM. And it has a clean, obvious syntax so that you can easily write tests.
+- **[jest](https://github.com/facebook/jest)** - Painless JavaScript Testing.
+- **[jsdom](https://github.com/tmpvar/jsdom)** - A JavaScript implementation of the WHATWG DOM and HTML standards, for use with Node.js.
+- **[karma](https://github.com/karma-runner/karma)** - Spectacular Test Runner for JavaScript.
+- **[karma-babel-preprocessor](https://www.npmjs.com/package/karma-babel-preprocessor)** - Preprocessor to compile ES6 on the fly with babel.
+- **[karma-browserify](https://www.npmjs.com/package/karma-browserify)** - A fast browserify integration for Karma that handles large projects with ease.
+- **[karma-jasmine](https://www.npmjs.com/package/karma-jasmine)** - A Karma plugin - adapter for Jasmine testing framework.
+- **[karma-phantomjs-launcher](https://www.npmjs.com/package/karma-phantomjs-launcher)** - A Karma plugin. Launcher for PhantomJS.
+- **[mocha](http://mochajs.org/)** - Mocha is a feature-rich JavaScript test framework running on Node.js and in the browser, making asynchronous testing simple and fun.
+- **[phantomjs](https://www.npmjs.com/package/phantomjs)** - Headless WebKit with JS API.
+- **[pm2](http://pm2.keymetrics.io/)** - Production process manager for Node.JS applications with a built-in load balancer.
+- **[react](https://facebook.github.io/react/)** - A declarative, efficient, and flexible JavaScript library for building user interfaces.
+- **[react-dom](https://www.npmjs.com/package/react-dom)** - React package for working with the DOM.
+- **[react-addons-test-utils](https://www.npmjs.com/package/react-addons-test-utils)** - This package provides the React TestUtils add-on.
+- **[react-test-renderer](https://www.npmjs.com/package/react-test-renderer)** - React package for snapshot testing. This package provides an experimental React renderer that can be used to render React components to pure JavaScript objects, without depending on the DOM or a native mobile environment.
+- **[watchify](https://www.npmjs.com/package/watchify)** - watch mode for browserify builds.
+- **[webpack](https://webpack.js.org/)** - Packs CommonJs/AMD modules for the browser. Allows to split your codebase into multiple bundles, which can be loaded on demand. Support loaders to preprocess files, i.e. json, jsx, es7, css, less, ... and your custom stuff.
+- **[webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)** - Serves a webpack app. Updates the browser on changes.
 
 
 ```
@@ -280,23 +280,31 @@ Create a new directory `src/server/`:
     
 Create a new file `src/server/index.js` with these contents:
 
-    const express = require('express');
+    const express = require('express');  
     
-    const app = express();
+    const app = express();  
     
     app.use(express.static('static'));
     
-    app.listen(8000, () => {
-      console.log('Example app listening on port 8000!'); // eslint-disable-line no-console
-    });
+      const port = process.env.PORT || 8000; 
+    const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
+     const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
+     const name = process.env.name || 'node';  
+    
+    app.listen(port, () => { 
+      console.log(`${name}${instances} listening on port ${port}`); // eslint-disable-line no-console
+     });
     
 Inside of `package.json` add a few commands to `scripts`:
 
-    "start": "./node_modules/pm2/bin/pm2 start src/server/index.js -i 0 --name \"react-hello-world\"",
-    "restart": "./node_modules/pm2/bin/pm2 restart \"react-hello-world\"",
-    "stop": "./node_modules/pm2/bin/pm2 stop \"react-hello-world\"",
-    "kill": "./node_modules/pm2/bin/pm2 kill",
-    "list": "./node_modules/pm2/bin/pm2 list",
+    "start": "./node_modules/pm2/bin/pm2 start --env production process.yml", 
+    "restart": "./node_modules/pm2/bin/pm2 restart react-hello-world",
+     "stop": "./node_modules/pm2/bin/pm2 stop react-hello-world", 
+    "show": "./node_modules/pm2/bin/pm2 show react-hello-world", 
+    "kill": "./node_modules/pm2/bin/pm2 kill", 
+    "list": "./node_modules/pm2/bin/pm2 list", 
+    "monit": "./node_modules/pm2/bin/pm2 monit", 
+    "logs": "./node_modules/pm2/bin/pm2 logs",
 
 When we execute `npm run start` in the commandline/terminal it runs that application, we can stop, restart and kill the application as well with the scripts we have defined in package.json as shown above.
     
