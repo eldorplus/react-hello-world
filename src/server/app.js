@@ -19,8 +19,5 @@ exports.start = function start(config, readyCallback) {
       }
     });
   }
-};
-
-exports.close = function close() {
-  this.server.close();
+  return this.server;
 };

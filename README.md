@@ -254,7 +254,7 @@ Now add some `run-scripts` to `package.json`:
     "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
     "test": "./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
-    "jest": "./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
+    "jest": "npm run lint; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
     "lint-and-test": "npm run lint; npm run test -- -u",
 
 If we execute `npm run karma` we can open our browser to see the tests running a the browser [http://localhost:9876/](http://localhost:9876/).
@@ -287,7 +287,8 @@ Create a new directory `src/server/`:
     
 Create a new file `src/server/index.js` with these contents:
 
-    require('./app').start();
+    import server from './app'
+    export default server.start();
     
 This file starts up the application server on default port `8000`. Now let's add the the `src/server/app.js`:
 
@@ -327,25 +328,17 @@ Now we should add the server code in `src/server/app.js`:
           }
         });
       }
-    };
-    
-    exports.close = function close() {
-      this.server.close();
+      return this.server;
     };
     
 We should test our server app, `test/server/app.spec.js`:
 
     import server from './../../src/server/app';
+    import expect from 'expect';
     
     describe('Server app', () => {
-      it('executes callback', (done) => {
-        server.start({}, () => { return done(); });
-      });
-      it('port can be closed', (done) => {
-        spyOn(server, 'close');
-        server.close();
-        expect(server.close).toHaveBeenCalled();
-        done();
+      it('executes callback and returns the server instance', (done) => {
+        expect(server.start({}, () => { return done(); })).toIncludeKeys(['_connections', '_events', '_handle']);
       });
     });
 
@@ -978,7 +971,7 @@ Create another `jasmine` test in `test/app.spec.js` having this code:
 With all the `jasmine` tests in place and `karma` configured with `jasmine`, `browserify`, `babelify` and `babel` we can update our `test` and `karma` `run-script` in `package.json` to be like this.
 
     "test": "./node_modules/karma/bin/karma start; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
-    "karma": "./node_modules/karma/bin/karma start --auto-watch --no-single-run",
+    "karma": "npm run lint; ./node_modules/karma/bin/karma start --auto-watch --no-single-run",
     
 Now when we run `npm run test` or `npm test` or `npm t` we should have `karma` test our code and even if `karma` fails `jest` will run tests to check everything giving it own coverage output.
 
@@ -1181,8 +1174,8 @@ With all said and done you should have these commands in `package.json` file:
     "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
     "test": "./node_modules/karma/bin/karma start; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
-    "karma": "./node_modules/karma/bin/karma start --auto-watch --no-single-run",
-    "jest": "./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
+    "karma": "npm run lint; ./node_modules/karma/bin/karma start --auto-watch --no-single-run",
+    "jest": "npm run lint; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
     "lint-and-test": "npm run lint; npm run test -- -u",
     "start": "./node_modules/pm2/bin/pm2 start --env production process.yml",
     "restart": "./node_modules/pm2/bin/pm2 restart react-hello-world",

@@ -1,1 +1,2 @@
-require('./app').start();
+import server from './app'
+export default server.start();
