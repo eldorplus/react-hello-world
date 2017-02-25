@@ -1419,17 +1419,26 @@ For this project we are using `jest` with snapshots functionality and all the sn
 
 #### Run
 
-To run the project execute this command `npm run start` to run it in docker execute `npm run production`, once running you can connect to [http://localhost:8000/](http://localhost:8000/) to view the project from a web browser.
+To run the project, execute `npm run build`, to bundle the frontend code for the react app and then `npm start`, to start the application server on port 8000.
+
+To run it in docker, execute `npm run production`. This will build a docker image and run it as a container, starting the application server on port 8000.
+
+In either case, once the application server is running, open your favorite browser pointing to [http://localhost:8000/](http://localhost:8000/).
 
 #### Develop
 
-When making updates to the code(working on the application), we run `npm run dev`, this command executed `webpack-dev-server --content-base ./static` to transpile the code and hot-reload these changes into the web browser. 
-If you run this command and make some changes the browser window will refresh and they will show up immediately.
+We can execute `npm run lint` or `npm run lint-and-test` during development process so `eslint` can guide us and help us to write better/prettier code.
+
+When making updates to the frontend code(working on the React application), we run `npm run dev`, this command executes `webpack-dev-server --content-base ./static`(in the background) to compile the code and hot-reload the changes into the web browser. During this process `eslint` runs and you may see `eslint` errors in the terminal output.
+
+When doing development we want to make sure to write tests in the `test/` and `src/` directories and execute `npm t` or `npm run jest` or `npm run karma` to run the tests.
 
 - The rationale behind using React, is simple, React is awesome! ReactDOM is just a dependency so obviously we install it.
-- WebPack simplifies our workflow by compiling our content for us, and is easier to configure than Grunt or Gulp for this task.
+- WebPack simplifies our workflow by compiling our content for us. For this project we are trying to achieve everything without using Grunt or Gulp.
 
 #### Test
 
-When making updates to the tests, we run `npm run test`, this command executes `./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js` to run the tests and check that all the use cases we have defined meet to our expected results. 
-This is why we need to make sure our tests cover all the scenarios, good and bad. Then we can sleep easy at night knowing everything is working as expected, because we have tested for it and this way it makes it easy to automate so you don't stay up all night testing it manually.
+- Tests specific to `jest` are located in `test/` directory. `jest` runs all tests in both `src/` and `test/` directories(runs our karma tests too).
+- Tests specific to `karma` are located in `src/` directory, follow the source luke!
+
+When making updates to tests, execute `npm run test`(to run both karma and jest), this command executes tests located in `test/` and `src/` directories and checks that all the use cases we have defined meet to our expected results. Coverage is generated(when `karma` and/or `jest` run) into `coverage/` directory.
