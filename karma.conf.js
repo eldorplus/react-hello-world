@@ -23,5 +23,13 @@ module.exports = function (karma) {  // eslint-disable-line func-names
       debug: true,
       transform: ['babelify', 'brfs', 'browserify-shim'],
     },
+
+    coverageReporter: {
+      dir: 'coverage',
+      subdir: (browser) => {
+        return browser.toLowerCase().split(/[ /-]/)[0];
+      },
+      file: 'index.html',
+    },
   });
 };

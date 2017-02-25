@@ -39,6 +39,7 @@ Here is a list of some of the packages we will be installing and configuring for
 - **[jasmine](https://jasmine.github.io/)** - Jasmine is a behavior-driven development framework for testing JavaScript code. It does not depend on any other JavaScript frameworks. It does not require a DOM. And it has a clean, obvious syntax so that you can easily write tests.
 - **[jest](https://github.com/facebook/jest)** - Painless JavaScript Testing.
 - **[jsdom](https://github.com/tmpvar/jsdom)** - A JavaScript implementation of the WHATWG DOM and HTML standards, for use with Node.js.
+- **[istanbul](https://github.com/gotwarlost/istanbul)** - Yet another JS code coverage tool that computes statement, line, function and branch coverage with module loader hooks to transparently add coverage when running tests. Supports all JS coverage use cases including unit tests, server side functional tests.
 - **[karma](https://github.com/karma-runner/karma)** - Spectacular Test Runner for JavaScript.
 - **[karma-babel-preprocessor](https://www.npmjs.com/package/karma-babel-preprocessor)** - Preprocessor to compile ES6 on the fly with babel.
 - **[karma-browserify](https://www.npmjs.com/package/karma-browserify)** - A fast browserify integration for Karma that handles large projects with ease.
@@ -691,7 +692,7 @@ In `App` we add `Example2` component with override for default propTypes `numCli
 
 Let's install `karma` and all of its dependencies, to get it all working side-by-side with `jest`.
 
-    npm install --save-dev karma babelify brfs browserify browserify-shim karma-babel-preprocessor watchify karma-browserify karma-jasmine karma-coverage karma-firefox-launcher karma-chrome-launcher react-addons-test-utils
+    npm install --save-dev karma istanbul babelify brfs browserify browserify-shim karma-babel-preprocessor watchify karma-browserify karma-jasmine karma-coverage karma-firefox-launcher karma-chrome-launcher react-addons-test-utils
     
 We need to add `browserify-shim` object to `package.json` or we will get an error:
 
