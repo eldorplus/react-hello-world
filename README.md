@@ -305,7 +305,7 @@ Let's create a unit test to test the application server, file located in `test/s
       });
     });
     
-Now we should add the server code in `src/server/app.js`:
+Now we should add the server code in `src/server/app.js` from [http://stackoverflow.com/questions/13176245/automate-jasmine-node-and-express-js](http://stackoverflow.com/questions/13176245/automate-jasmine-node-and-express-js):
 
     exports.start = function start(config, readyCallback) {
       if (!this.server) {
