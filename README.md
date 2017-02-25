@@ -287,8 +287,9 @@ Create a new directory `src/server/`:
     
 Create a new file `src/server/index.js` with these contents:
 
-    import server from './app'
-    export default server.start();
+    const server = require('./app');
+    
+    module.exports = server.start();
     
 This file starts up the application server on default port `8000`. Now let's add the the `src/server/app.js`:
 
@@ -308,20 +309,21 @@ Let's create a unit test to test the application server, file located in `test/s
 Now we should add the server code in `src/server/app.js` from [http://stackoverflow.com/questions/13176245/automate-jasmine-node-and-express-js](http://stackoverflow.com/questions/13176245/automate-jasmine-node-and-express-js):
 
     exports.start = function start(config, readyCallback) {
+      const conf = config || {};
       if (!this.server) {
         const express = require('express'); // eslint-disable-line global-require
         const app = express();
     
         app.use(express.static('static'));
     
-        const port = config.port || process.env.PORT || 8000;
-        const name = config.name || process.env.name || 'node';
+        const port = conf.port || process.env.PORT || 8000;
+        const name = conf.name || process.env.name || 'node';
     
         const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
         const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
     
         this.server = app.listen(port, () => {
-          console.log(`${name}${instances} listening on port ${port}`); // eslint-disable-line no-console
+          console.info(`${name}${instances} listening on port ${port}`); // eslint-disable-line no-console
           // callback to call when the server is ready
           if (readyCallback) {
             readyCallback();
@@ -333,8 +335,8 @@ Now we should add the server code in `src/server/app.js` from [http://stackoverf
     
 We should test our server app, `test/server/app.spec.js`:
 
-    import server from './../../src/server/app';
     import expect from 'expect';
+    import server from './../../src/server/app';
     
     describe('Server app', () => {
       it('executes callback and returns the server instance', (done) => {

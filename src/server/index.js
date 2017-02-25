@@ -1,2 +1,3 @@
-import server from './app'
-export default server.start();
+const server = require('./app');
+
+module.exports = server.start();
