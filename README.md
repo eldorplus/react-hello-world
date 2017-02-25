@@ -23,6 +23,7 @@ Here is a list of some of the packages we will be installing and configuring for
 - **[babel-preset-jest](https://www.npmjs.com/package/babel-preset-jest)** - Babel preset for all Jest plugins. This preset is automatically included when using babel-jest.
 - **[babel-preset-react](https://www.npmjs.com/package/babel-preset-react)** - Babel preset for all React plugins.
 - **[babelify](https://www.npmjs.com/package/babelify)** - Babel browserify transform.
+- **[bluebird](https://www.npmjs.com/package/bluebird)** - Full featured Promises/A+ implementation with exceptionally good performance.
 - **[brfs](https://www.npmjs.com/package/brfs)** - browserify fs.readFileSync() static asset inliner.
 - **[browserify](https://www.npmjs.com/package/browserify)** - browser-side require() the node way.
 - **[browserify-shim](https://www.npmjs.com/package/browserify-shim)** - Makes CommonJS-incompatible modules browserifyable.
@@ -53,6 +54,8 @@ Here is a list of some of the packages we will be installing and configuring for
 - **[react-dom](https://www.npmjs.com/package/react-dom)** - React package for working with the DOM.
 - **[react-addons-test-utils](https://www.npmjs.com/package/react-addons-test-utils)** - This package provides the React TestUtils add-on.
 - **[react-test-renderer](https://www.npmjs.com/package/react-test-renderer)** - React package for snapshot testing. This package provides an experimental React renderer that can be used to render React components to pure JavaScript objects, without depending on the DOM or a native mobile environment.
+- **[request](https://www.npmjs.com/package/request)** - Simplified HTTP request client.
+- **[request-promise](https://www.npmjs.com/package/request-promise)** - The simplified HTTP request client 'request' with Promise support. Powered by Bluebird.
 - **[watchify](https://www.npmjs.com/package/watchify)** - watch mode for browserify builds.
 - **[webpack](https://webpack.js.org/)** - Packs CommonJs/AMD modules for the browser. Allows to split your codebase into multiple bundles, which can be loaded on demand. Support loaders to preprocess files, i.e. json, jsx, es7, css, less, ... and your custom stuff.
 - **[webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)** - Serves a webpack app. Updates the browser on changes.
@@ -264,7 +267,7 @@ Inside of `src/` we will place all of our project code and inside of `static/` w
 
 Install `express` and `pm2`:
 
-    npm install --save express pm2
+    npm install --save express pm2 bluebird request request-promise 
     
 We should add a `pm2` configuration file, called `process.yml` in the root of the project directory that looks like this:
 
@@ -284,21 +287,71 @@ Create a new directory `src/server/`:
     
 Create a new file `src/server/index.js` with these contents:
 
-    const express = require('express');
+    require('./app').start();
     
-    const app = express();
-    
-    app.use(express.static('static'));
-    
-    const port = process.env.PORT || 8000;
-    const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
-    const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
-    const name = process.env.name || 'node';
-    
-    app.listen(port, () => {
-      console.log(`${name}${instances} listening on port ${port}`); // eslint-disable-line no-console
+This file starts up the application server on default port `8000`. Now let's add the the `src/server/app.js`:
+
+Let's create a unit test to test the application server, file located in `test/server/index.spec.js`:
+
+    const server = require('./../../src/server/app');
+
+    describe("Server", function() {
+      it("start gets called", function(done) {
+        spyOn(server, 'start');
+        require('./../../src/server/index');
+        expect(server.start).toHaveBeenCalled();
+        done();
+      });
     });
     
+Now we should add the server code in `src/server/app.js`:
+
+    exports.start = function( config, readyCallback ) {
+      if(!this.server) {
+        const express = require('express');
+    
+        const app = express();
+    
+        app.use(express.static('static'));
+    
+        const port = config.port || process.env.PORT || 8000;
+        const name = config.name || process.env.name || 'node';
+    
+        const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
+        const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
+    
+        this.server = app.listen( port, function() {
+          console.log(`${name}${instances} listening on port ${port}`); // eslint-disable-line no-console
+          // callback to call when the server is ready
+          if(readyCallback) {
+            readyCallback();
+          }
+        });
+      }
+    };
+    
+    exports.close = function() {
+      this.server.close();
+    };
+    
+    
+We should test our server app, `test/server/app.spec.js`:
+
+    const express = require('express');
+    const server = require('./../../src/server/app');
+    
+    describe("Server app", function() {
+      it("executes callback", function (done) {
+        server.start( {}, () => { return done(); } );
+      });
+      it("port can be closed", function(done) {
+        spyOn(server, 'close');
+        server.close();
+        expect(server.close).toHaveBeenCalled();
+        done();
+      });
+    });
+
 Inside of `package.json` add a few commands to `scripts`:
 
     "start": "./node_modules/pm2/bin/pm2 start --env production process.yml", 
