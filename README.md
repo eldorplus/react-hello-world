@@ -1280,7 +1280,7 @@ For testing we have a lot of different options. For this project we are using tw
 But we use `describe(it())` instead because both work and `describe` hierarchy looks prettier. This is only in `jest`, in `karma` the below works.
 
     describe('Sum', () => {
-      test('adds 1 + 2 to equal 3', () => {
+      it('adds 1 + 2 to equal 3', () => {
         expect(sum(1, 2)).toBe(3);
       });
     });
