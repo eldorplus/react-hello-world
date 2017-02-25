@@ -1,7 +1,6 @@
-exports.start = (config, readyCallback) => {
+exports.start = function start(config, readyCallback) {
   if (!this.server) {
     const express = require('express'); // eslint-disable-line global-require
-
     const app = express();
 
     app.use(express.static('static'));
@@ -22,6 +21,6 @@ exports.start = (config, readyCallback) => {
   }
 };
 
-exports.close = () => {
+exports.close = function close() {
   this.server.close();
 };

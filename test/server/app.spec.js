@@ -1,4 +1,4 @@
-const server = require('./../../src/server/app');
+import server from './../../src/server/app';
 
 describe('Server app', () => {
   it('executes callback', (done) => {

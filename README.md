@@ -306,10 +306,9 @@ Let's create a unit test to test the application server, file located in `test/s
     
 Now we should add the server code in `src/server/app.js`:
 
-    exports.start = (config, readyCallback) => {
+    exports.start = function start(config, readyCallback) {
       if (!this.server) {
         const express = require('express'); // eslint-disable-line global-require
-    
         const app = express();
     
         app.use(express.static('static'));
@@ -330,13 +329,13 @@ Now we should add the server code in `src/server/app.js`:
       }
     };
     
-    exports.close = () => {
+    exports.close = function close() {
       this.server.close();
     };
     
 We should test our server app, `test/server/app.spec.js`:
 
-    const server = require('./../../src/server/app');
+    import server from './../../src/server/app';
     
     describe('Server app', () => {
       it('executes callback', (done) => {
