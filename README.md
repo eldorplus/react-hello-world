@@ -65,7 +65,7 @@ Here is a list of packages that will be installed and configured for this projec
 - **[webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)** - Serves a webpack app. Updates the browser on changes.
 
 
-#### Setup and configure the project with code quality checks, unit testing, production ready tools and workflow to developing top of the line apps in React
+## Setup and configure the project
 
 Let's install `React`:
 
@@ -359,7 +359,7 @@ Inside of `package.json` add a few commands to `scripts`:
 
 When we execute `npm run start` in the commandline/terminal it runs that application, we can stop, restart and kill the application as well with the scripts we have defined in package.json as shown above.
     
-#### React the App to the power of X or create the app
+## React the App to the power of X or create the app
 
 Let's create a `index.html` file in `static/` directory with these contents:
 
@@ -1212,7 +1212,7 @@ To configure https://scrutinizer-ci.com/docs/build/code_coverage, lets add   `.s
 
 ## The Project
 
-#### Day 1
+### Day 1
 To begin, I'd like you to make something simple with javascript. The app should:
 
 - show a button, and a "Hello World" message
@@ -1225,7 +1225,7 @@ Even though it's a very simple example, I'd like you to code it in a way that, t
 
 Finally, please make notes on all of this stuff so we can go through it together.
 
-#### Day 2
+### Day 2
 1) update it so that visibility only changes after every 3 clicks.
 
 Eg:
@@ -1237,7 +1237,7 @@ Eg:
 
 3) add some more to the Rationale section that cover things like tools or workflows you chose to use
 
-#### Day 4
+### Day 4
 Have a go at setting up a simple app using http://expressjs.com/
 
 Here's what I'd like to see:
@@ -1250,7 +1250,7 @@ Here's what I'd like to see:
 
 ## Rationale
 
-#### code
+### code
 
 To have a application that renders a button a message and keeps state for message shown or hidden.
 
@@ -1261,7 +1261,7 @@ To have a application that renders a button a message and keeps state for messag
 5. Define the `Button` component and `Message` component as stateless, since there is no need for them to keep state because the parent component already does that with `showMessage`.
 6. `Button` and `Message` both have defaultProps in case the developer doesn't pass in a text property, wanting to use a default value.
 
-#### tools
+### tools
 
 Since we are building a ReactJS application with ES6, we want to use WebPack to bundle the source code. We are trying to create a workflow that covers all the uses cases and allows us to produce a production ready application, to do this we want to make sure we tests everything, and to have separate environments, one for development, one for testing and one for production.
  
@@ -1289,13 +1289,13 @@ But we use `describe(it())` instead because both work and `describe` hierarchy l
 
 For this project we are using `jest` with snapshots functionality and all the snapshots tests are located in `test/__snapshots__/` directory. When you run the tests, the snapshots may get out of sync and you will need to update them, they will update when you run `npm run lint-and-test` because it passes the `-u` param to `jest`. You can also run `npm run test -- -u` to run tests and update the snapshots for `jest` tests.
 
-#### Workflow
+### Workflow
 
-##### Run
+#### Run
 
 To run the project execute this command `npm run start` to run it in docker execute `npm run production`, once running you can connect to [http://localhost:8000/](http://localhost:8000/) to view the project from a web browser.
 
-##### Develop
+#### Develop
 
 When making updates to the code(working on the application), we run `npm run dev`, this command executed `webpack-dev-server --content-base ./static` to transpile the code and hot-reload these changes into the web browser. 
 If you run this command and make some changes the browser window will refresh and they will show up immediately.
@@ -1303,7 +1303,7 @@ If you run this command and make some changes the browser window will refresh an
 - The rationale behind using React, is simple, React is awesome! ReactDOM is just a dependency so obviously we install it.
 - WebPack simplifies our workflow by compiling our content for us, and is easier to configure than Grunt or Gulp for this task.
 
-##### Test
+#### Test
 
 When making updates to the tests, we run `npm run test`, this command executes `./node_modules/jest-cli/bin/jest.js --coverage --setupTestFrameworkScriptFile test/test_helper.js` to run the tests and check that all the use cases we have defined meet to our expected results. 
 This is why we need to make sure our tests cover all the scenarios, good and bad. Then we can sleep easy at night knowing everything is working as expected, because we have tested for it and this way it makes it easy to automate so you don't stay up all night testing it manually.
