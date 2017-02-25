@@ -7,6 +7,8 @@ In this tutorial we will create a button which shows and hides a message that sa
 
 ## Writing a "Hello World" application
 
+![Rendered React App](screenshots/rendered-react-app.png "Rendered React App")
+
 Firstly, create the project directory and cd into it:
 
     mkdir react-hello-world && cd react-hello-world
@@ -310,22 +312,24 @@ Let's create a unit test to test the application server, file located in `test/s
     
 Now we should add the server code in `src/server/app.js` from [http://stackoverflow.com/questions/13176245/automate-jasmine-node-and-express-js](http://stackoverflow.com/questions/13176245/automate-jasmine-node-and-express-js):
 
-    exports.start = function start(config, readyCallback) {
-      const conf = config || {};
+    const config = require(`./../../src/server/config/${process.env.NODE_ENV === 'test' ? 'testing' : process.env.NODE_ENV}`); // eslint-disable-line import/no-dynamic-require
+    
+    exports.start = function start(options, readyCallback) {
+      const opts = options || {};
       if (!this.server) {
         const express = require('express'); // eslint-disable-line global-require
         const app = express();
     
         app.use(express.static('static'));
     
-        const port = conf.port || process.env.PORT || 8000;
-        const name = conf.name || process.env.name || 'node';
+        const port = opts.port || process.env.PORT || config.port;
+        const name = opts.name || process.env.name || 'node';
     
         const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
         const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
     
         this.server = app.listen(port, () => {
-          console.info(`${name}${instances} listening on port ${port}`); // eslint-disable-line no-console
+          console.info(`${name}${instances} listening on port ${port} in ${process.env.NODE_ENV} mode`); // eslint-disable-line no-console
           // callback to call when the server is ready
           if (readyCallback) {
             readyCallback();
@@ -339,10 +343,11 @@ We should test our server app, `test/server/app.spec.js`:
 
     import expect from 'expect';
     import server from './../../src/server/app';
+    import config from './../../src/server/config/testing';
     
     describe('Server app', () => {
       it('executes callback and returns the server instance', (done) => {
-        expect(server.start({}, () => { return done(); })).toIncludeKeys(['_connections', '_events', '_handle']);
+        expect(server.start({ port: config.port }, () => { return done(); })).toIncludeKeys(['_connections', '_events', '_handle']);
       });
     });
 
@@ -739,6 +744,8 @@ We should update `src/app.js` to include the `Example2` we just created.
 
 In `App` we add `Example2` component with override for default propTypes `numClicks` value of 2 with the value of 3.
 
+![Jest Running Tests](screenshots/jest-running-tests.png "Jest Running Tests")
+
 Let's install `karma` and all of its dependencies, to get it all working side-by-side with `jest`.
 
     npm install --save-dev karma istanbul babelify brfs browserify browserify-shim karma-babel-preprocessor watchify karma-browserify karma-jasmine karma-coverage karma-firefox-launcher karma-chrome-launcher react-addons-test-utils
@@ -980,6 +987,8 @@ With all the `jasmine` tests in place and `karma` configured with `jasmine`, `br
     "karma": "npm run lint; ./node_modules/karma/bin/karma start --auto-watch --no-single-run",
     
 Now when we run `npm run test` or `npm test` or `npm t` we should have `karma` test our code and even if `karma` fails `jest` will run tests to check everything giving it own coverage output.
+
+![Karma Running Tests](screenshots/karma-running-tests.png "Karma Running Tests")
 
 ## Docker
 
