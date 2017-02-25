@@ -7,5 +7,7 @@ const defaults = {
 };
 
 /* eslint-disable */
-module.exports = _.merge(defaults, require(`./${process.env.NODE_ENV === 'test' ? 'testing' : process.env.NODE_ENV}.js`) || {});
+module.exports = {
+  config: _.merge(defaults, require(`./${process.env.NODE_ENV === 'test' ? 'testing' : process.env.NODE_ENV}.js`) || {}),
+};
 /* eslint-enable */

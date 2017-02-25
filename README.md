@@ -290,12 +290,9 @@ We should add a `pm2` configuration file, called `process.yml` in the root of th
     apps:
       - script: src/server/index.js
         name: react-hello-world
-        instances: 4
+        instances: 2
         exec_mode: cluster
-        env:
-          NODE_ENV: development
-        env_production:
-          NODE_ENV: production
+        watch: true
           
 ---
 ###  Write tested backend server code
@@ -1419,9 +1416,13 @@ For this project we are using `jest` with snapshots functionality and all the sn
 
 #### Run
 
-To run the project, execute `npm run build`, to bundle the frontend code for the react app and then `npm start`, to start the application server on port 8000.
+To run the project, execute `npm run build`, to bundle the frontend code for the react app and then `npm start`, to start the application server on port `8000`.
 
-To run it in docker, execute `npm run production`. This will build a docker image and run it as a container, starting the application server on port 8000.
+Then execute `npm run logs -- --lines 30` to show the logs, passing a param to show 30 lines or `npm run list` to show the running application instances or `npm run show` to show a description of all the processes running the application.
+
+To stop the server, execute `npm run stop` or execute `npm run restart` to refresh it or execute `npm run kill` to obliterate it.
+
+To run it in docker, execute `npm run production`. This will build a docker image and run it as a container, starting the application server on port `8000`.
 
 In either case, once the application server is running, open your favorite browser pointing to [http://localhost:8000/](http://localhost:8000/).
 
