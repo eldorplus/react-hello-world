@@ -1,4 +1,4 @@
-const config = require(`./../../src/server/config/${process.env.NODE_ENV === 'test' ? 'testing' : process.env.NODE_ENV}`); // eslint-disable-line import/no-dynamic-require
+const config = require('./../../src/server/config');
 
 exports.start = function start(options, readyCallback) {
   const opts = options || {};

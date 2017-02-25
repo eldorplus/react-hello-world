@@ -53,6 +53,7 @@ Here is a list of packages that will be installed and configured for this projec
 - **[karma-coverage](https://www.npmjs.com/package/karma-coverage)** - A Karma plugin. Generate code coverage.
 - **[karma-jasmine](https://www.npmjs.com/package/karma-jasmine)** - A Karma plugin - adapter for Jasmine testing framework.
 - **[karma-phantomjs-launcher](https://www.npmjs.com/package/karma-phantomjs-launcher)** - A Karma plugin. Launcher for PhantomJS.
+- **[lodash](https://lodash.com/)** - A modern JavaScript utility library delivering modularity, performance & extras.
 - **[mocha](http://mochajs.org/)** - Mocha is a feature-rich JavaScript test framework running on Node.js and in the browser, making asynchronous testing simple and fun.
 - **[phantomjs](https://www.npmjs.com/package/phantomjs)** - Headless WebKit with JS API.
 - **[pm2](http://pm2.keymetrics.io/)** - Production process manager for Node.JS applications with a built-in load balancer.
@@ -71,7 +72,7 @@ Here is a list of packages that will be installed and configured for this projec
 
 Let's install `React`:
 
-    npm install --save react react-dom
+    npm install --save react react-dom lodash
     
 Run this command to install `eslint` `eslint-config-airbnb` `eslint-plugin-import` `eslint-plugin-jsx-a11y` `eslint-plugin-react`:
 
@@ -312,7 +313,7 @@ Let's create a unit test to test the application server, file located in `test/s
     
 Now we should add the server code in `src/server/app.js` from [http://stackoverflow.com/questions/13176245/automate-jasmine-node-and-express-js](http://stackoverflow.com/questions/13176245/automate-jasmine-node-and-express-js):
 
-    const config = require(`./../../src/server/config/${process.env.NODE_ENV === 'test' ? 'testing' : process.env.NODE_ENV}`); // eslint-disable-line import/no-dynamic-require
+    const config = require('./../../src/server/config');
     
     exports.start = function start(options, readyCallback) {
       const opts = options || {};
@@ -348,6 +349,57 @@ We should test our server app, `test/server/app.spec.js`:
     describe('Server app', () => {
       it('executes callback and returns the server instance', (done) => {
         expect(server.start({ port: config.port }, () => { return done(); })).toIncludeKeys(['_connections', '_events', '_handle']);
+      });
+    });
+
+`test/server/config/index.spec.js`:
+
+    import expect from 'expect';
+    import config from './../../../src/server/config';
+    
+    describe('Server config index', () => {
+      it('should contain property name', (done) => {
+        expect(config).toIncludeKeys(['name']);
+        done();
+      });
+      it('should contain property port', (done) => {
+        expect(config).toIncludeKeys(['port']);
+        done();
+      });
+      it('should contain property env', (done) => {
+        expect(config).toIncludeKeys(['env']);
+        done();
+      });
+    });
+
+`test/server/config/production.spec.js`:
+
+    import expect from 'expect';
+    import config from './../../../src/server/config/production';
+    
+    describe('Server config production', () => {
+      it('should contain property port equal to 8000', (done) => {
+        expect(config).toIncludeKeys(['port']);
+        expect(config.port).toBe(8000);
+        done();
+      });
+    });
+
+`test/server/config/testing.spec.js`:
+
+    import expect from 'expect';
+    import config from './../../../src/server/config';
+    
+    describe('Server config testing', () => {
+      it('should contain property env equal to test', (done) => {
+        expect(config).toIncludeKeys(['env']);
+        expect(config.env).toBe('test');
+        done();
+      });
+      it('should contain property port equal to 9999', (done) => {
+        expect(config).toIncludeKeys(['port']);
+        expect(config.port).toBe(9999);
+        done();
       });
     });
 
