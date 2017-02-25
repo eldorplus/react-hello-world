@@ -7,7 +7,7 @@ module.exports = function (karma) {  // eslint-disable-line func-names
       'src/**/*.spec.js',
     ],
 
-    reporters: ['dots'],
+    reporters: ['dots', 'coverage'],
 
     preprocessors: {
       'src/**/*.spec.js': ['babel', 'browserify', 'coverage'],

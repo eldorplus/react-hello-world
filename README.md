@@ -250,11 +250,12 @@ Now add some `run-scripts` to `package.json`:
     "build": "./node_modules/webpack/bin/webpack.js -p",
     "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
-    "test": "./node_modules/jest-cli/bin/jest.js --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
     "karma": "./node_modules/karma/bin/karma start karma.conf.js --auto-watch --no-single-run",
-    "jest": "./node_modules/jest/bin/jest.js --setupTestFrameworkScriptFile test/jest_helper.js --watchAll",
+    "jest": "./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
     "lint-and-test": "npm run lint; npm run test -- -u",
 
+If we execute `npm run karma` we can open our browser to see the tests running a the browser [http://localhost:9876/](http://localhost:9876/).
 
 With the project initialized, we have testing tools and `webpack` installed, create the project `src/` and `static/` directories:
     
