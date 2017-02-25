@@ -6,8 +6,7 @@ filter:
 build:
   tests:
     override:
-      -
-        command: 'npm run lint-and-test'
+      - command: 'npm run lint-and-test'
         coverage:
-        file: 'coverage/clover.xml'
-        format: 'clover'
+          file: 'coverage/clover.xml'
+          format: 'clover'

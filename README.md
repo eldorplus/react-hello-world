@@ -1158,8 +1158,8 @@ To configure https://scrutinizer-ci.com/docs/build/code_coverage, lets add   `.s
           -
             command: 'npm run lint-and-test'
             coverage:
-            file: 'coverage/clover.xml'
-            format: 'clover'
+              file: 'coverage/clover.xml'
+              format: 'clover'
 
 ## The Project
 
