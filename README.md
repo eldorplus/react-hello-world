@@ -294,11 +294,11 @@ This file starts up the application server on default port `8000`. Now let's add
 Let's create a unit test to test the application server, file located in `test/server/index.spec.js`:
 
     const server = require('./../../src/server/app');
-
-    describe("Server", function() {
-      it("start gets called", function(done) {
+    
+    describe('Server', () => {
+      it('start gets called', (done) => {
         spyOn(server, 'start');
-        require('./../../src/server/index');
+        require('./../../src/server/index'); // eslint-disable-line global-require
         expect(server.start).toHaveBeenCalled();
         done();
       });
@@ -306,9 +306,9 @@ Let's create a unit test to test the application server, file located in `test/s
     
 Now we should add the server code in `src/server/app.js`:
 
-    exports.start = function( config, readyCallback ) {
-      if(!this.server) {
-        const express = require('express');
+    exports.start = (config, readyCallback) => {
+      if (!this.server) {
+        const express = require('express'); // eslint-disable-line global-require
     
         const app = express();
     
@@ -320,31 +320,29 @@ Now we should add the server code in `src/server/app.js`:
         const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
         const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
     
-        this.server = app.listen( port, function() {
+        this.server = app.listen(port, () => {
           console.log(`${name}${instances} listening on port ${port}`); // eslint-disable-line no-console
           // callback to call when the server is ready
-          if(readyCallback) {
+          if (readyCallback) {
             readyCallback();
           }
         });
       }
     };
     
-    exports.close = function() {
+    exports.close = () => {
       this.server.close();
     };
     
-    
 We should test our server app, `test/server/app.spec.js`:
 
-    const express = require('express');
     const server = require('./../../src/server/app');
     
-    describe("Server app", function() {
-      it("executes callback", function (done) {
-        server.start( {}, () => { return done(); } );
+    describe('Server app', () => {
+      it('executes callback', (done) => {
+        server.start({}, () => { return done(); });
       });
-      it("port can be closed", function(done) {
+      it('port can be closed', (done) => {
         spyOn(server, 'close');
         server.close();
         expect(server.close).toHaveBeenCalled();
