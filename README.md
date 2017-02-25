@@ -688,6 +688,8 @@ We have to test our `Message`, add a new test in `test/components/Message.spec.j
       });
     });
 
+![Example1](screenshots/example1.png "Example1")
+
 This makes for a simple unit tested hello world application with a button that toggles a message.
 
 If we run `npm run dev` and goto [http://localhost:8080](http://localhost:8080) we will see the project running in development with hot reloading.
@@ -746,6 +748,8 @@ Let's go ahead and make another example `src/example2.js` with these contents:
 
 As you can see this file looks very similar to `example1.js` the only difference is we now have a clickedCount variable tracking the number of times the button has been clicked. 
 This value gets updated each time the user clicks the button, `toggle` is called, incrementing the value until it reaches `numClicks` and resets the value while alternating the `showMessage` value.
+
+![Example2](screenshots/example2.png "Example2")
 
 Let's add a test for `Example2`, create `test/example2.spec.js` file with this in it:
 
