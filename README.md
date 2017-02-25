@@ -250,8 +250,7 @@ Now add some `run-scripts` to `package.json`:
     "build": "./node_modules/webpack/bin/webpack.js -p",
     "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
-    "test": "./node_modules/karma/bin/karma start karma.conf.js; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
-    "karma": "./node_modules/karma/bin/karma start karma.conf.js --auto-watch --no-single-run",
+    "test": "./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
     "jest": "./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
     "lint-and-test": "npm run lint; npm run test -- -u",
 
@@ -926,9 +925,10 @@ Create another `jasmine` test in `test/app.spec.js` having this code:
       });
     });
 
-With all the `jasmine` tests in place and `karma` configured with `jasmine`, `browserify`, `babelify` and `babel` we can update our `test` `run-script` in `package.json` to be like this.
+With all the `jasmine` tests in place and `karma` configured with `jasmine`, `browserify`, `babelify` and `babel` we can update our `test` and `karma` `run-script` in `package.json` to be like this.
 
-    "test": "./node_modules/karma/bin/karma start karma.conf.js; ./node_modules/jest/bin/jest.js --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
+    "karma": "./node_modules/karma/bin/karma start karma.conf.js --auto-watch --no-single-run",
     
 Now when we run `npm run test` or `npm test` or `npm t` we should have `karma` test our code and even if `karma` fails `jest` will run tests to check everything giving it own coverage output.
 
@@ -1125,6 +1125,26 @@ Let's add some `run-scripts` to our `package.json`:
     "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
     "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
 
+With all said and done you should have these commands in `package.json` file:
+
+    "build": "./node_modules/webpack/bin/webpack.js -p",
+    "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
+    "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
+    "karma": "./node_modules/karma/bin/karma start karma.conf.js --auto-watch --no-single-run",
+    "jest": "./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
+    "lint-and-test": "npm run lint; npm run test -- -u",
+    "start": "./node_modules/pm2/bin/pm2 start --env production process.yml",
+    "restart": "./node_modules/pm2/bin/pm2 restart react-hello-world",
+    "stop": "./node_modules/pm2/bin/pm2 stop react-hello-world",
+    "show": "./node_modules/pm2/bin/pm2 show react-hello-world",
+    "kill": "./node_modules/pm2/bin/pm2 kill",
+    "list": "./node_modules/pm2/bin/pm2 list",
+    "monit": "./node_modules/pm2/bin/pm2 monit",
+    "logs": "./node_modules/pm2/bin/pm2 logs",
+    "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
+    "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
+        
 ## The Project
 
 #### Day 1
