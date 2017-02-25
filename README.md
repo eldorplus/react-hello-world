@@ -1145,8 +1145,13 @@ With all said and done you should have these commands in `package.json` file:
     "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
     "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
         
-To configure https://scrutinizer-ci.com/docs/build/code_coverage, lets add   `.coveragerc` file:
+To configure https://scrutinizer-ci.com/docs/build/code_coverage, lets add   `.scrutinizer.yml` file:
 
+    checks:
+      javascript: true
+    filter:
+      excluded_paths:
+        - test/*
     build:
       tests:
         override:
