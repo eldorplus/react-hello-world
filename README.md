@@ -1,13 +1,11 @@
-react-hello-world
-=================
+[react-hello-world](https://github.com/gxela/react-hello-world)
+===============================================================
 
-[![THIS](https://img.shields.io/badge/React%20Hello%20World-Tutorial-blue.svg)](https://github.com/gxela/react-hello-world) [![Travis](https://img.shields.io/travis/gxela/react-hello-world/master.svg)](https://travis-ci.org/gxela/react-hello-world) [![Codeship](https://img.shields.io/codeship/c1bab050-dacf-0134-662d-4a7ecfb8dfa8/master.svg)](https://app.codeship.com/projects/203832) [![CircleCI](https://img.shields.io/circleci/project/github/gxela/react-hello-world/master.svg)](https://circleci.com/gh/gxela/react-hello-world) [![Scrutinizer](https://img.shields.io/scrutinizer/g/gxela/react-hello-world.svg)](https://scrutinizer-ci.com/g/gxela/react-hello-world/) [![Scrutinizer Inspections](https://img.shields.io/scrutinizer/coverage/g/gxela/react-hello-world.svg)](https://scrutinizer-ci.com/g/gxela/react-hello-world/inspections) 
+[![THIS](https://img.shields.io/badge/React%20Hello%20World-Tutorial-blue.svg)](https://github.com/gxela/react-hello-world) [![Travis](https://img.shields.io/travis/gxela/react-hello-world/master.svg)](https://travis-ci.org/gxela/react-hello-world) [![Codeship](https://img.shields.io/codeship/c1bab050-dacf-0134-662d-4a7ecfb8dfa8/master.svg)](https://app.codeship.com/projects/203832) [![CircleCI](https://img.shields.io/circleci/project/github/gxela/react-hello-world/master.svg)](https://circleci.com/gh/gxela/react-hello-world) [![Scrutinizer](https://img.shields.io/scrutinizer/g/gxela/react-hello-world.svg)](https://scrutinizer-ci.com/g/gxela/react-hello-world/) [![Scrutinizer Inspections](https://img.shields.io/scrutinizer/coverage/g/gxela/react-hello-world.svg)](https://scrutinizer-ci.com/g/gxela/react-hello-world/inspections)
+[![React Hello World](screenshots/rendered-react-app.png "Open React Hello World")](http://localhost:8000)
 
-In this tutorial we will create a button which shows and hides a message that says "Hello World".
-
-## Writing a "Hello World" application
-
-![Rendered React App](screenshots/rendered-react-app.png "Rendered React App")
+---
+### Writing a "Hello World" application
 
 Firstly, create the project directory and cd into it:
 
@@ -18,6 +16,9 @@ Initialize the project by running `npm init` in the command prompt, then answer 
 ```
 npm init
 ```
+
+---
+### Project dependencies
 
 Here is a list of packages that will be installed and configured for this project:
 
@@ -67,13 +68,16 @@ Here is a list of packages that will be installed and configured for this projec
 - **[webpack](https://webpack.js.org/)** - Packs CommonJs/AMD modules for the browser. Allows to split your codebase into multiple bundles, which can be loaded on demand. Support loaders to preprocess files, i.e. json, jsx, es7, css, less, ... and your custom stuff.
 - **[webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)** - Serves a webpack app. Updates the browser on changes.
 
-
-## Setup and configure the project
+---
+### Setup and configure the project
 
 Let's install `React`:
 
     npm install --save react react-dom lodash
     
+---
+### Install and configure eslint
+
 Run this command to install `eslint` `eslint-config-airbnb` `eslint-plugin-import` `eslint-plugin-jsx-a11y` `eslint-plugin-react`:
 
     export PKG=eslint-config-airbnb;
@@ -87,7 +91,7 @@ Let's initialize eslint so it knows how to parse our code, type `eslint --init` 
     ? Do you use React? Yes
     ? What format do you want your config file to be in? JavaScript
     
-Edit the `.eslintrc.js` file to add `browser: true` so `eslint` won't complain about `document` not being defined.
+Edit the `.eslintrc.js` file to add `browser: true` so `eslint` won't complain about `document` not being defined and `jasmine: true` so it won't complain about `describe` not being defined.
 
     "env": {
         "browser": true,
@@ -125,6 +129,9 @@ After the modification the `.eslintrc.js` file should look like this:
     };
 
 We are using `eslint --ignore-path .gitignore .` for `lint` run-script because it uses our ignore file to ignore static and coverage. Alternative is `eslint --ignore-pattern "/coverage/" --ignore-pattern "/static/" .`
+
+---
+### Install and configure webpack and babel
 
 Install `babel` and `webpack` and some loaders(babel-loader, eslint-loader) and presets(es2015, react) for babel:
 
@@ -175,6 +182,9 @@ Make sure to add the `eslint-loader` after the `babel-loader`, otherwise you wil
 The above `webpack.config.js` executes eslint over our source code after compiling all the code with webpack babel-loader. neat huh!
 
 To make sure everything is working as expected before we deploy things to production we should add unit tests.
+
+---
+### Install and configure jest
 
 Let's install `mocha`, `expect`, `jsdom` and `jest` for testing our project code:
 
@@ -262,7 +272,8 @@ Now add some `run-scripts` to `package.json`:
     "jest": "npm run lint; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
     "lint-and-test": "npm run lint; npm run test -- -u",
 
-If we execute `npm run karma` we can open our browser to see the tests running a the browser [http://localhost:9876/](http://localhost:9876/).
+---
+### Install and configure pm2
 
 With the project initialized, we have testing tools and `webpack` installed, create the project `src/` and `static/` directories:
     
@@ -286,6 +297,9 @@ We should add a `pm2` configuration file, called `process.yml` in the root of th
         env_production:
           NODE_ENV: production
           
+---
+###  Write tested backend server code
+
 Create a new directory `src/server/`:
 
     mkdir src/server
@@ -352,6 +366,20 @@ We should test our server app, `test/server/app.spec.js`:
       });
     });
 
+`src/server/config/index.js`:
+
+    const _ = require('lodash');
+    
+    const defaults = {
+      name: 'react-hello-world',
+      env: process.env.NODE_ENV,
+      port: 8080,
+    };
+    
+    /* eslint-disable */
+    module.exports = _.merge(defaults, require(`./${process.env.NODE_ENV === 'test' ? 'testing' : process.env.NODE_ENV}.js`) || {});
+    /* eslint-enable */
+    
 `test/server/config/index.spec.js`:
 
     import expect from 'expect';
@@ -372,6 +400,12 @@ We should test our server app, `test/server/app.spec.js`:
       });
     });
 
+`src/server/config/production.js`:
+
+    module.exports = {
+      port: 8000,
+    };
+
 `test/server/config/production.spec.js`:
 
     import expect from 'expect';
@@ -384,6 +418,12 @@ We should test our server app, `test/server/app.spec.js`:
         done();
       });
     });
+
+`src/server/config/testing.js`:
+
+    module.exports = {
+      port: 9999,
+    };
 
 `test/server/config/testing.spec.js`:
 
@@ -414,9 +454,10 @@ Inside of `package.json` add a few commands to `scripts`:
     "monit": "./node_modules/pm2/bin/pm2 monit", 
     "logs": "./node_modules/pm2/bin/pm2 logs",
 
-When we execute `npm run start` in the commandline/terminal it runs that application, we can stop, restart and kill the application as well with the scripts we have defined in package.json as shown above.
+When we execute `npm start` in the commandline/terminal it runs that application, we can stop, restart and kill the application as well with the scripts we have defined in package.json as shown above.
     
-## React the App to the power of X or create the app
+---
+### React the App to the power of X or create the app
 
 Let's create a `index.html` file in `static/` directory with these contents:
 
@@ -448,6 +489,8 @@ Now we are ready to start writing the application code, lets add this content to
 The `src/index.js` file above, loads the application into the `root` div element using react-dom library. Because we `import React` we don't need to load it with a `<script />` tag in the browser from `index.html`, it should be part of the compiled `bundle.js`.
 
 Lets add our first unit test! This test will be ran by `jest`. All it does is verify that the render function gets called. If you comment out the `require` line, the test will fail.
+
+`test/index.spec.js`:
 
     import ReactDOM from 'react-dom';
     import expect from 'expect'; // eslint-disable-line import/no-extraneous-dependencies
@@ -802,6 +845,9 @@ In `App` we add `Example2` component with override for default propTypes `numCli
 
 ![Jest Running Tests](screenshots/jest-running-tests.png "Jest Running Tests")
 
+---
+### Install and configure karma
+
 Let's install `karma` and all of its dependencies, to get it all working side-by-side with `jest`.
 
     npm install --save-dev karma istanbul babelify brfs browserify browserify-shim karma-babel-preprocessor watchify karma-browserify karma-jasmine karma-coverage karma-firefox-launcher karma-chrome-launcher react-addons-test-utils
@@ -842,10 +888,9 @@ Now lets configure `karma` by creating a file called `karma.conf.js` in the root
       });
     };
 
-    
-We are ready to start adding `jasmine` tests that will be run by `karma` to the `test/` folder.
+We are ready to start adding `jasmine` tests that will be run by `karma` to the `src/` folder located next to our source code.
 
-Let's add a duplicate test like we have in `test/index.spec.js` we will have this same test in `test/` so that karma can test ReactDOM render being called too, like `jest`:
+Let's add a duplicate test like we have in `src/index.spec.js` we will have this same test in `test/` so that karma can test ReactDOM render being called too, like `jest`:
 
     import ReactDOM from 'react-dom';
     import expect from 'expect'; // eslint-disable-line import/no-extraneous-dependencies
@@ -858,10 +903,10 @@ Let's add a duplicate test like we have in `test/index.spec.js` we will have thi
       });
     });
 
-Create another `jasmine` test in `test/app.spec.js` having this code:
+Create another test in `src/app.spec.js` having this code:
 
     import React from 'react';
-    import ReactTestUtils from 'react-addons-test-utils';
+    import ReactTestUtils from 'react-addons-test-utils'; // eslint-disable-line import/no-extraneous-dependencies
     
     import App from '../src/app';
     import Example1 from '../src/example1';
@@ -882,10 +927,10 @@ Create another `jasmine` test in `test/app.spec.js` having this code:
       });
     });
     
-`test/example1.spec.js`:
+`src/example1.spec.js`:
 
     import React from 'react';
-    import ReactTestUtils from 'react-addons-test-utils';
+    import ReactTestUtils from 'react-addons-test-utils'; // eslint-disable-line import/no-extraneous-dependencies
     
     import Example1 from '../src/example1';
     import Button from '../src/components/Button';
@@ -907,10 +952,10 @@ Create another `jasmine` test in `test/app.spec.js` having this code:
       });
     });
     
-`test/example2.spec.js`:
+`src/example2.spec.js`:
 
     import React from 'react';
-    import ReactTestUtils from 'react-addons-test-utils';
+    import ReactTestUtils from 'react-addons-test-utils'; // eslint-disable-line import/no-extraneous-dependencies
     
     import Example2 from '../src/example2';
     import Button from '../src/components/Button';
@@ -932,7 +977,7 @@ Create another `jasmine` test in `test/app.spec.js` having this code:
       });
     });
     
-`test/components/Button.spec.js`:
+`src/components/Button.spec.js`:
     
     /* eslint-disable import/no-extraneous-dependencies */
     
@@ -976,7 +1021,7 @@ Create another `jasmine` test in `test/app.spec.js` having this code:
       });
     });
 
-`test/components/Message.spec.js`:
+`src/components/Message.spec.js`:
 
     /* eslint-disable import/no-extraneous-dependencies */
     
@@ -1037,16 +1082,22 @@ Create another `jasmine` test in `test/app.spec.js` having this code:
       });
     });
 
-With all the `jasmine` tests in place and `karma` configured with `jasmine`, `browserify`, `babelify` and `babel` we can update our `test` and `karma` `run-script` in `package.json` to be like this.
+With all the tests in place and `karma` configured with `jasmine`, `browserify`, `babelify` and `babel` we can update our `test` and `karma` `run-script` in `package.json` to be like this.
 
     "test": "./node_modules/karma/bin/karma start; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
     "karma": "npm run lint; ./node_modules/karma/bin/karma start --auto-watch --no-single-run",
     
-Now when we run `npm run test` or `npm test` or `npm t` we should have `karma` test our code and even if `karma` fails `jest` will run tests to check everything giving it own coverage output.
+Now when we run `npm run test` or `npm test` or `npm t` to run tests, `karma` will run the tests and then even if it fails `jest` will run tests, both will generate coverage into the `coverage/` directory when they run.
+
+We can do `npm run karma` to execute `karma` for tests located in `src/`.
+We can do `npm run jest` to execute `jest` for tests located in `test/`.
+
+If we execute `npm run karma` we can open our browser to see the tests running a the browser [http://localhost:9876/](http://localhost:9876/).
 
 ![Karma Running Tests](screenshots/karma-running-tests.png "Karma Running Tests")
 
-## Docker
+---
+### Docker
 
 Now let's create a `Dockerfile` with these contents, let's call this file `Dockerfile.production`:
  
@@ -1175,7 +1226,39 @@ Ideally for production we would upload the application frontend files to Amazon 
 
 https://webpack.js.org/guides/production-build/
 
-At some point after starting working on the project, and adding some tests, you can goto https://travis-ci.org and add the project there, so it can run tests when you push your changes to git. This project is also managed on codeship. 
+Let's add some `run-scripts` to our `package.json`:
+
+    "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
+    "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
+
+---
+### Commands
+
+With all said and done you should have these commands in `package.json` file:
+
+    "build": "./node_modules/webpack/bin/webpack.js -p",
+    "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
+    "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
+    "test": "./node_modules/karma/bin/karma start; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
+    "karma": "npm run lint; ./node_modules/karma/bin/karma start --auto-watch --no-single-run",
+    "jest": "npm run lint; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
+    "lint-and-test": "npm run lint; npm run test -- -u",
+    "start": "./node_modules/pm2/bin/pm2 start --env production process.yml",
+    "restart": "./node_modules/pm2/bin/pm2 restart react-hello-world",
+    "stop": "./node_modules/pm2/bin/pm2 stop react-hello-world",
+    "show": "./node_modules/pm2/bin/pm2 show react-hello-world",
+    "kill": "./node_modules/pm2/bin/pm2 kill",
+    "list": "./node_modules/pm2/bin/pm2 list",
+    "monit": "./node_modules/pm2/bin/pm2 monit",
+    "logs": "./node_modules/pm2/bin/pm2 logs",
+    "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
+    "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
+        
+
+---
+### Continuous Integration
+
+At some point after starting working on the project, and adding some tests, you can goto https://travis-ci.org and add the project there, so it can run tests when you push your changes to git.
 
 - https://app.codeship.com/projects/203832
 - https://travis-ci.org/gxela/react-hello-world
@@ -1234,31 +1317,6 @@ The above files will run both docker containers in parallel when we run `jet ste
 
 https://documentation.codeship.com/pro/getting-started/installation/
 
-Let's add some `run-scripts` to our `package.json`:
-
-    "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
-    "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
-
-With all said and done you should have these commands in `package.json` file:
-
-    "build": "./node_modules/webpack/bin/webpack.js -p",
-    "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
-    "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base ./static",
-    "test": "./node_modules/karma/bin/karma start; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --verbose --setupTestFrameworkScriptFile test/jest_helper.js",
-    "karma": "npm run lint; ./node_modules/karma/bin/karma start --auto-watch --no-single-run",
-    "jest": "npm run lint; ./node_modules/jest/bin/jest.js --collectCoverageFrom='[\"src/**/**/**/*.js\"]' --coverage --setupTestFrameworkScriptFile test/jest_helper.js --watchAll --no-cache",
-    "lint-and-test": "npm run lint; npm run test -- -u",
-    "start": "./node_modules/pm2/bin/pm2 start --env production process.yml",
-    "restart": "./node_modules/pm2/bin/pm2 restart react-hello-world",
-    "stop": "./node_modules/pm2/bin/pm2 stop react-hello-world",
-    "show": "./node_modules/pm2/bin/pm2 show react-hello-world",
-    "kill": "./node_modules/pm2/bin/pm2 kill",
-    "list": "./node_modules/pm2/bin/pm2 list",
-    "monit": "./node_modules/pm2/bin/pm2 monit",
-    "logs": "./node_modules/pm2/bin/pm2 logs",
-    "production": "docker-compose rm -f; docker-compose build --no-cache app && docker-compose up app",
-    "testing": "docker-compose rm -f; docker-compose build --no-cache test && docker-compose up test"
-        
 To configure https://scrutinizer-ci.com/docs/build/code_coverage, lets add   `.scrutinizer.yml` file:
 
     checks:
@@ -1275,9 +1333,10 @@ To configure https://scrutinizer-ci.com/docs/build/code_coverage, lets add   `.s
               file: 'coverage/clover.xml'
               format: 'clover'
 
-## The Project
+---
+### The Project
 
-### Day 1
+#### Day 1
 To begin, I'd like you to make something simple with javascript. The app should:
 
 - show a button, and a "Hello World" message
@@ -1290,7 +1349,7 @@ Even though it's a very simple example, I'd like you to code it in a way that, t
 
 Finally, please make notes on all of this stuff so we can go through it together.
 
-### Day 2
+#### Day 2
 1) update it so that visibility only changes after every 3 clicks.
 
 Eg:
@@ -1302,7 +1361,7 @@ Eg:
 
 3) add some more to the Rationale section that cover things like tools or workflows you chose to use
 
-### Day 4
+#### Day 4
 Have a go at setting up a simple app using http://expressjs.com/
 
 Here's what I'd like to see:
@@ -1313,9 +1372,10 @@ Here's what I'd like to see:
 
 **Bonus round**: we want users to be able to login, using their google account.
 
-## Rationale
+---
+### Rationale
 
-### code
+#### Code
 
 To have a application that renders a button a message and keeps state for message shown or hidden.
 
@@ -1326,7 +1386,7 @@ To have a application that renders a button a message and keeps state for messag
 5. Define the `Button` component and `Message` component as stateless, since there is no need for them to keep state because the parent component already does that with `showMessage`.
 6. `Button` and `Message` both have defaultProps in case the developer doesn't pass in a text property, wanting to use a default value.
 
-### tools
+#### Tools
 
 Since we are building a ReactJS application with ES6, we want to use WebPack to bundle the source code. We are trying to create a workflow that covers all the uses cases and allows us to produce a production ready application, to do this we want to make sure we tests everything, and to have separate environments, one for development, one for testing and one for production.
  
@@ -1354,6 +1414,7 @@ But we use `describe(it())` instead because both work and `describe` hierarchy l
 
 For this project we are using `jest` with snapshots functionality and all the snapshots tests are located in `test/__snapshots__/` directory. When you run the tests, the snapshots may get out of sync and you will need to update them, they will update when you run `npm run lint-and-test` because it passes the `-u` param to `jest`. You can also run `npm run test -- -u` to run tests and update the snapshots for `jest` tests.
 
+---
 ### Workflow
 
 #### Run
