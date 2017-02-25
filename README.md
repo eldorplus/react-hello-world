@@ -1443,3 +1443,8 @@ When doing development we want to make sure to write tests in the `test/` and `s
 - Tests specific to `karma` are located in `src/` directory, follow the source luke!
 
 When making updates to tests, execute `npm run test`(to run both karma and jest), this command executes tests located in `test/` and `src/` directories and checks that all the use cases we have defined meet to our expected results. Coverage is generated(when `karma` and/or `jest` run) into `coverage/` directory.
+
+---
+### TODO
+
+- Make it so when running `npm run dev` or `webpack-dev-server` it also runs tests on top of lint and transpiling etc.
