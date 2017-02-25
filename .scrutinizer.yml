@@ -3,3 +3,15 @@ checks:
 filter:
   excluded_paths:
     - test/*
+build:
+  dependencies:
+    before:
+      - npm install istanbul   # or add it as part of your package.json
+
+  tests:
+    override:
+      -
+        command: 'npm run lint-and-test'
+        coverage:
+        file: 'coverage/clover.xml'
+        format: 'clover'
