@@ -11,9 +11,13 @@ Firstly, create the project directory and cd into it:
 
     mkdir react-hello-world && cd react-hello-world
     
-Initialize the project by running `npm init` in the command prompt to generate a `package.json` file.
+Initialize the project by running `npm init` in the command prompt, then answer some questions to generate a `package.json` file for the project.
 
-Here is a list of some of the packages we will be installing and configuring for this project:
+```
+npm init
+```
+
+Here is a list of packages that will be installed and configured for this project:
 
 - **[babel-core](https://www.npmjs.com/package/babel-core)** - Babel compiler core.
 - **[babel-jest](https://www.npmjs.com/package/babel-jest)** - Babel jest plugin.
@@ -61,9 +65,7 @@ Here is a list of some of the packages we will be installing and configuring for
 - **[webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)** - Serves a webpack app. Updates the browser on changes.
 
 
-```
-npm init
-```
+#### Setup and configure the project with code quality checks, unit testing, production ready tools and workflow to developing top of the line apps in React
 
 Let's install `React`:
 
@@ -357,6 +359,8 @@ Inside of `package.json` add a few commands to `scripts`:
 
 When we execute `npm run start` in the commandline/terminal it runs that application, we can stop, restart and kill the application as well with the scripts we have defined in package.json as shown above.
     
+#### React the App to the power of X or create the app
+
 Let's create a `index.html` file in `static/` directory with these contents:
 
     <!DOCTYPE html>
@@ -386,7 +390,7 @@ Now we are ready to start writing the application code, lets add this content to
 
 The `src/index.js` file above, loads the application into the `root` div element using react-dom library. Because we `import React` we don't need to load it with a `<script />` tag in the browser from `index.html`, it should be part of the compiled `bundle.js`.
 
-Lets add our first unit test! All it does is verify that the render function gets called. If you comment out the `require` line, the test will fail.
+Lets add our first unit test! This test will be ran by `jest`. All it does is verify that the render function gets called. If you comment out the `require` line, the test will fail.
 
     import ReactDOM from 'react-dom';
     import expect from 'expect'; // eslint-disable-line import/no-extraneous-dependencies
