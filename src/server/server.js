@@ -26,11 +26,11 @@ exports.start = function start(options, readyCallback) {
       const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
 
       this.server = app.listen(port, () => {
-        console.info(`${name}${instances} listening on port ${port} in ${process.env.NODE_ENV} mode`); // eslint-disable-line no-console
+        console.info(`${name}${instances} listening on port ${port} in ${config.env} mode`); // eslint-disable-line no-console
         if (instances === '') {
-          console.info('CTRL+C to exit'); // eslint-disable-line no-console
+          console.info('Hit CTRL-C to stop the server'); // eslint-disable-line no-console
         } else {
-          console.info('execute `npm run kill` to exit'); // eslint-disable-line no-console
+          console.info('execute "npm run stop" to stop the server\nexecute "npm run restart" to restart the server\nexecute "npm run kill" to kill the server'); // eslint-disable-line no-console
         }
         // callback to call when the server is ready
         if (readyCallback) {
