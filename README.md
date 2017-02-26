@@ -287,12 +287,16 @@ Install `express` and `pm2`:
     
 We should add a `pm2` configuration file, called `process.yml` in the root of the project directory that looks like this:
 
-    apps:
-      - script: src/server/index.js
-        name: react-hello-world
-        instances: 2
-        exec_mode: cluster
-        watch: true
+    apps: 
+      - script: src/server/index.js 
+        name: react-hello-world 
+        instances: 2 
+        exec_mode: cluster 
+        watch: true 
+        env:
+          NODE_ENV: development
+        env_production:
+          NODE_ENV: production
           
 ---
 ###  Write tested backend server code
@@ -1094,6 +1098,19 @@ If we execute `npm run karma` we can open our browser to see the tests running a
 ![Karma Running Tests](screenshots/karma-running-tests.png "Karma Running Tests")
 
 ---
+### Authentication with Google
+
+Let's take our application to the next level by adding Google authentication. To do this we need to install `mongoose`, `passport`, `passport-google-oauth` and write some code.
+
+    npm install --save passport passport-google-oauth mongoose
+
+Add a new file `src/server/auth/index.js`:
+
+    require('./google');
+
+``
+
+---
 ### Docker
 
 Now let's create a `Dockerfile` with these contents, let's call this file `Dockerfile.production`:
@@ -1194,6 +1211,7 @@ The `docker-compose.yml` file should look like this after those changes:
         build:
           context: .
           dockerfile: Dockerfile.production
+        image: react-hello-world/app
         ports:
           - '8000:8000'
         volumes:
@@ -1202,6 +1220,7 @@ The `docker-compose.yml` file should look like this after those changes:
         build:
           context: .
           dockerfile: Dockerfile.testing
+        image: react-hello-world/test
         environment:
           SELENIUM_HOST: http://selenium:4444/wd/hub
           TEST_SELENIUM: 'yes'
@@ -1214,9 +1233,16 @@ The `docker-compose.yml` file should look like this after those changes:
         image: selenium/node-phantomjs
         links:
           - selenium
+      mongo:
+        build:
+          context: .
+          dockerfile: Dockerfile
+        image: docker/mongo
+        volumes:
+          - ./mongo/data:/data/db
+        ports:
+          - "27017:27017"
 
-
-          
 You can run the test container in docker like this: `docker-compose up react-hello-world-test` or `npm run testing`
     
 Ideally for production we would upload the application frontend files to Amazon S3 bucket and configure that bucket to host website. 

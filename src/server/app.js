@@ -1,26 +1,39 @@
-const config = require('./../../src/server/config');
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('cookie-session');
 
-exports.start = function start(options, readyCallback) {
-  const opts = options || {};
-  if (!this.server) {
-    const express = require('express'); // eslint-disable-line global-require
-    const app = express();
+const mongoose = require('mongoose');
+const passport = require('passport');
 
-    app.use(express.static('static'));
+const config = require('./config');
 
-    const port = opts.port || process.env.PORT || config.port;
-    const name = opts.name || process.env.name || 'node';
+const app = express();
 
-    const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
-    const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
-    this.server = app.listen(port, () => {
-      console.info(`${name}${instances} listening on port ${port} in ${process.env.NODE_ENV} mode`); // eslint-disable-line no-console
-      // callback to call when the server is ready
-      if (readyCallback) {
-        readyCallback();
-      }
-    });
-  }
-  return this.server;
-};
+app.use(express.static(path.join(__dirname, 'static')));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(cookieParser());
+app.use(session(config.session.secret));
+
+mongoose.connect(config.mongo.uri, (err) => {
+  if (err) console.error(`failed to connect to MongoDB with config ${JSON.stringify(config.mongo)}`); // eslint-disable-line no-console
+  else console.info('succesfully connected to MongoDB database'); // eslint-disable-line no-console
+});
+
+
+// Configure passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Register routes
+app.use('/', require('./routes'));
+
+module.exports = app;

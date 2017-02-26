@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.production
+    image: react-hello-world/app
     ports:
       - '8000:8000'
     volumes:
@@ -13,6 +14,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.testing
+    image: react-hello-world/test
     environment:
       SELENIUM_HOST: http://selenium:4444/wd/hub
       TEST_SELENIUM: 'yes'
@@ -25,3 +27,12 @@ services:
     image: selenium/node-phantomjs
     links:
       - selenium
+  mongo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: docker/mongo
+    volumes:
+      - ./mongo/data:/data/db
+    ports:
+      - "27017:27017"
