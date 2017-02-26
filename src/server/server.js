@@ -19,14 +19,15 @@ exports.start = function start(options, readyCallback) {
       const config = require('./../../src/server/config');
       /* eslint-enable */
 
+      const host = opts.host || process.env.NODE_HOST || config.host;
       const port = opts.port || process.env.PORT || config.port;
       const name = opts.name || process.env.name || 'node';
 
       const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
       const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
 
-      this.server = app.listen(port, () => {
-        console.info(`${name}${instances} listening on port ${port} in ${config.env} mode`); // eslint-disable-line no-console
+      this.server = app.listen(port, host, () => {
+        console.info(`${name}${instances} listening on ${host}:${port} in ${config.env} mode`); // eslint-disable-line no-console
         if (instances === '') {
           console.info('Hit CTRL-C to stop the server'); // eslint-disable-line no-console
         } else {

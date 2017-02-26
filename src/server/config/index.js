@@ -2,6 +2,7 @@ const _ = require('lodash');
 
 const defaults = {
   name: 'react-hello-world',
+  host: process.env.NODE_HOST || '127.0.0.1',
   env: process.env.NODE_ENV || 'development',
   version: require('./../../../package.json').version, // eslint-disable-line global-require
   session: {

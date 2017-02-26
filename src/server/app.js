@@ -16,6 +16,10 @@ app.set('view engine', 'jade');
 
 app.use(express.static(path.join(__dirname, '../../static')));
 
+if (config.env !== 'production') {
+  app.use(express.static(path.join(__dirname, '../../coverage')));
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
