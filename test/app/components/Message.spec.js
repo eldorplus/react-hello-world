@@ -2,11 +2,11 @@
 
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
-import Message from './../../src/components/Message';
+import Message from './../../../src/app/components/Message';
 
 const Renderer = ReactTestUtils.createRenderer();
 
-describe('Message component', () => {
+describe('Message', () => {
   it('should have defaults', () => {
     Renderer.render(<Message />);
     const result = Renderer.getRenderOutput();

@@ -19,7 +19,7 @@ exports.start = function start(options, readyCallback) {
       const config = require('./../../src/server/config');
       /* eslint-enable */
 
-      const host = opts.host || process.env.NODE_HOST || config.host;
+      const host = opts.host || process.env.HOST || config.host;
       const port = opts.port || process.env.PORT || config.port;
       const name = opts.name || process.env.name || 'node';
 
@@ -41,4 +41,9 @@ exports.start = function start(options, readyCallback) {
     }
   }
   return this.server;
+};
+
+exports.close = function close() {
+  if (this.server) return this.server.close();
+  return false;
 };

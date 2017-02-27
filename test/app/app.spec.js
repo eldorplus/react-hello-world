@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils'; // eslint-disable-line import/no-extraneous-dependencies
 
-import App from '../src/app';
-import Example1 from '../src/example1';
-import Example2 from '../src/example2';
+import App from './../../src/app/app';
+import Example1 from './../../src/app/example1';
+import Example2 from './../../src/app/example2';
 
 const Renderer = ReactTestUtils.createRenderer();
 

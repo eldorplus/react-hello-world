@@ -4,7 +4,7 @@ import expect from 'expect'; // eslint-disable-line import/no-extraneous-depende
 describe('index', () => {
   it('calls render', () => {
     const spy = expect.spyOn(ReactDOM, 'render');
-    require('../src/index'); // eslint-disable-line global-require
+    require('./../../src/app/index'); // eslint-disable-line global-require
     expect(spy).toHaveBeenCalled(); // eslint-disable-line no-unused-expressions
   });
 });

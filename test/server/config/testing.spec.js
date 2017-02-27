@@ -7,9 +7,11 @@ describe('Server config testing', () => {
     expect(config.env).toBe('test');
     done();
   });
-  it('should contain property port equal to 9999', (done) => {
+  it('should contain property port equal to a random port between 49152 and 65535', (done) => {
     expect(config).toIncludeKeys(['port']);
-    expect(config.port).toBe(9999);
+    expect(typeof config.port).toBe('number');
+    expect(config.port).toBeLessThan(65535);
+    expect(config.port).toBeGreaterThan(49152);
     done();
   });
 });

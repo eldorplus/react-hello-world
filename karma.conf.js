@@ -4,13 +4,13 @@ module.exports = function (karma) {  // eslint-disable-line func-names
     frameworks: ['browserify', 'jasmine'],
 
     files: [
-      'src/**/*.spec.js',
+      'test/app/**/*.spec.js',
     ],
 
-    reporters: ['dots', 'coverage'],
+    reporters: ['spec', 'coverage'],
 
     preprocessors: {
-      'src/**/*.spec.js': ['babel', 'browserify', 'coverage'],
+      'test/app/**/*.spec.js': ['babel', 'browserify', 'coverage'],
     },
 
     browsers: ['PhantomJS'],
@@ -19,6 +19,7 @@ module.exports = function (karma) {  // eslint-disable-line func-names
 
     singleRun: true,
 
+    captureTimeout: 60000,
     browserify: {
       debug: true,
       transform: ['babelify', 'brfs', 'browserify-shim'],

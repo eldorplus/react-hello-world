@@ -2,11 +2,12 @@
 
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
-import Button from './../../src/components/Button';
+
+import Button from './../../../src/app/components/Button';
 
 const Renderer = ReactTestUtils.createRenderer();
 
-describe('Button component', () => {
+describe('Button', () => {
   it('should have defaults', () => {
     Renderer.render(<Button />);
     const result = Renderer.getRenderOutput();
