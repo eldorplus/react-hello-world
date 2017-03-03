@@ -1,3 +1,4 @@
 module.exports = {
-  port: 8000,
+  port: process.env.PORT || 443,
+  subDomain: process.env.SUBDOMAIN || 'www.react-hello-world.com:443',
 };

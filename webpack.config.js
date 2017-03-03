@@ -1,6 +1,8 @@
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
+  context: __dirname,
   entry: './src/app/index.js',
   output: {
     path: path.resolve(__dirname, 'static'),
@@ -13,7 +15,7 @@ const config = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
-          presets: ['es2015', 'react'],
+          presets: ['es2015', 'react', 'stage-0'],
         },
       },
       {
@@ -21,6 +23,10 @@ const config = {
         loader: 'eslint-loader',
         exclude: /(node_modules|bower_components)/,
       },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('css!sass')
+      }
     ],
   },
   devtool: 'source-map',

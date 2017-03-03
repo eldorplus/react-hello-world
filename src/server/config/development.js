@@ -1,3 +1,5 @@
 module.exports = {
-  port: 8080,
+  port: process.env.PORT || 8080,
+  subDomain: process.env.SUBDOMAIN || 'www.react-hello-world.dev',
+
 };

@@ -9,7 +9,7 @@ const User = require('./../models/User');
 //   invoke a callback with a user object.
 passport.use(new GoogleStrategy(config.auth.google,
   (token, tokenSecret, profile, done) => {
-    User.findOrCreate({ googleId: profile.id }, (err, user) => {
+    User.findOrCreate({ 'google.id': profile.id }, (err, user) => {
       return done(err, user);
     });
   },
