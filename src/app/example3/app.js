@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from './components/NavLink';
+import Home from './components/Home';
 
 const Example3App = (props) => {
   return (
@@ -7,7 +7,7 @@ const Example3App = (props) => {
       <h2>Example 3 -
         <small>login via google auth</small>
       </h2>
-      {props.children}
+      {props.children||<Home />}
     </div>
   );
 };

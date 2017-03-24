@@ -10,7 +10,7 @@ export default class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        {this.props.profile && this.props.profile.id ? <Profile {...this.props.profile} /> : 'Nothing' }
+        <Profile {...this.props.profile} />
         <Auth />
       </div>
     );

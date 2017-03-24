@@ -1,8 +1,6 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 
-// from https://github.com/lipp/login-with/blob/master/src/routes.js
-
 const cookieOpts = ({ httpOnly, reset = false, domain, maxAge = false }) => ({
   secure: true,
   httpOnly,
@@ -12,13 +10,14 @@ const cookieOpts = ({ httpOnly, reset = false, domain, maxAge = false }) => ({
 });
 
 module.exports = ({
+  User,
   strategies,
   passport,
   tokenCookieName,
   tokenSecret,
-  profileCookieName,
   cookieDomain,
   maxAge = false,
+  secret,
 }) => ({
   onAuthenticationRequest: (req, res, next) => {
     const type = req.path.split('/')[2];
@@ -26,10 +25,11 @@ module.exports = ({
     const opts = {};
     req.session.success = req.query.success;
     req.session.failure = req.query.failure;
-    if (_.includes(['developer', 'manager', 'admin'], req.query.role)) {
+    console.log('role', req.query.role);
+    if (_.includes(['Developer', 'Manager', 'Admin'], req.query.role)) {
       req.session.role = req.query.role;
     } else {
-      req.session.role = 'developer'
+      req.session.role = 'Developer'
     }
     if (strategy.preHook) {
       strategy.preHook(req, opts);
@@ -41,14 +41,12 @@ module.exports = ({
     passport.authenticate(type, (error, user) => {
       if (error) {
         res.cookie(tokenCookieName, '');
-        res.cookie(profileCookieName, JSON.stringify({error}));
         if (req.session.failure) {
           return res.redirect(decodeURIComponent(req.session.failure))
         }
       } else if (user) {
-        user.profile.userRole = req.session.role;
-        res.cookie(tokenCookieName, jwt.sign(user, tokenSecret));
-        res.cookie(profileCookieName, JSON.stringify(user.profile));
+        const token = jwt.sign(user, tokenSecret);
+        res.cookie(tokenCookieName, token);
         if (req.session.success) {
           return res.redirect(decodeURIComponent(req.session.success))
         }
@@ -59,16 +57,53 @@ module.exports = ({
   },
   onLogout: (req, res) => {
     res.cookie(tokenCookieName, '');
-    res.cookie(profileCookieName, '');
     if (req.query.success) {
       return res.redirect(decodeURIComponent(req.query.success))
     }
     return res.json({status: 'logged out'})
   },
-  onIndex: (req, res) => {
-    return res.json({token: req.cookies[tokenCookieName], profile: req.cookies[profileCookieName]})
+  onUser: (req, res) => {
+    return res.json({user: req.user.toObject()});
   },
-  onProfile: (req, res) => {
-    return res.json({profile: req.cookies[profileCookieName]})
+  onRegister: (req, res) => {
+    if(!req.body.email || !req.body.password) {
+      res.json({ success: false, message: 'Please enter email and password.' });
+    } else {
+      var newUser = new User({
+        email: req.body.email,
+        password: req.body.password
+      });
+
+      newUser.save(function(err) {
+        if (err) {
+          return res.json({ success: false, message: 'That email address already exists.'});
+        }
+        res.json({ success: true, message: 'Successfully created new user.' });
+      });
+    }
+  },
+  onLogin: (req, res) => {
+    User.findOne({
+      email: req.body.email
+    }, function(err, user) {
+      if (err) throw err;
+
+      if (!user) {
+        res.send({ success: false, message: 'Authentication failed. User not found.' });
+      } else {
+        // Check if password matches
+        user.comparePassword(req.body.password, function(err, isMatch) {
+          if (isMatch && !err) {
+            // Create token if the password matched and no error was thrown
+            var token = jwt.sign(user, secret, {
+              expiresIn: 10080 // in seconds
+            });
+            res.json({ success: true, token: 'JWT ' + token });
+          } else {
+            res.send({ success: false, message: 'Authentication failed. Passwords did not match.' });
+          }
+        });
+      }
+    });
   }
 });

@@ -26,6 +26,9 @@ exports.start = function start(options, readyCallback) {
       const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
       const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
 
+      if (config.env === 'development') {
+        require('heapdump');
+      }
       this.server = app.listen(port, host, () => {
         console.info(`${name}${instances} listening on ${host}:${port} in ${config.env} mode`); // eslint-disable-line no-console
         if (instances === '') {

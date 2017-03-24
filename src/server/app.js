@@ -1,8 +1,10 @@
 const path = require('path');
 const express = require('express');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
 // const MemoryStore = require('session-memory-store')(expressSession);
 
 const mongoose = require('mongoose');
@@ -23,13 +25,13 @@ if (config.env !== 'production') {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(cookieParser());
+app.use(morgan('dev'));
+app.use(cookieParser(config.session.secret));
 app.use(session({
   secret: config.session.secret,
+  // store: new RedisStore(config.redis),
   resave: true,
   saveUninitialized: false,
-  // store: new MemoryStore(),
   // rolling: true,
 }));
 
@@ -45,7 +47,7 @@ app.use(passport.session());
 passport.serializeUser((user, done) => { done(null, user); });
 passport.deserializeUser((user, done) => { done(null, user); });
 
-app.use('/', require('./routes'));
+app.use('/', require('./routes')(config, passport));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

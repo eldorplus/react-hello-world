@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, hashHistory, IndexRoute } from 'react-router';
+import { Router, Route, hashHistory, IndexRoute, Redirect } from 'react-router';
 import Example3App from './example3/app';
 import Home from './example3/components/Home';
 import Auth from './example3/components/Auth';
@@ -16,6 +16,7 @@ const Example3 = () => {
           <Route path="/users" component={Users}>
             <Route path="/users/:userName" component={User} />
           </Route>
+          <Redirect from="_=_" to="/" />
         </Route>
       </Router>
     </div>

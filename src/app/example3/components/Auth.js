@@ -15,7 +15,7 @@ class Auth extends React.Component {
     }
   }
   logout() {
-    window.location = `/auth/logout?success=/`
+    window.location = `/auth/logout?success=/&failure=/`
   }
   render() {
     return (
@@ -23,9 +23,19 @@ class Auth extends React.Component {
         <div>
           <h2>Login with</h2>
           <ul>
-            <li><Button onClick={this.login('google', 'admin')} text="Google as Admin" /></li>
-            <li><Button onClick={this.login('google', 'manager')} text="Google as Manager" /></li>
-            <li><Button onClick={this.login('google', 'developer')} text="Google as Developer" /></li>
+            <li><Button onClick={this.login('google', 'Admin')} text="Google as Admin" /></li>
+            <li><Button onClick={this.login('google', 'Manager')} text="Google as Manager" /></li>
+            <li><Button onClick={this.login('google', 'Developer')} text="Google as Developer" /></li>
+          </ul>
+          <ul>
+            <li><Button onClick={this.login('github', 'Admin')} text="Github as Admin" /></li>
+            <li><Button onClick={this.login('github', 'Manager')} text="Github as Manager" /></li>
+            <li><Button onClick={this.login('github', 'Developer')} text="Github as Developer" /></li>
+          </ul>
+          <ul>
+            <li><Button onClick={this.login('facebook', 'Admin')} text="Facebook as Admin" /></li>
+            <li><Button onClick={this.login('facebook', 'Manager')} text="Facebook as Manager" /></li>
+            <li><Button onClick={this.login('facebook', 'Developer')} text="Facebook as Developer" /></li>
           </ul>
         </div>
         <div>

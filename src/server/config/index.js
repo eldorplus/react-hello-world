@@ -23,23 +23,34 @@ const defaults = {
   host: process.env.HOST || '127.0.0.1',
   env,
   version: require('./../../../package.json').version, // eslint-disable-line global-require
-  subDomain: envConfig.subDomain,
-  protocol: process.env.SUBDOMAIN ? 'https://' : 'http://',
-  profileCookieName: process.env.PROFILE_COOKIENAME || 'profile',
   tokenCookieName: process.env.JWT_COOKIENAME || 'jwt',
   tokenSecret: process.env.JWT_SECRET || 'a token secret',
   sessionSecret: process.env.SESSION_SECRET || 'a session secret',
   cookieDomain: '.' + envConfig.subDomain.split('.').slice(1).join('.'),
   session: {
-    secret: ['super secret is top secret'],
+    secret: 'super secret is top secret',
     maxAge: process.env.COOKIE_MAXAGE || tenDays,
   },
+  redis: {
+
+  },
   auth: {
+    facebook: {
+      appID: process.env.FACEBOOK_APP_ID || 'ID',
+      appSecret: process.env.FACEBOOK_APP_SECRET || 'SECRET',
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/facebook/callback`
+    },
+    github: {
+      clientID: process.env.GITHUB_CLIENT_ID || 'ID',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || 'SECRET',
+      callbackURL: process.env.GITHUB_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/github/callback`
+    },
     google: {
       clientID: process.env.GOOGLE_CLIENT_ID || 'ID',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'SECRET',
       callbackURL: process.env.GOOGLE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/google/callback`,
     },
+
   },
   mongo: {
     uri: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/hello-world',
