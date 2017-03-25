@@ -5,7 +5,7 @@ module.exports = {
   getConfig: (env) => {
     const consumerKey = env.auth.tumblr.consumerKey;
     const consumerSecret = env.auth.tumblr.consumerSecret;
-    const callbackURL = env.auth.google.callbackURL;
+    const callbackURL = env.auth.tumblr.callbackURL;
     if (consumerKey && consumerSecret) {
       return {
         consumerKey,
