@@ -28,12 +28,12 @@ class Profile extends React.Component {
       <div>
         <h2>{this.state.name}'s {_.capitalize(this.state.provider)} Profile</h2>
         <ul>
-          <li>id: {this.state._id}</li>
+          <li>id: {this.state.id}</li>
           {this.state.name ? <li>name: {this.state.name}</li> : null }
           {this.state.username ? <li>username: {this.state.username}</li> : null }
           {this.state.email ? <li>email: {this.state.email}</li> : null }
           <li>role: {this.state.role}</li>
-          <li>photo: <img src={this.state.photo} /></li>
+          <li>photo: <img src={this.state.provider === 'github' ? `${this.state.photo}&s=50` : this.state.photo} /></li>
         </ul>
         <hr />
       </div>

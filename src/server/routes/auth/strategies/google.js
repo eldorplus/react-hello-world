@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const User = require('./../../../models/User');
 
 module.exports = {
   Ctor: require('passport-google-oauth20').Strategy,
@@ -20,38 +19,9 @@ module.exports = {
     opts.scope = ['email']
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
-    User.findOne({ 'google.id': profile.id }, function(err, user) {
-      if (err) done(err);
-
-      if (!user) {
-        user = new User();
-      }
-
-      if(!user.email) {
-        user.email = profile.emails[0] ? profile.emails[0].value : null;
-      }
-      if(!user.username) {
-        user.username = profile.username ? profile.username : user.email;
-      }
-      if(!user.name) {
-        user.name = profile.displayName ? profile.displayName : null;
-      }
-      if(!user.photo) {
-        user.photo = profile.photos[0] ? profile.photos[0].value : null;
-      }
-
-      user.role = req.session.role;
-      user.provider = 'google';
-
-      user.google.id = profile.id;
-
-      user.google.token = accessToken;
-      user.google.refresh = refreshToken;
-      user.google.profile = profile;
-
-      require('./index').saver(user, done);
-
-    });
+    profile.role = req.session.role;
+    profile.provider = 'google';
+    require('./index').userSaver(accessToken, refreshToken, profile, done);
   },
 
 };

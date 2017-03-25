@@ -63,6 +63,12 @@ var userSchema = new Schema({
     refresh: String,
     profile: Object,
   },
+  tumblr: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
   twitter: {
     id: String,
     token: String,

@@ -35,6 +35,11 @@ const defaults = {
 
   },
   auth: {
+    beam: {
+      clientID: process.env.BEAM_CLIENT_ID || 'ID',
+      clientSecret: process.env.BEAM_CLIENT_SECRET || 'SECRET',
+      callbackURL: process.env.BEAM_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/beam/callback`
+    },
     facebook: {
       appID: process.env.FACEBOOK_APP_ID || 'ID',
       appSecret: process.env.FACEBOOK_APP_SECRET || 'SECRET',
@@ -50,7 +55,21 @@ const defaults = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'SECRET',
       callbackURL: process.env.GOOGLE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/google/callback`,
     },
-
+    reddit: {
+      clientID: process.env.REDDIT_CLIENT_ID || 'ID',
+      clientSecret: process.env.REDDIT_CLIENT_SECRET || 'SECRET',
+      callbackURL: process.env.REDDIT_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/reddit/callback`,
+    },
+    tumblr: {
+      consumerKey: process.env.TUMBLR_CONSUMER_KEY || 'KEY',
+      consumerSecret: process.env.TUMBLR_CONSUMER_SECRET || 'SECRET',
+      callbackURL: process.env.TUBMLR_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/tumblr/callback`,
+    },
+    twitter: {
+      consumerKey: process.env.TWITTER_CONSUMER_KEY || 'KEY',
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET || 'SECRET',
+      callbackURL: process.env.TWITTER_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/twitter/callback`,
+    },
   },
   mongo: {
     uri: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/hello-world',
