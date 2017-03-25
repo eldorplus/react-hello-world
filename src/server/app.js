@@ -47,7 +47,48 @@ app.use(passport.session());
 passport.serializeUser((user, done) => { done(null, user); });
 passport.deserializeUser((user, done) => { done(null, user); });
 
-app.use('/', require('./routes')(config, passport));
+const _ = require('lodash');
+var ConnectRoles = require('connect-roles');
+
+var userRole = new ConnectRoles({
+  failureHandler: function (req, res, action) {
+    // optional function to customise code that runs when
+    // user fails authorisation
+    var accept = req.headers.accept || '';
+    res.status(403);
+    if (~accept.indexOf('html')) {
+      res.render('access-denied', {action: action});
+    } else {
+      res.json('Access Denied - You don\'t have permission to: ' + action);
+    }
+  }
+});
+
+//anonymous users can only access the home page
+//returning false stops any more rules from being
+//considered
+userRole.use(function (req, action) {
+  if (!req.isAuthenticated()) return action === 'access home page';
+});
+
+//moderator users can access private page, but
+//they might not be the only ones so we don't return
+//false if the user isn't a moderator
+userRole.use('access users page', function (req) {
+  console.log('current user', req.user);
+  if (_.includes(['Manager', 'Admin'], req.user.role)) {
+    return true;
+  }
+});
+
+//admin users can access all pages
+userRole.use(function (req) {
+  if (req.user.role === 'Admin') {
+    return true;
+  }
+});
+
+app.use('/', require('./routes')(config, passport, require('./auth/roles')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

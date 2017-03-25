@@ -70,7 +70,7 @@ module.exports = ({
     return res.json({status: 'logged out'})
   },
   onUser: (req, res) => {
-    return res.json({user: req.user.toObject()});
+    return res.json({user: req.user.toJSON()});
   },
   onRegister: (req, res) => {
     if(!req.body.email || !req.body.password) {

@@ -1,16 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
-
-function transform(doc, ret) {
-  delete ret.__v;
-  ret.id = ret._id;
-  delete ret._id;
-  ret.password && delete ret.password;
-  ret.facebook && delete ret.facebook;
-  ret.github && delete ret.github;
-  ret.google && delete ret.google;
-}
+const transform = require('./transform/User');
 
 var userSchema = new Schema({
   name: String,
@@ -30,6 +21,16 @@ var userSchema = new Schema({
     enum: ['Developer', 'Manager', 'Admin'],
     default: 'Developer'
   },
+  permissions: [
+    {
+      name: {
+        type: String
+      },
+      path: {
+        type: String
+      }
+    }
+  ],
   photo: String,
   provider: String,
   beam: {

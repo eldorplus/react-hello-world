@@ -4,7 +4,7 @@ const _ = require('lodash');
 const router = require('express').Router();
 const User = require('./../models/User');
 
-function setupRouter(config, passport) {
+function setupRouter(config, passport, userRole) {
   require('./../auth/jwt')(config, passport, User);
 
   router.get('/version', (req, res) => {
@@ -59,7 +59,7 @@ function setupRouter(config, passport) {
 
     router.get(
       '/auth/user',
-      passport.authenticate('jwt', { session: false }),
+      passport.authenticate('jwt'),
       routes.onUser
     );
   }
@@ -71,20 +71,17 @@ function setupRouter(config, passport) {
     }
   );
 
-  require('./users')(config, passport, User, router);
+  require('./users')(config, passport, User, router, userRole);
+
+  // router.use(function (req, res, next) {
+  //   if (req.isAuthenticated()) {
+  //     return next();
+  //   } else {
+  //     res.json({'message': 'Not Authenticated'});
+  //   }
+  // });
+
   return router;
-}
-
-
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated())
-    return next();
-
-  // if they aren't redirect them to the home page
-  res.redirect('/');
 }
 
 module.exports = setupRouter;

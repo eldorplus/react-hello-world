@@ -9,13 +9,11 @@ module.exports = function(config, passport, User) {
   passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
     console.log('jwt_payload', jwt_payload);
     User.findOne({_id: jwt_payload._id}, function(err, user) {
-      console.log('jwt user', user);
+      console.log('jwt_user', user);
       if (err) {
         return done(err, false);
       }
       if (user) {
-        user.provider = jwt_payload.provider;
-        console.log('fda', user);
         done(null, user);
       } else {
         done(null, false);
