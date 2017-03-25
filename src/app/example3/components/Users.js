@@ -19,7 +19,11 @@ class Users extends React.Component {
       .then(res => {
         const users = res.data.users;
         if (users) this.setState({users: [ ...users ]});
-        else this.setState({error: res.data.error})
+        else this.setState({error: {
+          code: res.statusCode ? res.statusCode : null,
+          status: res.statusText ? res.statusText : null,
+          message: res.data.message ? res.data.message : null,
+        }})
       })
       .catch(function (error) {
         if (error && error.response) {
@@ -27,7 +31,7 @@ class Users extends React.Component {
             error: {
               code: error.response.statusCode ? error.response.statusCode : null,
               status: error.response.statusText ? error.response.statusText : null,
-              message: error.response.data.error ? error.response.data.error : null,
+              message: error.response.data.message ? error.response.data.message : null,
             }
           })
         }

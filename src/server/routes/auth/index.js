@@ -69,23 +69,35 @@ module.exports = ({
     }
     return res.json({status: 'logged out'})
   },
-  onUser: (req, res) => {
+  onProfile: (req, res) => {
     return res.json({user: req.user.toJSON()});
   },
-  onRegister: (req, res) => {
-    if(!req.body.email || !req.body.password) {
-      res.json({ success: false, message: 'Please enter email and password.' });
+  onRegister: (req, res, next) => {
+    if(!req.body.name || !req.body.email || !req.body.password) {
+      return res.json({ success: false, message: 'Please enter name, email and password.' });
     } else {
-      var newUser = new User({
-        email: req.body.email,
-        password: req.body.password
-      });
-
-      newUser.save(function(err) {
-        if (err) {
+      User.findOne({'email': req.body.email}, (err, user) => {
+        if (err) next(err);
+        if (!user) {
+          let role = 'Developer';
+          if (_.includes(['Admin', 'Manager', 'Developer'], req.body.role)){
+            role = req.body.role;
+          }
+          new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            role
+          }).save(function(err, user) {
+            if (err) return res.json(err);
+            var token = jwt.sign({id: user._id}, tokenSecret, jwtOpts);
+            res.cookie(tokenCookieName, token);
+            return res.json({ success: true, message: 'Successfully created new user.', token });
+          });
+        } else {
           return res.json({ success: false, message: 'That email address already exists.'});
         }
-        res.json({ success: true, message: 'Successfully created new user.' });
+
       });
     }
   },
@@ -102,12 +114,12 @@ module.exports = ({
         user.comparePassword(req.body.password, function(err, isMatch) {
           if (isMatch && !err) {
             // Create token if the password matched and no error was thrown
-            var token = jwt.sign(user, secret, jwtOpts);
+            var token = jwt.sign({id: user._id}, tokenSecret, jwtOpts);
             res.cookie(tokenCookieName, token);
             if (req.query.success) {
               return res.redirect(decodeURIComponent(req.query.success))
             }
-            return res.json({ success: true, token: 'JWT ' + token });
+            return res.json({ success: true, token });
           } else {
             if (req.query.failure) {
               return res.redirect(decodeURIComponent(req.query.failure))

@@ -18,7 +18,10 @@ module.exports = {
   toUser: (req, token, tokenSecret, profile, done) => {
     profile.role = req.session.role;
     profile.provider = 'tumblr';
-    require('./index').userSaver(token, tokenSecret, profile, done);
+    const fields = (user) => {
+      user.name = profile.username ? profile.username : null;
+    };
+    require('./index').userSaver(fields, token, tokenSecret, profile, done);
   },
 
 };

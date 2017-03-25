@@ -92,9 +92,8 @@ app.use('/', require('./routes')(config, passport, require('./auth/roles')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  res.render('index');
+  next();
 });
 
 // development error handler, show stacktrace

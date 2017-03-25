@@ -38,6 +38,28 @@ function setupRouter(config, passport, userRole) {
     config.User = User;
     const routes = require('./auth/index')(config);
     router.get(
+      '/auth/providers',
+      (req, res) => {
+        const s = strategies.map(strategy => strategy.type);
+        let p = {};
+
+        strategies.map(strategy => {
+          let enabled = (
+            (strategy.config.clientID && strategy.config.clientID !== 'ID') ||
+            (strategy.config.appID && strategy.config.appID !== 'ID') ||
+            (strategy.config.consumerKey && strategy.config.consumerKey !== 'KEY')
+          ) ? true: false;
+          if (enabled) {
+            p[strategy.type] = {
+              name: strategy.name,
+              callbackURL: strategy.config.callbackURL,
+            };
+          }
+        });
+        res.json({strategies: s, providers: p})
+      }
+    );
+    router.get(
       strategies.map(strategy => `/auth/${strategy.type}`),
       routes.onAuthenticationRequest
     );
@@ -47,9 +69,14 @@ function setupRouter(config, passport, userRole) {
       routes.onAuthenticationCallback
     );
 
-    router.get(
+    router.post(
       '/auth/login',
       routes.onLogin
+    );
+
+    router.post(
+      '/auth/register',
+      routes.onRegister
     );
 
     router.get(
@@ -58,9 +85,9 @@ function setupRouter(config, passport, userRole) {
     );
 
     router.get(
-      '/auth/user',
+      '/auth/profile',
       passport.authenticate('jwt'),
-      routes.onUser
+      routes.onProfile
     );
   }
 
@@ -72,14 +99,6 @@ function setupRouter(config, passport, userRole) {
   );
 
   require('./users')(config, passport, User, router, userRole);
-
-  // router.use(function (req, res, next) {
-  //   if (req.isAuthenticated()) {
-  //     return next();
-  //   } else {
-  //     res.json({'message': 'Not Authenticated'});
-  //   }
-  // });
 
   return router;
 }

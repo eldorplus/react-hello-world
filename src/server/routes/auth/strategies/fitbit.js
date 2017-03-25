@@ -1,9 +1,11 @@
+const _ = require('lodash');
+
 module.exports = {
-  Ctor: require('passport-github2').Strategy,
+  Ctor: require('passport-fitbit-oauth2').FitbitOAuth2Strategy,
   getConfig: (env) => {
-    const clientID = env.auth.github.clientID;
-    const clientSecret = env.auth.github.clientSecret;
-    const callbackURL = env.auth.github.callbackURL;
+    const clientID = env.auth.fitbit.clientID;
+    const clientSecret = env.auth.fitbit.clientSecret;
+    const callbackURL = env.auth.fitbit.callbackURL;
     if (clientID && clientSecret) {
       return {
         clientID,
@@ -14,17 +16,16 @@ module.exports = {
     }
   },
   preHook: (req, opts) => {
-    opts.scope = ['email']
+    opts.scope = ['profile']; // 'activity','heartrate','location'
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
+    console.log('fitbit', profile);
     profile.role = req.session.role;
-    profile.provider = 'github';
+    profile.provider = 'fitbit';
     const fields = (user) => {
       user.name = profile.displayName ? profile.displayName : null;
-      user.email = profile.email ? profile.email : null;
-      user.username = profile.username ? profile.username : null;
-      user.photo = profile._json && profile._json.avatar_url ? profile._json.avatar_url : null;
     };
     require('./index').userSaver(fields, accessToken, refreshToken, profile, done);
   },
+
 };

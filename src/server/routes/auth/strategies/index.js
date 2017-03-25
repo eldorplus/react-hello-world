@@ -1,11 +1,28 @@
 const strategies = {
+  amazon: require('./amazon'),
   beam: require('./beam'),
+  bitbucket: require('./bitbucket'),
+  bnet: require('./bnet'),
+  dropbox: require('./dropbox'),
+  evernote: require('./evernote'),
   facebook: require('./facebook'),
+  fitbit: require('./fitbit'),
+  forcedotcom: require('./forcedotcom'),
+  foursquare: require('./foursquare'),
   github: require('./github'),
   google: require('./google'),
+  instagram: require('./instagram'),
+  linkedin: require('./linkedin'),
+  paypal: require('./paypal'),
   reddit: require('./reddit'),
+  sharepoint: require('./sharepoint'),
+  slack: require('./slack'),
+  spotify: require('./spotify'),
   tumblr: require('./tumblr'),
   twitter: require('./twitter'),
+  vkontakte: require('./vkontakte'),
+  weibo: require('./weibo'),
+  windowslive: require('./windowslive'),
 };
 
 const isConfigured = strategy => strategy.config;
@@ -13,6 +30,7 @@ const isConfigured = strategy => strategy.config;
 module.exports.loader = (config) => Object.keys(strategies)
   .map(type => {
     const strategy = strategies[type];
+    strategy.name = config.auth[type] && config.auth[type].name ? config.auth[type].name : type;
     strategy.config = strategy.getConfig(config);
     strategy.type = type;
     return strategy
@@ -23,7 +41,8 @@ const _saver = (user, done) => {
 
 };
 
-module.exports.userSaver = (accessToken, refreshToken, profile, done) => {
+module.exports.userSaver = (fields, accessToken, refreshToken, profile, done) => {
+  console.log('save profile', profile);
   const providerPath = `${profile.provider}.id`;
   const query = {};
   query[providerPath] = profile.id;
@@ -40,18 +59,7 @@ module.exports.userSaver = (accessToken, refreshToken, profile, done) => {
     user.role = profile.role;
     user.provider = profile.provider;
 
-    if(!user.name) {
-      user.name = profile.displayName ? profile.displayName : null;
-    }
-    if(!user.email) {
-      user.email = profile.email ? profile.email : null;
-    }
-    if(!user.username) {
-      user.username = profile.username ? profile.username : profile.email ? profile.email : profile.id;
-    }
-    if(!user.photo) {
-      user.photo = profile.photos[0] ? profile.photos[0].value : null;
-    }
+    fields(user);
 
     user[profile.provider].id = profile.id;
 
@@ -62,7 +70,7 @@ module.exports.userSaver = (accessToken, refreshToken, profile, done) => {
     user.save((err) => {
       if (err) throw err;
       let result = {
-        _id: user.id,
+        id: user.id,
         provider: user.provider,
       };
       result[user.provider] = {

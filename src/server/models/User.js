@@ -33,13 +33,61 @@ var userSchema = new Schema({
   ],
   photo: String,
   provider: String,
+  amazon: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
   beam: {
     id: String,
     token: String,
     refresh: String,
     profile: Object,
   },
+  bitbucket: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  bnet: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  dropbox: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  evernote: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
   facebook: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  fitbit: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  forcedotcom: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  foursquare: {
     id: String,
     token: String,
     refresh: String,
@@ -57,7 +105,55 @@ var userSchema = new Schema({
     refresh: String,
     profile: Object,
   },
+  instagram: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  linkedin: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  paypal: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
   reddit: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  runkeeper: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  sharepoint: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  slack: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  soundcloud: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  spotify: {
     id: String,
     token: String,
     refresh: String,
@@ -75,6 +171,30 @@ var userSchema = new Schema({
     refresh: String,
     profile: Object,
   },
+  vkontakte: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  weibo: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  windowslive: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
+  yahoo: {
+    id: String,
+    token: String,
+    refresh: String,
+    profile: Object,
+  },
 }, {
   toObject: {
     transform: transform
@@ -83,11 +203,9 @@ var userSchema = new Schema({
     transform: transform
   }
 });
-
 userSchema.pre('save', function (next) {
   var user = this;
-  if (this.hasOwnProperty('password')
-      && (this.isModified('password') || this.isNew)) {
+  if (user.password && (this.isModified('password') || this.isNew)) {
     bcrypt.genSalt(10, function (err, salt) {
       if (err) {
         return next(err);

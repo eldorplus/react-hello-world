@@ -12,13 +12,20 @@ module.exports = {
         clientSecret,
         callbackURL,
         passReqToCallback: true,
-        profileFields: ['displayName', 'name', 'photos', 'email']
+        profileFields: ['id', 'displayName', 'name', 'gender', 'photos', 'email', 'profileUrl']
       }
     }
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
     profile.role = req.session.role;
     profile.provider = 'facebook';
-    require('./index').userSaver(accessToken, refreshToken, profile, done);
+    const fields = (user) => {
+      user.name = profile.displayName ? profile.displayName : null;
+      user.gender = profile.gender ? profile.gender : null;
+      user.email = profile.email ? profile.email : null;
+      user.username = profile.username ? profile.username : null;
+      user.photo = profile.photos && profile.photos[0] ? profile.photos[0].value : null;
+    };
+    require('./index').userSaver(fields, accessToken, refreshToken, profile, done);
   }
 };

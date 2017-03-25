@@ -2,7 +2,7 @@ import React from 'react';
 
 const Error = (props) => {
   return (
-    <p><strong>Error {props.code} ({props.status})</strong>: {props.message}</p>
+    <p><strong>Error {props.code} ({props.status})</strong>! {props.message}</p>
   );
 };
 

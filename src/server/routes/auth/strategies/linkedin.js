@@ -1,25 +1,28 @@
 module.exports = {
-  Ctor: require('passport-twitter').Strategy,
+  Ctor: require('passport-linkedin-oauth2').Strategy,
   getConfig: (env) => {
-    const consumerKey = env.auth.twitter.consumerKey;
-    const consumerSecret = env.auth.twitter.consumerSecret;
-    const callbackURL = env.auth.twitter.callbackURL;
-
-    if (consumerKey && consumerSecret) {
+    const clientID = env.auth.linkedin.clientID;
+    const clientSecret = env.auth.linkedin.clientSecret;
+    const callbackURL = env.auth.linkedin.callbackURL;
+    if (clientID && clientSecret) {
       return {
-        consumerKey,
-        consumerSecret,
+        clientID,
+        clientSecret,
         callbackURL,
         passReqToCallback: true,
+        state: true,
       }
     }
   },
+  preHook: (req, opts) => {
+    opts.scope = ['r_emailaddress', 'r_basicprofile'];
+  },
   toUser: (req, token, tokenSecret, profile, done) => {
     profile.role = req.session.role;
-    profile.provider = 'twitter';
+    profile.provider = 'linkedin';
     const fields = (user) => {
       user.name = profile.displayName ? profile.displayName : null;
-      user.email = profile.email ? profile.email : null;
+      user.email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
       user.username = profile.username ? profile.username : profile.email ? profile.email : profile.id;
       user.photo = profile.photos && profile.photos[0] ? profile.photos[0].value : null;
     };
