@@ -100,6 +100,7 @@
     "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^4.0.0",
+    "passport-tumblr": "^0.1.2",
     "pm2": "^2.4.0",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",

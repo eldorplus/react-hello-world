@@ -26,7 +26,7 @@ exports.start = function start(options, readyCallback) {
       const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
       const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
 
-      if (config.env === 'development') {
+      if (config.env !== 'production') {
         require('heapdump');
       }
       this.server = app.listen(port, host, () => {

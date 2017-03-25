@@ -62,15 +62,16 @@ function setupRouter(config, passport) {
       passport.authenticate('jwt', { session: false }),
       routes.onUser
     );
-
-    router.get(
-      '/auth/:view',
-      (req, res) => {
-        res.redirect('/#/auth/'+req.params.view);
-      }
-    )
   }
 
+  router.get(
+    '/auth/:view',
+    (req, res) => {
+      res.redirect('/#/auth/'+req.params.view);
+    }
+  );
+
+  require('./users')(config, passport, User, router);
   return router;
 }
 

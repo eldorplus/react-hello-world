@@ -28,6 +28,12 @@ module.exports = {
       if(!user.name) {
         user.name = profile.displayName ? profile.displayName : null;
       }
+      if(!user.email) {
+        user.email = profile.email ? profile.email : null;
+      }
+      if(!user.username) {
+        user.username = profile.username ? profile.username : profile.email ? profile.email : profile.id;
+      }
       if(!user.photo) {
         user.photo = profile.photos[0] ? profile.photos[0].value : null;
       }
@@ -43,25 +49,5 @@ module.exports = {
 
       require('./index').saver(user, done);
     });
-
-    // let name
-    // if (profile.name) {
-    //   if (profile.name.givenName && profile.name.familyName) {
-    //     name = `${profile.name.givenName} ${profile.name.familyName}`
-    //   } else if (profile.name.givenName) {
-    //     name = profile.name.givenName
-    //   } else if (profile.name.familyName) {
-    //     name = profile.name.familyName
-    //   }
-    // }
-    // done(null, {
-    //   accessToken,
-    //   refreshToken,
-    //   profile: {
-    //     username: profile.displayName,
-    //     name,
-    //     photo: profile.photos && profile.photos[0] ? profile.photos[0].value : null
-    //   }
-    // })
   }
 };

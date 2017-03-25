@@ -2,6 +2,16 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
+function transform(doc, ret) {
+  delete ret.__v;
+  ret.id = ret._id;
+  delete ret._id;
+  ret.password && delete ret.password;
+  ret.facebook && delete ret.facebook;
+  ret.github && delete ret.github;
+  ret.google && delete ret.google;
+}
+
 var userSchema = new Schema({
   name: String,
   username: {
@@ -58,6 +68,13 @@ var userSchema = new Schema({
     refresh: String,
     profile: Object,
   },
+}, {
+  toObject: {
+    transform: transform
+  },
+  toJSON: {
+    transform: transform
+  }
 });
 
 userSchema.pre('save', function (next) {

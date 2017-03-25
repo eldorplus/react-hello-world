@@ -30,6 +30,9 @@ module.exports = {
       if(!user.email) {
         user.email = profile.emails[0] ? profile.emails[0].value : null;
       }
+      if(!user.username) {
+        user.username = profile.username ? profile.username : user.email;
+      }
       if(!user.name) {
         user.name = profile.displayName ? profile.displayName : null;
       }

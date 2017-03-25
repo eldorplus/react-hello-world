@@ -9,6 +9,10 @@ const cookieOpts = ({ httpOnly, reset = false, domain, maxAge = false }) => ({
   maxAge: !reset ? maxAge : maxAge,
 });
 
+const jwtOpts = {
+  expiresIn: 10080 // in seconds
+};
+
 module.exports = ({
   User,
   strategies,
@@ -20,17 +24,20 @@ module.exports = ({
   secret,
 }) => ({
   onAuthenticationRequest: (req, res, next) => {
-    const type = req.path.split('/')[2];
-    const strategy = strategies.find(strategy => strategy.type === type);
-    const opts = {};
     req.session.success = req.query.success;
     req.session.failure = req.query.failure;
-    console.log('role', req.query.role);
+
+    // Validate user role is one of these strings
     if (_.includes(['Developer', 'Manager', 'Admin'], req.query.role)) {
       req.session.role = req.query.role;
     } else {
       req.session.role = 'Developer'
     }
+
+    const type = req.path.split('/')[2];
+    const strategy = strategies.find(strategy => strategy.type === type);
+    const opts = {};
+
     if (strategy.preHook) {
       strategy.preHook(req, opts);
     }
@@ -45,7 +52,7 @@ module.exports = ({
           return res.redirect(decodeURIComponent(req.session.failure))
         }
       } else if (user) {
-        const token = jwt.sign(user, tokenSecret);
+        const token = jwt.sign(user, tokenSecret, jwtOpts);
         res.cookie(tokenCookieName, token);
         if (req.session.success) {
           return res.redirect(decodeURIComponent(req.session.success))
@@ -95,12 +102,17 @@ module.exports = ({
         user.comparePassword(req.body.password, function(err, isMatch) {
           if (isMatch && !err) {
             // Create token if the password matched and no error was thrown
-            var token = jwt.sign(user, secret, {
-              expiresIn: 10080 // in seconds
-            });
-            res.json({ success: true, token: 'JWT ' + token });
+            var token = jwt.sign(user, secret, jwtOpts);
+            res.cookie(tokenCookieName, token);
+            if (req.query.success) {
+              return res.redirect(decodeURIComponent(req.query.success))
+            }
+            return res.json({ success: true, token: 'JWT ' + token });
           } else {
-            res.send({ success: false, message: 'Authentication failed. Passwords did not match.' });
+            if (req.query.failure) {
+              return res.redirect(decodeURIComponent(req.query.failure))
+            }
+            return res.send({ success: false, message: 'Authentication failed. Passwords did not match.' });
           }
         });
       }

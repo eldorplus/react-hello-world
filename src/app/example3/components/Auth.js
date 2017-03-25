@@ -1,8 +1,6 @@
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
-
 import React from 'react';
 import Button from './../../components/Button';
+import NavLink from './NavLink';
 
 class Auth extends React.Component {
   constructor(props) {
@@ -20,8 +18,10 @@ class Auth extends React.Component {
   render() {
     return (
       <div>
+        <div><NavLink to="/users">All Users</NavLink></div>
         <div>
           <h2>Login with</h2>
+
           <ul>
             <li><Button onClick={this.login('google', 'Admin')} text="Google as Admin" /></li>
             <li><Button onClick={this.login('google', 'Manager')} text="Google as Manager" /></li>
