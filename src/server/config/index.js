@@ -60,13 +60,13 @@ const defaults = {
     cookie: 'locale',
     queryParameter: 'lang',
     logDebugFn: function (msg) {
-      console.log('debug', msg);
+      defaults.logger.debug(msg);
     },
     logWarnFn: function (msg) {
-      console.log('warn', msg);
+      defaults.logger.warn(msg);
     },
     logErrorFn: function (msg) {
-      console.log('error', msg);
+      defaults.logger.error(msg);
     },
     api: {
       '__': 't',  //now req.__ becomes req.t
