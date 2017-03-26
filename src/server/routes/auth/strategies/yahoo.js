@@ -3,12 +3,14 @@ module.exports = {
   getConfig: (env) => {
     const clientID = env.auth.yahoo.clientID;
     const clientSecret = env.auth.yahoo.clientSecret;
-    const callbackURL = env.auth.yahoo.callbackURL;
+    const authorizationURL = 'https://api.login.yahoo.com/oauth2/request_auth';
+    const tokenURL = 'https://api.login.yahoo.com/oauth2/get_token';
     if (clientID && clientSecret) {
       return {
         clientID,
         clientSecret,
-        callbackURL,
+        authorizationURL,
+        tokenURL,
         passReqToCallback: true,
       }
     }

@@ -10,6 +10,7 @@ module.exports = {
         clientSecret,
         callbackURL,
         passReqToCallback: true,
+        scope: 'clouddrive:read_all'
       }
     }
   },

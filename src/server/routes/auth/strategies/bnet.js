@@ -11,14 +11,16 @@ module.exports = {
         clientID,
         clientSecret,
         callbackURL,
+        region: 'us',
         passReqToCallback: true,
       }
     }
   },
   preHook: (req, opts) => {
-    opts.scope = ['email']; // 'status', 'friends', 'notify'
+    opts.scope = ['wow.profile', 'sc2.profile'];
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
+    console.log('bnet', profile);
     profile.role = req.session.role;
     profile.provider = 'bnet';
     const fields = (user) => {

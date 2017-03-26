@@ -73,12 +73,21 @@ module.exports = ({
     return res.json({user: req.user.toJSON()});
   },
   onRegister: (req, res, next) => {
-    if(!req.body.name || !req.body.email || !req.body.password) {
-      return res.json({ success: false, message: 'Please enter name, email and password.' });
+    if(!req.body.name || !req.body.email || !req.body.username || !req.body.password) {
+      return res.json({ success: false, message: 'Please enter name, email, username and password.' });
     } else {
-      User.findOne({'email': req.body.email}, (err, user) => {
+      User.find({ $or: [
+        {
+          'email': req.body.email
+        },
+        {
+          'username': req.body.username
+        }
+      ]})
+      .exec((err, users) => {
         if (err) next(err);
-        if (!user) {
+        console.log('registered', users)
+        if (users.length === 0) {
           let role = 'Developer';
           if (_.includes(['Admin', 'Manager', 'Developer'], req.body.role)){
             role = req.body.role;
@@ -86,48 +95,46 @@ module.exports = ({
           new User({
             name: req.body.name,
             email: req.body.email,
+            username: req.body.username,
             password: req.body.password,
             role
           }).save(function(err, user) {
-            if (err) return res.json(err);
+            if (err) throw err;
             var token = jwt.sign({id: user._id}, tokenSecret, jwtOpts);
             res.cookie(tokenCookieName, token);
-            return res.json({ success: true, message: 'Successfully created new user.', token });
+            res.json({ success: true, message: 'Successfully created new user.', token });
           });
         } else {
-          return res.json({ success: false, message: 'That email address already exists.'});
+          res.json({ success: false, message: 'That user already exists.'});
         }
 
       });
     }
   },
   onLogin: (req, res) => {
-    User.findOne({
-      email: req.body.email
-    }, function(err, user) {
+    console.log('body', req.body);
+    User.findOne({$or: [
+      {'email': req.body.username_or_email},
+      {'username': req.body.username_or_email},
+      ]}, (err, user) => {
       if (err) throw err;
-
-      if (!user) {
-        res.send({ success: false, message: 'Authentication failed. User not found.' });
-      } else {
+      if(user) {
         // Check if password matches
         user.comparePassword(req.body.password, function(err, isMatch) {
           if (isMatch && !err) {
+            console.log(user, user._id);
             // Create token if the password matched and no error was thrown
             var token = jwt.sign({id: user._id}, tokenSecret, jwtOpts);
             res.cookie(tokenCookieName, token);
-            if (req.query.success) {
-              return res.redirect(decodeURIComponent(req.query.success))
-            }
-            return res.json({ success: true, token });
+            res.json({ success: true, token, message: 'Logged in successfully!' });
           } else {
-            if (req.query.failure) {
-              return res.redirect(decodeURIComponent(req.query.failure))
-            }
-            return res.send({ success: false, message: 'Authentication failed. Passwords did not match.' });
+            res.json({ success: false, message: 'Authentication failed.' });
           }
         });
+      } else {
+        res.json({ success: false, message: 'Authentication failed.' });
       }
     });
+
   }
 });

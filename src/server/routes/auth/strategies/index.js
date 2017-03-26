@@ -15,14 +15,18 @@ const strategies = {
   linkedin: require('./linkedin'),
   paypal: require('./paypal'),
   reddit: require('./reddit'),
+  rightsignature: require('./rightsignature'),
+  runkeeper: require('./runkeeper'),
   sharepoint: require('./sharepoint'),
   slack: require('./slack'),
+  soundcloud: require('./soundcloud'),
   spotify: require('./spotify'),
   tumblr: require('./tumblr'),
   twitter: require('./twitter'),
   vkontakte: require('./vkontakte'),
   weibo: require('./weibo'),
   windowslive: require('./windowslive'),
+  yahoo: require('./yahoo'),
 };
 
 const isConfigured = strategy => strategy.config;

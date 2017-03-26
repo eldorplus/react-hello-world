@@ -48,7 +48,7 @@ const defaults = {
       callbackURL: process.env.BEAM_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/beam/callback`
     },
     bitbucket: {
-      name: 'ButBucket',
+      name: 'BitBucket',
       clientID: process.env.BITBUCKET_CLIENT_ID || 'ID',
       clientSecret: process.env.BITBUCKET_CLIENT_SECRET || 'SECRET',
       callbackURL: process.env.BITBUCKET_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/bitbucket/callback`
@@ -131,6 +131,12 @@ const defaults = {
       clientSecret: process.env.REDDIT_CLIENT_SECRET || 'SECRET',
       callbackURL: process.env.REDDIT_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/reddit/callback`,
     },
+    rightsignature: {
+      name: 'RightSignature',
+      consumerKey: process.env.RIGHTSIGNATURE_CONSUMER_KEY || 'KEY',
+      consumerSecret: process.env.RIGHTSIGNATURE_CONSUMER_SECRET || 'SECRET',
+      callbackURL: process.env.RIGHTSIGNATURE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/rightsignature/callback`,
+    },
     runkeeper: {
       name: 'RunKeeper',
       clientID: process.env.RUNKEEPER_CLIENT_ID || 'ID',
@@ -195,7 +201,7 @@ const defaults = {
       name: 'Yahoo',
       clientID: process.env.YAHOO_CLIENT_ID || 'ID',
       clientSecret: process.env.YAHOO_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.YAHOO_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/windowslive/callback`,
+      callbackURL: process.env.YAHOO_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/yahoo/callback`,
     },
   },
   mongo: {

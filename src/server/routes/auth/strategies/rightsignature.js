@@ -1,13 +1,13 @@
 module.exports = {
   Ctor: require('passport-rightsignature').Strategy,
   getConfig: (env) => {
-    const clientID = env.auth.rightsignature.clientID;
-    const clientSecret = env.auth.rightsignature.clientSecret;
+    const consumerKey = env.auth.rightsignature.consumerKey;
+    const consumerSecret = env.auth.rightsignature.consumerSecret;
     const callbackURL = env.auth.rightsignature.callbackURL;
-    if (clientID && clientSecret) {
+    if (consumerKey && consumerSecret) {
       return {
-        clientID,
-        clientSecret,
+        consumerKey,
+        consumerSecret,
         callbackURL,
         passReqToCallback: true,
       }

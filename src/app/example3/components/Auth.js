@@ -14,16 +14,33 @@ const RolesEnum = t.enums({
 const RegisterFormSchema = t.struct({
   name: t.String,
   email: t.String,
+  username: t.maybe(t.String),
   password: t.String,
   role: RolesEnum,
 });
 const LoginFormSchema = t.struct({
-  email: t.String,
+  username_or_email: t.String,
   password: t.String,
+
 });
 
-const formOpts = {
+const registerFormOpts = {
   fields: {
+    password: {
+      type: 'password'
+    }
+  }
+};
+
+const loginFormOpts = {
+  fields: {
+    username_or_email: {
+      label: 'Username or Email',
+      attrs: {
+        autoFocus: true,
+        placeholder: 'Type username or email',
+      },
+    },
     password: {
       type: 'password'
     }
@@ -40,30 +57,60 @@ class Auth extends React.Component {
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
   }
 
+  onLoginFormChange(value) {
+    console.log(value)
+    this.setState({loginForm: value})
+  }
+  onRegisterFormChange(value) {
+    this.setState({registerForm: value})
+  }
   onLoginSubmit(evt) {
     evt.preventDefault();
+    loginFormOpts.hasError = false;
+    loginFormOpts.error = null;
     const data = this.refs.loginForm.getValue();
     const valid = this.refs.loginForm.validate().isValid();
-    console.log(valid)
+    console.log(valid);
     if (data && valid) {
       axios.post(`/auth/login`, data)
         .then(res => {
-          // console.log(res);
-          window.location = '/';
-        });
+          if(res.data.success) {
+            window.location = '/';
+          } else {
+            console.log(res.data.message);
 
+            loginFormOpts.hasError = true;
+            loginFormOpts.error = res.data.message;
+          }
+        });
+    } else {
+      loginFormOpts.hasError = true;
+      loginFormOpts.error = this.refs.loginForm.validate().firstError().message;
     }
   }
   onRegisterSubmit(evt) {
     evt.preventDefault();
+    registerFormOpts.hasError = false;
+    registerFormOpts.error = null;
     const data = this.refs.registerForm.getValue();
-    const valid = this.refs.loginForm.validate().isValid();
-    if (data) {
+    const valid = this.refs.registerForm.validate().isValid();
+    console.log(valid);
+    if (data && valid) {
       axios.post(`/auth/register`, data)
         .then(res => {
-          // console.log(res);
-          window.location = '/';
+          console.log(res);
+          if(res.data.success) {
+            window.location = '/';
+          } else {
+            console.log(res.data.message);
+            registerFormOpts.hasError = true;
+            registerFormOpts.error = res.data.message;
+          }
+          //
         });
+    } else {
+      registerFormOpts.hasError = true;
+      registerFormOpts.error = this.refs.registerForm.validate().firstError().message;
     }
   }
 
@@ -103,14 +150,14 @@ class Auth extends React.Component {
         </ul>
         <div>
           <form onSubmit={this.onRegisterSubmit}>
-            <t.form.Form ref="registerForm" type={RegisterFormSchema} options={formOpts} />
+            <t.form.Form ref="registerForm" type={RegisterFormSchema} options={registerFormOpts} value={this.state.registerForm} onChange={this.onRegisterFormChange.bind(this)} />
             <div className="form-group">
               <button type="submit" className="btn btn-primary">Register</button>
             </div>
           </form>
 
           <form onSubmit={this.onLoginSubmit}>
-            <t.form.Form ref="loginForm" type={LoginFormSchema} options={formOpts} />
+            <t.form.Form ref="loginForm" type={LoginFormSchema} options={loginFormOpts} value={this.state.loginForm} onChange={this.onLoginFormChange.bind(this)} />
             <div className="form-group">
               <button type="submit" className="btn btn-primary">Login</button>
             </div>
