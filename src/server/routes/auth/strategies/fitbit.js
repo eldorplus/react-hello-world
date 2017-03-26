@@ -19,7 +19,6 @@ module.exports = {
     opts.scope = ['profile']; // 'activity','heartrate','location'
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
-    console.log('fitbit', profile);
     profile.role = req.session.role;
     profile.provider = 'fitbit';
     const fields = (user) => {

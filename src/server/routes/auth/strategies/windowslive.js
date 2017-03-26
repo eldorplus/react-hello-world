@@ -19,7 +19,6 @@ module.exports = {
     opts.scope = ['wl.basic'];
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
-    console.log('windowslive', profile);
     profile.role = req.session.role;
     profile.provider = 'windowslive';
     const fields = (user) => {

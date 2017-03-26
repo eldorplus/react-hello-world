@@ -24,12 +24,11 @@ function setupRouter(config, passport, userRole) {
 
 // const rootUrl = config.protocol + config.subDomain;
 
-  const strategies = require('./auth/strategies').loader(config);
-  console.log(`Configured strategies: ${strategies.map(strategy => strategy.type).join('/')}`);
+  const strategies = require('./auth/strategies').loader();
+  config.logger.info(`Loading passport strategies: ${strategies.map(strategy => strategy.type).join(', ')}`);
 
   strategies.forEach(strategy => {
     passport.use(new strategy.Ctor(strategy.config, strategy.toUser));
-    console.log(`Using login with "${strategy.type}" strategy`);
   });
 
   if (strategies.length > 0) {

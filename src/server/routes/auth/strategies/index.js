@@ -1,3 +1,5 @@
+const config = require('./../../../config');
+
 const strategies = {
   amazon: require('./amazon'),
   beam: require('./beam'),
@@ -31,7 +33,7 @@ const strategies = {
 
 const isConfigured = strategy => strategy.config;
 
-module.exports.loader = (config) => Object.keys(strategies)
+module.exports.loader = () => Object.keys(strategies)
   .map(type => {
     const strategy = strategies[type];
     strategy.name = config.auth[type] && config.auth[type].name ? config.auth[type].name : type;
@@ -42,7 +44,6 @@ module.exports.loader = (config) => Object.keys(strategies)
   .filter(strategy => isConfigured(strategy));
 
 module.exports.userSaver = (fields, accessToken, refreshToken, profile, done) => {
-  console.log('save profile', profile);
   const providerPath = `${profile.provider}.id`;
   const query = {};
   query[providerPath] = profile.id;
@@ -78,7 +79,7 @@ module.exports.userSaver = (fields, accessToken, refreshToken, profile, done) =>
         token: user[user.provider].token,
         refresh: user[user.provider].refresh,
       };
-      console.log('result', result);
+      config.logger.info('saved user', result);
       done(null, result);
     })
   });

@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const path = require('path'); // eslint-disable-line no-unused-vars
 const nconf = require('nconf');
+const winston = require('winston');
 
 nconf
   .argv()
@@ -21,12 +22,35 @@ const defaults = {
       expiresIn: 2630000 // ~1 month in seconds
     },
   },
+  secret: 'the super secret key now one should ever know',
   session: {
     secret: 'super secret is top secret',
   },
   redis: {
-
+    uri: nconf.get('REDIS_URI') || 'redis://127.0.0.1:6379/1', // redis-cli flushall, redis-cli, select 1, keys *
+    enabled: !!nconf.get('REDIS_ENABLED') || true,
+    shortTTL: nconf.get('REDIS_SHORT_TTL') || 300,
+    longTTL: nconf.get('REDIS_LONG_TTL') || 3600,
+    digest: nconf.get('REDIS_DIGEST') || null, // 'md5', 'sha256'
   },
+  mongo: {
+    uri: nconf.get('MONGO_URI') || 'mongodb://127.0.0.1:27017/hello-world',
+    auth: {
+      user: nconf.get('MONGO_USER') || '',
+      pass: nconf.get('MONGO_PASS') || '',
+    },
+    options: {
+      server: {
+        reconnectTries: Number.MAX_VALUE,
+      },
+    },
+  },
+  logger: new (winston.Logger)({
+    level: nconf.get('LOG_LEVEL') || 'info',
+    transports: [
+      new (winston.transports.Console)({ colorize: true, timestamp: true }),
+    ],
+  }),
   auth: {
     amazon: {
       name: 'Amazon',
@@ -195,18 +219,6 @@ const defaults = {
       clientID: nconf.get('YAHOO_CLIENT_ID') || 'ID',
       clientSecret: nconf.get('YAHOO_CLIENT_SECRET') || 'SECRET',
       callbackURL: nconf.get('YAHOO_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/yahoo/callback`,
-    },
-  },
-  mongo: {
-    uri: nconf.get('MONGO_URI') || 'mongodb://127.0.0.1:27017/hello-world',
-    auth: {
-      user: '',
-      pass: '',
-    },
-    options: {
-      server: {
-        reconnectTries: Number.MAX_VALUE,
-      },
     },
   },
 };

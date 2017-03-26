@@ -19,7 +19,6 @@ module.exports = {
     opts.scope = ['profile']; // 'activity','heartrate','location'
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
-    console.log('foursquare', profile);
     profile.role = req.session.role;
     profile.provider = 'foursquare';
     const fields = (user) => {

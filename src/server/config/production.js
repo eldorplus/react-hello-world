@@ -1,3 +1,5 @@
+const nconf = require('nconf');
+
 module.exports = {
-  port: process.env.PORT || 443,
+  port: nconf.get('PORT') || 443,
 };

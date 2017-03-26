@@ -20,7 +20,6 @@ module.exports = {
     opts.scope = ['wow.profile', 'sc2.profile'];
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
-    console.log('bnet', profile);
     profile.role = req.session.role;
     profile.provider = 'bnet';
     const fields = (user) => {

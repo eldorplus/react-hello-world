@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const Promise = require('bluebird');
 const transform = require('./transform/User');
 
-mongoose.Promise = require('bluebird');
+mongoose.Promise = Promise;
 
 var userSchema = new mongoose.Schema({
   name: String,
@@ -202,7 +203,7 @@ var userSchema = new mongoose.Schema({
   },
   toJSON: {
     transform: transform
-  }
+  },
 });
 userSchema.pre('save', function (next) {
   var user = this;
@@ -233,4 +234,33 @@ userSchema.methods.comparePassword = function(pw, cb) {
   });
 };
 
-module.exports = mongoose.model('User', userSchema);
+userSchema.statics.getAll = Promise.coroutine(function* (options) {
+  const cacheHelper = require('./../_lib/cachehelper');
+  const cached = yield cacheHelper.getUsersFromCache(options);
+  const result = [];
+  let users;
+  if (!cached) {
+    users = yield User.find({});
+    if (users) {
+      users = users.map((user) => {
+        return user.toObject({transform: function(doc, ret, opts) {
+          transform(doc, ret, opts);
+          if(options.role === 'Manager') {
+            delete ret.email;
+            delete ret.username;
+          }
+        }})
+      });
+      cacheHelper.setUsersInCache(users, options);
+      result.push(users);
+    }
+  } else {
+    users = cached.data.map((user) => {
+      return new User(user);
+    });
+  }
+  return users;
+});
+
+const User = mongoose.model('User', userSchema)
+module.exports = User;

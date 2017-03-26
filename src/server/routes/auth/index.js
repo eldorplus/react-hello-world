@@ -32,7 +32,6 @@ module.exports = ({
   onAuthenticationCallback: (req, res, next) => {
     const type = req.path.split('/')[2];
     passport.authenticate(type, (err, user) => {
-      console.log('err', err)
       if (err) {
         res.cookie(tokenCookieName, '');
         if (req.session.failure) {
@@ -115,7 +114,6 @@ module.exports = ({
         // Check if password matches
         user.comparePassword(req.body.password, function(err, isMatch) {
           if (isMatch && !err) {
-            console.log(user, user._id);
             // Create token if the password matched and no error was thrown
             var token = jwt.sign({id: user._id}, tokenSecret, jwtOptions);
             res.cookie(tokenCookieName, token);

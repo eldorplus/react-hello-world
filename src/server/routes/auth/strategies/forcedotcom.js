@@ -19,7 +19,6 @@ module.exports = {
     opts.scope = ['profile'];
   },
   toUser: (req, accessToken, refreshToken, profile, done) => {
-    console.log('forcedotcom', profile);
     profile.role = req.session.role;
     profile.provider = 'forcedotcom';
     const fields = (user) => {

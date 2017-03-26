@@ -7,8 +7,8 @@ exports.start = function start(options, readyCallback) {
     /* eslint-enable */
 
     fs.readdir(path.join(__dirname, './config'), (err, files) => {
-      const val = _.filter(files, (name) => { return name.indexOf('index') !== 0; }).map((name) => { return name.replace('.js', ''); });
-      console.error(`Unable to start server. Please set NODE_ENV to one of ${JSON.stringify(val)}`); // eslint-disable-line no-console
+      const environments = _.filter(files, (name) => { return name.indexOf('index') !== 0; }).map((name) => { return name.replace('.js', ''); });
+      console.error(`Unable to start server. Please set NODE_ENV to one of ${JSON.stringify(environments)}`); // eslint-disable-line no-console
       process.exit();
     });
   } else {
@@ -23,6 +23,7 @@ exports.start = function start(options, readyCallback) {
       const port = opts.port || process.env.PORT || config.port;
       const name = opts.name || process.env.name || 'node';
 
+      // pm2 sets NODE_APP_INSTANCE and instances when started
       const instance = parseInt(process.env.NODE_APP_INSTANCE, 10) + 1 || 0;
       const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
 
@@ -30,11 +31,11 @@ exports.start = function start(options, readyCallback) {
         require('heapdump');
       }
       this.server = app.listen(port, host, () => {
-        console.info(`${name}${instances} listening on ${host}:${port} in ${config.env} mode`); // eslint-disable-line no-console
+        config.logger.info(`${name}${instances} listening on ${host}:${port} in ${config.env} mode`); // eslint-disable-line no-console
         if (instances === '') {
-          console.info('Hit CTRL-C to stop the server'); // eslint-disable-line no-console
+          config.logger.info('Hit CTRL-C to stop the server'); // eslint-disable-line no-console
         } else {
-          console.info('execute "npm run stop" to stop the server\nexecute "npm run restart" to restart the server\nexecute "npm run kill" to kill the server'); // eslint-disable-line no-console
+          config.logger.info('execute "npm run stop" to stop the server\nexecute "npm run restart" to restart the server\nexecute "npm run kill" to kill the server'); // eslint-disable-line no-console
         }
         // callback to call when the server is ready
         if (readyCallback) {
