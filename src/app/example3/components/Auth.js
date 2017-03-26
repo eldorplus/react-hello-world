@@ -58,7 +58,6 @@ class Auth extends React.Component {
   }
 
   onLoginFormChange(value) {
-    console.log(value)
     this.setState({loginForm: value})
   }
   onRegisterFormChange(value) {
@@ -138,6 +137,7 @@ class Auth extends React.Component {
     }
   }
   logout() {
+    cookie.remove('jwt'); // remove cookie on frontend and redirect to logout where does same thing possibly plus more
     window.location = `/auth/logout?success=/&failure=/`
   }
   render() {

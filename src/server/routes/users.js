@@ -7,7 +7,7 @@ module.exports = (config, passport, User, router, userRole) => {
     userRole.can('access users page'),
     (req, res) => {
       User.find({},(err, users) => {
-        return res.json({users: users.map((user) => {
+        res.json({users: users.map((user) => {
           return user.toObject({transform: function(doc, ret, opts) {
             transformUser(doc, ret, opts);
             if(req.user.role === 'Manager') {

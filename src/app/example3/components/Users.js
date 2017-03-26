@@ -14,28 +14,31 @@ class Users extends React.Component {
 
   componentDidMount() {
     let that = this;
-    axios.defaults.headers.common['Authorization'] = 'JWT ' + cookie.load('jwt');
-    axios.get(`/users`)
-      .then(res => {
-        const users = res.data.users;
-        if (users) this.setState({users: [ ...users ]});
-        else this.setState({error: {
-          code: res.statusCode ? res.statusCode : null,
-          status: res.statusText ? res.statusText : null,
-          message: res.data.message ? res.data.message : null,
-        }})
-      })
-      .catch(function (error) {
-        if (error && error.response) {
-          that.setState({
-            error: {
-              code: error.response.statusCode ? error.response.statusCode : null,
-              status: error.response.statusText ? error.response.statusText : null,
-              message: error.response.data.message ? error.response.data.message : null,
-            }
-          })
-        }
-      });
+    const token = cookie.load('jwt');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = 'JWT ' + token;
+      axios.get(`/users`)
+        .then(res => {
+          const users = res.data.users;
+          if (users) this.setState({users: [ ...users ]});
+          else this.setState({error: {
+            code: res.statusCode ? res.statusCode : null,
+            status: res.statusText ? res.statusText : null,
+            message: res.data.message ? res.data.message : null,
+          }})
+        })
+        .catch(function (error) {
+          if (error && error.response) {
+            that.setState({
+              error: {
+                code: error.response.statusCode ? error.response.statusCode : null,
+                status: error.response.statusText ? error.response.statusText : null,
+                message: error.response.data.message ? error.response.data.message : null,
+              }
+            })
+          }
+        });
+    }
   }
 
   render() {

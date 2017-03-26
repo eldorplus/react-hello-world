@@ -10,7 +10,7 @@ const cookieOpts = ({ httpOnly, reset = false, domain, maxAge = false }) => ({
 });
 
 const jwtOpts = {
-  expiresIn: 10080 // in seconds
+  expiresIn: 15 // 2630000 // ~1 month in seconds
 };
 
 module.exports = ({
@@ -49,32 +49,32 @@ module.exports = ({
       if (error) {
         res.cookie(tokenCookieName, '');
         if (req.session.failure) {
-          return res.redirect(decodeURIComponent(req.session.failure))
+          res.redirect(decodeURIComponent(req.session.failure))
         }
       } else if (user) {
         const token = jwt.sign(user, tokenSecret, jwtOpts);
         res.cookie(tokenCookieName, token);
         if (req.session.success) {
-          return res.redirect(decodeURIComponent(req.session.success))
+          res.redirect(decodeURIComponent(req.session.success))
         }
       }
-      return res.json({error, user});
+      res.json({error, user});
 
     })(req, res)
   },
   onLogout: (req, res) => {
     res.cookie(tokenCookieName, '');
     if (req.query.success) {
-      return res.redirect(decodeURIComponent(req.query.success))
+      res.redirect(decodeURIComponent(req.query.success))
     }
-    return res.json({status: 'logged out'})
+    res.json({success: true, message: 'Successfully logged out!'})
   },
   onProfile: (req, res) => {
-    return res.json({user: req.user.toJSON()});
+    res.json({user: req.user.toJSON()});
   },
   onRegister: (req, res, next) => {
     if(!req.body.name || !req.body.email || !req.body.username || !req.body.password) {
-      return res.json({ success: false, message: 'Please enter name, email, username and password.' });
+      res.json({ success: false, message: 'Please enter name, email, username and password.' });
     } else {
       User.find({ $or: [
         {
@@ -102,9 +102,15 @@ module.exports = ({
             if (err) throw err;
             var token = jwt.sign({id: user._id}, tokenSecret, jwtOpts);
             res.cookie(tokenCookieName, token);
+            if (req.query.success) {
+              res.redirect(decodeURIComponent(req.query.success))
+            }
             res.json({ success: true, message: 'Successfully created new user.', token });
           });
         } else {
+          if (req.query.failure) {
+            res.redirect(decodeURIComponent(req.query.failure))
+          }
           res.json({ success: false, message: 'That user already exists.'});
         }
 
@@ -126,12 +132,21 @@ module.exports = ({
             // Create token if the password matched and no error was thrown
             var token = jwt.sign({id: user._id}, tokenSecret, jwtOpts);
             res.cookie(tokenCookieName, token);
+            if (req.query.success) {
+              res.redirect(decodeURIComponent(req.query.success))
+            }
             res.json({ success: true, token, message: 'Logged in successfully!' });
           } else {
+            if (req.query.failure) {
+              res.redirect(decodeURIComponent(req.query.failure))
+            }
             res.json({ success: false, message: 'Authentication failed.' });
           }
         });
       } else {
+        if (req.query.failure) {
+          res.redirect(decodeURIComponent(req.query.failure))
+        }
         res.json({ success: false, message: 'Authentication failed.' });
       }
     });

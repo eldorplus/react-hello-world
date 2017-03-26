@@ -13,12 +13,17 @@ class Profile extends React.Component {
   componentWillMount() {
     if(!this.props.profile) {
       const token = cookie.load('jwt');
-      axios.defaults.headers.common['Authorization'] = 'JWT ' + token;
-      axios.get(`/auth/profile`)
-        .then(res => {
-          const profile = res.data.user;
-          this.setState({ ...profile });
-        });
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = 'JWT ' + token;
+        axios.get(`/auth/profile`)
+          .then(res => {
+            const profile = res.data.user;
+            this.setState({ ...profile });
+          })
+          .catch(err => {
+            cookie.remove('jwt'); // remove stale/expired cookie
+          });
+      }
     } else {
       this.setState({ ...this.props.profile })
     }
