@@ -31,13 +31,13 @@ const defaults = {
     enabled: !!nconf.get('REDIS_ENABLED') || true,
     shortTTL: nconf.get('REDIS_SHORT_TTL') || 300,
     longTTL: nconf.get('REDIS_LONG_TTL') || 3600,
-    digest: nconf.get('REDIS_DIGEST') || null, // 'md5', 'sha256'
+    digest: nconf.get('REDIS_DIGEST') || null, // 'md5', // 'sha256'
   },
   mongo: {
     uri: nconf.get('MONGO_URI') || 'mongodb://127.0.0.1:27017/hello-world',
     auth: {
       user: nconf.get('MONGO_USER') || '',
-      pass: nconf.get('MONGO_PASS') || '',
+      pass: nconf.get() || '',
     },
     options: {
       server: {
@@ -51,6 +51,30 @@ const defaults = {
       new (winston.transports.Console)({ colorize: true, timestamp: true }),
     ],
   }),
+  i18n: {
+    locales:['de', 'en', 'es', 'it', 'nl', 'ru'],
+    defaultLocales: 'en',
+    directory: __dirname + '/locales',
+    directoryPermissions: '755',
+    extension: '.json',
+    cookie: 'locale',
+    queryParameter: 'lang',
+    logDebugFn: function (msg) {
+      console.log('debug', msg);
+    },
+    logWarnFn: function (msg) {
+      console.log('warn', msg);
+    },
+    logErrorFn: function (msg) {
+      console.log('error', msg);
+    },
+    api: {
+      '__': 't',  //now req.__ becomes req.t
+      '__n': 'tn' //and req.__n can be called as req.tn
+    },
+    preserveLegacyCase: true,
+    objectNotation: true,
+  },
   auth: {
     amazon: {
       name: 'Amazon',

@@ -90,6 +90,7 @@
     "express": "^4.14.1",
     "express-session": "^1.15.1",
     "extract-text-webpack-plugin": "^2.0.0",
+    "i18n": "^0.8.3",
     "isomorphic-fetch": "^2.2.1",
     "jade": "^1.11.0",
     "jest": "^19.0.0",

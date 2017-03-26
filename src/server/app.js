@@ -1,4 +1,5 @@
 const path = require('path');
+const i18n = require("i18n");
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -6,13 +7,13 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 // const MemoryStore = require('session-memory-store')(expressSession);
-
-const mongoose = require('mongoose');
 const passport = require('passport');
-
 const config = require('./config');
 
+i18n.configure(config.i18n);
+
 const app = express();
+app.use(i18n.init);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -35,10 +36,7 @@ app.use(session({
   // rolling: true,
 }));
 
-mongoose.connect(config.mongo.uri, config.mongo.auth, (err) => {
-  if (err) config.logger.error(`failed to connect to MongoDB with config ${JSON.stringify(config.mongo)}`); // eslint-disable-line no-console
-  else config.logger.info(`succesfully connected to MongoDB database ${config.mongo.uri}`); // eslint-disable-line no-console
-});
+require('./_lib/mongoclient')(config);
 
 // Configure passport middleware
 app.use(passport.initialize());
@@ -51,14 +49,14 @@ app.use('/', require('./routes')(config, passport, require('./auth/roles')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  const error = {success: false, error: {status: 404, message: 'Not Found'}};
+  const error = {success: false, error: {status: req.t('error.404.Error 404'), message: req.t('error.404.Not Found')}};
   if (req.headers.accept.indexOf('json') !== -1 || req.headers.accept.indexOf('javascript') !== -1) {
     res.status(404).json(error);
   } else if (req.headers.accept.indexOf('xml') !== -1 && req.headers.accept.indexOf('html') === -1) {
     const easyxml = require('easyxml');
     res.status(404).header('Content-Type', 'text/xml').send(new easyxml({}).render(error));
   } else if (req.headers.accept.indexOf('plain') !== -1) {
-    res.status(404).header('Content-Type', 'text/plain').send('Error 404\nNot Found');
+    res.status(404).header('Content-Type', 'text/plain').send(req.t('error.404.Error 404\nNot Found'));
   } else {
     res.status(404).render('error', error);
   }

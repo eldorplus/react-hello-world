@@ -12,24 +12,24 @@ if (isCached) {
   Promise.promisifyAll(redis.RedisClient.prototype);
   Promise.promisifyAll(redis.Multi.prototype);
 
-  client.on("ready", function () {
-    config.logger.info("RedisCache Ready!");
+  client.on('ready', function () {
+    config.logger.info('RedisCache Ready', config.redis.digest);
   });
 
-  client.on("connect", function () {
-    config.logger.info("RedisCache connected!");
+  client.on('connect', function () {
+    config.logger.info('RedisCache connected to', config.redis.uri);
   });
 
-  client.on("reconnecting", function () {
-    config.logger.info("RedisCache re-connecting!");
+  client.on('reconnecting', function () {
+    config.logger.info('RedisCache re-connecting to', config.redis.uri);
   });
 
-  client.on("error", function (err) {
-    config.logger.error("RedisCache " + err);
+  client.on('error', function (err) {
+    config.logger.error('RedisCache', err);
   });
 
-  client.on("end", function () {
-    config.logger.info("RedisCache End!");
+  client.on('end', function () {
+    config.logger.info('RedisCache End!');
   });
 }
 
@@ -38,7 +38,7 @@ const cache = (data) => {
     return crypto
       .createHmac(config.redis.digest, config.secret)
       .update(data)
-      .digest("hex");
+      .digest('hex');
   }
   return data;
 };
