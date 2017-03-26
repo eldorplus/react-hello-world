@@ -7,7 +7,7 @@ exports.start = function start(options, readyCallback) {
     /* eslint-enable */
 
     fs.readdir(path.join(__dirname, './config'), (err, files) => {
-      const environments = _.filter(files, (name) => { return name.indexOf('index') !== 0; }).map((name) => { return name.replace('.js', ''); });
+      const environments = _.filter(files, (name) => { return name.indexOf('index') !== 0 && name.indexOf('.js') > 0; }).map((name) => { return name.replace('.js', ''); });
       console.error(`Unable to start server. Please set NODE_ENV to one of ${JSON.stringify(environments)}`); // eslint-disable-line no-console
       process.exit();
     });
