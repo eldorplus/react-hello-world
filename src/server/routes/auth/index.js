@@ -1,27 +1,13 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 
-const cookieOpts = ({ httpOnly, reset = false, domain, maxAge = false }) => ({
-  secure: true,
-  httpOnly,
-  domain,
-  expires: reset ? new Date() : null,
-  maxAge: !reset ? maxAge : maxAge,
-});
-
-const jwtOpts = {
-  expiresIn: 15 // 2630000 // ~1 month in seconds
-};
-
 module.exports = ({
   User,
   strategies,
   passport,
+  jwtOptions,
   tokenCookieName,
   tokenSecret,
-  cookieDomain,
-  maxAge = false,
-  secret,
 }) => ({
   onAuthenticationRequest: (req, res, next) => {
     req.session.success = req.query.success;
@@ -45,27 +31,28 @@ module.exports = ({
   },
   onAuthenticationCallback: (req, res, next) => {
     const type = req.path.split('/')[2];
-    passport.authenticate(type, (error, user) => {
-      if (error) {
+    passport.authenticate(type, (err, user) => {
+      console.log('err', err)
+      if (err) {
         res.cookie(tokenCookieName, '');
         if (req.session.failure) {
-          res.redirect(decodeURIComponent(req.session.failure))
+          return res.redirect(decodeURIComponent(req.session.failure))
         }
       } else if (user) {
-        const token = jwt.sign(user, tokenSecret, jwtOpts);
+        const token = jwt.sign(user, tokenSecret, jwtOptions);
         res.cookie(tokenCookieName, token);
         if (req.session.success) {
-          res.redirect(decodeURIComponent(req.session.success))
+          return res.redirect(decodeURIComponent(req.session.success))
         }
       }
-      res.json({error, user});
+      res.json({success: !err, user});
 
     })(req, res)
   },
   onLogout: (req, res) => {
     res.cookie(tokenCookieName, '');
     if (req.query.success) {
-      res.redirect(decodeURIComponent(req.query.success))
+      return res.redirect(decodeURIComponent(req.query.success))
     }
     res.json({success: true, message: 'Successfully logged out!'})
   },
@@ -76,17 +63,15 @@ module.exports = ({
     if(!req.body.name || !req.body.email || !req.body.username || !req.body.password) {
       res.json({ success: false, message: 'Please enter name, email, username and password.' });
     } else {
-      User.find({ $or: [
+      const userPromise = User.find({ $or: [
         {
           'email': req.body.email
         },
         {
           'username': req.body.username
         }
-      ]})
-      .exec((err, users) => {
-        if (err) next(err);
-        console.log('registered', users)
+      ]}).exec();
+      userPromise.then(users => {
         if (users.length === 0) {
           let role = 'Developer';
           if (_.includes(['Admin', 'Manager', 'Developer'], req.body.role)){
@@ -100,25 +85,27 @@ module.exports = ({
             role
           }).save(function(err, user) {
             if (err) throw err;
-            var token = jwt.sign({id: user._id}, tokenSecret, jwtOpts);
+            var token = jwt.sign({id: user._id}, tokenSecret, jwtOptions);
             res.cookie(tokenCookieName, token);
             if (req.query.success) {
-              res.redirect(decodeURIComponent(req.query.success))
+              return res.redirect(decodeURIComponent(req.query.success))
             }
             res.json({ success: true, message: 'Successfully created new user.', token });
           });
         } else {
           if (req.query.failure) {
-            res.redirect(decodeURIComponent(req.query.failure))
+            return res.redirect(decodeURIComponent(req.query.failure))
           }
           res.json({ success: false, message: 'That user already exists.'});
         }
 
       });
+      userPromise.catch(err => {
+        if (err) next(err);
+      });
     }
   },
   onLogin: (req, res) => {
-    console.log('body', req.body);
     User.findOne({$or: [
       {'email': req.body.username_or_email},
       {'username': req.body.username_or_email},
@@ -130,22 +117,22 @@ module.exports = ({
           if (isMatch && !err) {
             console.log(user, user._id);
             // Create token if the password matched and no error was thrown
-            var token = jwt.sign({id: user._id}, tokenSecret, jwtOpts);
+            var token = jwt.sign({id: user._id}, tokenSecret, jwtOptions);
             res.cookie(tokenCookieName, token);
             if (req.query.success) {
-              res.redirect(decodeURIComponent(req.query.success))
+              return res.redirect(decodeURIComponent(req.query.success))
             }
             res.json({ success: true, token, message: 'Logged in successfully!' });
           } else {
             if (req.query.failure) {
-              res.redirect(decodeURIComponent(req.query.failure))
+              return res.redirect(decodeURIComponent(req.query.failure))
             }
             res.json({ success: false, message: 'Authentication failed.' });
           }
         });
       } else {
         if (req.query.failure) {
-          res.redirect(decodeURIComponent(req.query.failure))
+          return res.redirect(decodeURIComponent(req.query.failure))
         }
         res.json({ success: false, message: 'Authentication failed.' });
       }

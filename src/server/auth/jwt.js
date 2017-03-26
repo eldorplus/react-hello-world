@@ -5,7 +5,7 @@ var ExtractJwt = require('passport-jwt').ExtractJwt;
 module.exports = function(config, passport, User) {
   var opts = {};
   opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
-  opts.secretOrKey = config.tokenSecret;
+  opts.secretOrKey = config.jwt.tokenSecret;
   passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
     // console.log('jwt_payload', jwt_payload);
     User.findOne({_id: jwt_payload.id}, function(err, user) {
@@ -14,9 +14,9 @@ module.exports = function(config, passport, User) {
         return done(err, false);
       }
       if (user) {
-        done(null, user);
+        return done(null, user);
       } else {
-        done(null, false);
+        return done(null, false);
       }
     });
   }));

@@ -41,10 +41,6 @@ module.exports.loader = (config) => Object.keys(strategies)
   })
   .filter(strategy => isConfigured(strategy));
 
-const _saver = (user, done) => {
-
-};
-
 module.exports.userSaver = (fields, accessToken, refreshToken, profile, done) => {
   console.log('save profile', profile);
   const providerPath = `${profile.provider}.id`;
@@ -54,7 +50,7 @@ module.exports.userSaver = (fields, accessToken, refreshToken, profile, done) =>
   const User = require('./../../../models/User');
 
   User.findOne(query, function(err, user) {
-    if (err) done(err);
+    if (err) throw err;
 
     if (!user) {
       user = new User();
@@ -72,7 +68,7 @@ module.exports.userSaver = (fields, accessToken, refreshToken, profile, done) =>
     user[profile.provider].profile = profile;
 
     user.save((err) => {
-      if (err) throw err;
+      if (err) return done(err);
       let result = {
         id: user.id,
         provider: user.provider,
@@ -82,6 +78,7 @@ module.exports.userSaver = (fields, accessToken, refreshToken, profile, done) =>
         token: user[user.provider].token,
         refresh: user[user.provider].refresh,
       };
+      console.log('result', result);
       done(null, result);
     })
   });
@@ -90,7 +87,7 @@ module.exports.userSaver = (fields, accessToken, refreshToken, profile, done) =>
 module.exports.unlinker = (user, provider, done) => {
   user[provider] = undefined;
   user.save((err) => {
-    if (err) done({error: err});
-    done({redirect: '/'})
+    if (err) return done(err);
+    done(null, {redirect: '/'})
   })
 };

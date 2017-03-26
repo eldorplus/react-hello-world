@@ -33,10 +33,14 @@ function setupRouter(config, passport, userRole) {
   });
 
   if (strategies.length > 0) {
-    config.strategies = strategies;
-    config.passport = passport;
-    config.User = User;
-    const routes = require('./auth/index')(config);
+    const conf = {};
+    conf.strategies = strategies;
+    conf.passport = passport;
+    conf.jwtOptions = config.jwt.options;
+    conf.tokenCookieName = config.jwt.tokenCookieName;
+    conf.tokenSecret = config.jwt.tokenSecret;
+    conf.User = User;
+    const routes = require('./auth/index')(conf);
     router.get(
       '/auth/providers',
       (req, res) => {

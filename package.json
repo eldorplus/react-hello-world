@@ -96,6 +96,7 @@
     "lodash": "^4.17.4",
     "mongoose": "^4.8.4",
     "morgan": "^1.8.1",
+    "nconf": "^0.8.4",
     "node-sass": "^4.5.0",
     "passport": "^0.3.2",
     "passport-amazon": "^1.0.0",

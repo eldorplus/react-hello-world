@@ -1,35 +1,28 @@
 const _ = require('lodash');
 const path = require('path'); // eslint-disable-line no-unused-vars
+const nconf = require('nconf');
 
-const tenDays = 1000 * 60 * 60 * 24 * 10;
+nconf
+  .argv()
+  .env()
+  .file({file: `${__dirname}/local.env.json`});
 
-const env = process.env.NODE_ENV || 'development';
-
-let envConfig = {};
-try {
-  /* eslint-disable */
-  // grab the config to merge with the defaults, overriding anything already defined in defaults
-  envConfig = require(`${__dirname}/${env === 'test' ? 'testing' : env}.js`);
-  /* eslint-enable */
-} catch (error) {
-  // set a default port when unable to load a config inside PhantomJS
-  envConfig = {
-    port: 9999,
-  };
-}
+const packageJson = require('./../../../package.json');
 
 const defaults = {
   name: 'react-hello-world',
-  host: process.env.HOST || '127.0.0.1',
-  env,
-  version: require('./../../../package.json').version, // eslint-disable-line global-require
-  tokenCookieName: process.env.JWT_COOKIENAME || 'jwt',
-  tokenSecret: process.env.JWT_SECRET || 'a token secret',
-  // sessionSecret: process.env.SESSION_SECRET || 'a session secret',
-  cookieDomain: '.' + envConfig.subDomain.split('.').slice(1).join('.'),
+  host: nconf.get('HOST') || '127.0.0.1',
+  env: nconf.get('NODE_ENV') || nconf.get('APP_ENV') || 'development',
+  version: packageJson.version, // eslint-disable-line global-require
+  jwt: {
+    tokenCookieName: nconf.get('JWT_COOKIENAME') || 'jwt',
+    tokenSecret: nconf.get('JWT_SECRET') || 'a token secret',
+    options: {
+      expiresIn: 2630000 // ~1 month in seconds
+    },
+  },
   session: {
     secret: 'super secret is top secret',
-    maxAge: process.env.COOKIE_MAXAGE || tenDays,
   },
   redis: {
 
@@ -37,175 +30,175 @@ const defaults = {
   auth: {
     amazon: {
       name: 'Amazon',
-      clientID: process.env.AMAZON_CLIENT_ID || 'ID',
-      clientSecret: process.env.AMAZON_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.AMAZON_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/amazon/callback`
+      clientID: nconf.get('AMAZON_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('AMAZON_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('AMAZON_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/amazon/callback`
     },
     beam: {
       name: 'Beam',
-      clientID: process.env.BEAM_CLIENT_ID || 'ID',
-      clientSecret: process.env.BEAM_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.BEAM_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/beam/callback`
+      clientID: nconf.get('BEAM_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('BEAM_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('BEAM_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/beam/callback`
     },
     bitbucket: {
       name: 'BitBucket',
-      clientID: process.env.BITBUCKET_CLIENT_ID || 'ID',
-      clientSecret: process.env.BITBUCKET_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.BITBUCKET_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/bitbucket/callback`
+      clientID: nconf.get('BITBUCKET_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('BITBUCKET_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('BITBUCKET_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/bitbucket/callback`
     },
     bnet: {
       name: 'Bnet',
-      clientID: process.env.BNET_CLIENT_ID || 'ID',
-      clientSecret: process.env.BNET_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.BNET_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/bnet/callback`
+      clientID: nconf.get('BNET_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('BNET_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('BNET_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/bnet/callback`
     },
     dropbox: {
       name: 'DropBox',
-      clientID: process.env.DROPBOX_CLIENT_ID || 'ID',
-      clientSecret: process.env.DROPBOX_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.DROPBOX_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/dropbox/callback`
+      clientID: nconf.get('DROPBOX_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('DROPBOX_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('DROPBOX_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/dropbox/callback`
     },
     evernote: {
       name: 'EverNote',
-      consumerKey: process.env.EVERNOTE_CONSUMER_KEY || 'KEY',
-      consumerSecret: process.env.EVERNOTE_CONSUMER_SECRET || 'SECRET',
-      callbackURL: process.env.EVERNOTE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/evernote/callback`,
+      consumerKey: nconf.get('EVERNOTE_CONSUMER_KEY') || 'KEY',
+      consumerSecret: nconf.get('EVERNOTE_CONSUMER_SECRET') || 'SECRET',
+      callbackURL: nconf.get('EVERNOTE_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/evernote/callback`,
     },
     facebook: {
       name: 'FaceBook',
-      appID: process.env.FACEBOOK_APP_ID || 'ID',
-      appSecret: process.env.FACEBOOK_APP_SECRET || 'SECRET',
-      callbackURL: process.env.FACEBOOK_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/facebook/callback`
+      appID: nconf.get('FACEBOOK_APP_ID') || 'ID',
+      appSecret: nconf.get('FACEBOOK_APP_SECRET') || 'SECRET',
+      callbackURL: nconf.get('FACEBOOK_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/facebook/callback`
     },
     fitbit: {
       name: 'FitBit',
-      clientID: process.env.FITBIT_CLIENT_ID || 'ID',
-      clientSecret: process.env.FITBIT_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.FITBIT_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/beam/callback`
+      clientID: nconf.get('FITBIT_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('FITBIT_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('FITBIT_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/beam/callback`
     },
     forcedotcom: {
       name: 'SalesForce',
-      clientID: process.env.SALESFORCE_CLIENT_ID || 'ID',
-      clientSecret: process.env.SALESFORCE_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.SALEFORCE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/forcedotcom/callback`
+      clientID: nconf.get('SALESFORCE_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('SALESFORCE_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('SALEFORCE_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/forcedotcom/callback`
     },
     foursquare: {
       name: 'FourSquare',
-      clientID: process.env.FOURSQUARE_CLIENT_ID || 'ID',
-      clientSecret: process.env.FOURSQUARE_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.FOURSQUARE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/foursquare/callback`
+      clientID: nconf.get('FOURSQUARE_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('FOURSQUARE_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('FOURSQUARE_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/foursquare/callback`
     },
     github: {
       name: 'GitHub',
-      clientID: process.env.GITHUB_CLIENT_ID || 'ID',
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.GITHUB_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/github/callback`
+      clientID: nconf.get('GITHUB_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('GITHUB_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('GITHUB_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/github/callback`
     },
     google: {
       name: 'Google',
-      clientID: process.env.GOOGLE_CLIENT_ID || 'ID',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/google/callback`,
+      clientID: nconf.get('GOOGLE_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('GOOGLE_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('GOOGLE_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/google/callback`,
     },
     instagram: {
       name: 'Instagram',
-      clientID: process.env.INSTAGRAM_CLIENT_ID || 'ID',
-      clientSecret: process.env.INSTAGRAM_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.INSTAGRAM_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/instagram/callback`,
+      clientID: nconf.get('INSTAGRAM_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('INSTAGRAM_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('INSTAGRAM_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/instagram/callback`,
     },
     linkedin: {
       name: 'LinkedIn',
-      clientID: process.env.LINKEDIN_CLIENT_ID || 'ID',
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.LINKEDIN_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/linkedin/callback`,
+      clientID: nconf.get('LINKEDIN_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('LINKEDIN_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('LINKEDIN_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/linkedin/callback`,
     },
     paypal: {
       name: 'PayPal',
-      clientID: process.env.PAYPAL_CLIENT_ID || 'ID',
-      clientSecret: process.env.PAYPAL_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.PAYPAL_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/paypal/callback`,
+      clientID: nconf.get('PAYPAL_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('PAYPAL_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('PAYPAL_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/paypal/callback`,
     },
     reddit: {
       name: 'Reddit',
-      clientID: process.env.REDDIT_CLIENT_ID || 'ID',
-      clientSecret: process.env.REDDIT_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.REDDIT_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/reddit/callback`,
+      clientID: nconf.get('REDDIT_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('REDDIT_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('REDDIT_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/reddit/callback`,
     },
     rightsignature: {
       name: 'RightSignature',
-      consumerKey: process.env.RIGHTSIGNATURE_CONSUMER_KEY || 'KEY',
-      consumerSecret: process.env.RIGHTSIGNATURE_CONSUMER_SECRET || 'SECRET',
-      callbackURL: process.env.RIGHTSIGNATURE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/rightsignature/callback`,
+      consumerKey: nconf.get('RIGHTSIGNATURE_CONSUMER_KEY') || 'KEY',
+      consumerSecret: nconf.get('RIGHTSIGNATURE_CONSUMER_SECRET') || 'SECRET',
+      callbackURL: nconf.get('RIGHTSIGNATURE_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/rightsignature/callback`,
     },
     runkeeper: {
       name: 'RunKeeper',
-      clientID: process.env.RUNKEEPER_CLIENT_ID || 'ID',
-      clientSecret: process.env.RUNKEEPER_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.RUNKEEPER_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/runkeeper/callback`,
+      clientID: nconf.get('RUNKEEPER_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('RUNKEEPER_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('RUNKEEPER_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/runkeeper/callback`,
     },
     sharepoint: {
       name: 'SharePoint',
-      appID: process.env.SHAREPOINT_APP_ID || 'ID',
-      appSecret: process.env.SHAREPOINT_APP_SECRET || 'SECRET',
-      callbackURL: process.env.SHAREPOINT_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/sharepoint/callback`,
+      appID: nconf.get('SHAREPOINT_APP_ID') || 'ID',
+      appSecret: nconf.get('SHAREPOINT_APP_SECRET') || 'SECRET',
+      callbackURL: nconf.get('SHAREPOINT_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/sharepoint/callback`,
     },
     slack: {
       name: 'Slack',
-      clientID: process.env.SLACK_CLIENT_ID || 'ID',
-      clientSecret: process.env.SLACK_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.SLACK_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/slack/callback`,
+      clientID: nconf.get('SLACK_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('SLACK_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('SLACK_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/slack/callback`,
     },
     soundcloud: {
       name: 'SoundCloud',
-      clientID: process.env.SOUNDCLOUD_CLIENT_ID || 'ID',
-      clientSecret: process.env.SOUNDCLOUD_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.SOUNDCLOUD_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/soundcloud/callback`,
+      clientID: nconf.get('SOUNDCLOUD_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('SOUNDCLOUD_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('SOUNDCLOUD_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/soundcloud/callback`,
     },
     spotify: {
       name: 'Spotify',
-      clientID: process.env.SPOTIFY_CLIENT_ID || 'ID',
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.SPOTIFY_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/spotify/callback`,
+      clientID: nconf.get('SPOTIFY_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('SPOTIFY_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('SPOTIFY_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/spotify/callback`,
     },
     tumblr: {
       name: 'Tumblr',
-      consumerKey: process.env.TUMBLR_CONSUMER_KEY || 'KEY',
-      consumerSecret: process.env.TUMBLR_CONSUMER_SECRET || 'SECRET',
-      callbackURL: process.env.TUBMLR_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/tumblr/callback`,
+      consumerKey: nconf.get('TUMBLR_CONSUMER_KEY') || 'KEY',
+      consumerSecret: nconf.get('TUMBLR_CONSUMER_SECRET') || 'SECRET',
+      callbackURL: nconf.get('TUBMLR_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/tumblr/callback`,
     },
     twitter: {
       name: 'Twitter',
-      consumerKey: process.env.TWITTER_CONSUMER_KEY || 'KEY',
-      consumerSecret: process.env.TWITTER_CONSUMER_SECRET || 'SECRET',
-      callbackURL: process.env.TWITTER_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/twitter/callback`,
+      consumerKey: nconf.get('TWITTER_CONSUMER_KEY') || 'KEY',
+      consumerSecret: nconf.get('TWITTER_CONSUMER_SECRET') || 'SECRET',
+      callbackURL: nconf.get('TWITTER_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/twitter/callback`,
     },
     vkontakte: {
       name: 'Vkontakte',
-      clientID: process.env.VK_CLIENT_ID || 'ID',
-      clientSecret: process.env.VK_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.VK_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/vkontakte/callback`,
+      clientID: nconf.get('VK_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('VK_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('VK_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/vkontakte/callback`,
     },
     weibo: {
       name: 'Weibo',
-      clientID: process.env.WEIBO_CLIENT_ID || 'ID',
-      clientSecret: process.env.WEIBO_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.WEIBO_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/weibo/callback`,
+      clientID: nconf.get('WEIBO_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('WEIBO_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('WEIBO_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/weibo/callback`,
     },
     windowslive: {
       name: 'WindowsLive',
-      clientID: process.env.WINDOWSLIVE_CLIENT_ID || 'ID',
-      clientSecret: process.env.WINDOWSLIVE_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.WINDOWSLIVE_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/windowslive/callback`,
+      clientID: nconf.get('WINDOWSLIVE_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('WINDOWSLIVE_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('WINDOWSLIVE_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/windowslive/callback`,
     },
     yahoo: {
       name: 'Yahoo',
-      clientID: process.env.YAHOO_CLIENT_ID || 'ID',
-      clientSecret: process.env.YAHOO_CLIENT_SECRET || 'SECRET',
-      callbackURL: process.env.YAHOO_CALLBACK_URL || `http://${envConfig.subDomain}${':' + envConfig.port}/auth/yahoo/callback`,
+      clientID: nconf.get('YAHOO_CLIENT_ID') || 'ID',
+      clientSecret: nconf.get('YAHOO_CLIENT_SECRET') || 'SECRET',
+      callbackURL: nconf.get('YAHOO_CALLBACK_URL') || `${nconf.get('APP_URL')}/auth/yahoo/callback`,
     },
   },
   mongo: {
-    uri: process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/hello-world',
+    uri: nconf.get('MONGO_URI') || 'mongodb://127.0.0.1:27017/hello-world',
     auth: {
       user: '',
       pass: '',
@@ -216,9 +209,8 @@ const defaults = {
       },
     },
   },
-  tenDays,
 };
 
 /* eslint-disable */
-module.exports = _.merge(defaults, envConfig || {});
+module.exports = _.merge(defaults, require(`${__dirname}/${defaults.env === 'test' ? 'testing' : defaults.env}.js`) || {});
 /* eslint-enable */

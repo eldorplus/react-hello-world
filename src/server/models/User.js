@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 const transform = require('./transform/User');
 
-var userSchema = new Schema({
+mongoose.Promise = require('bluebird');
+
+var userSchema = new mongoose.Schema({
   name: String,
   username: {
     type: String,
@@ -215,7 +216,7 @@ userSchema.pre('save', function (next) {
           return next(err);
         }
         user.password = hash;
-        next();
+        return next();
       });
     });
   } else {
