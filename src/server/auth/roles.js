@@ -4,7 +4,7 @@ var ConnectRoles = require('connect-roles');
 var userRole = new ConnectRoles({
   failureHandler: function (req, res, action) {
     res.status(403);
-    res.json({success: false, message: `You don't have permission to ${action}`});
+    res.json({success: false, message: req.t(`You don't have permission to ${action}`)});
   }
 });
 

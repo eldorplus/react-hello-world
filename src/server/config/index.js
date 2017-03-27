@@ -54,7 +54,7 @@ const defaults = {
   i18n: {
     locales:['de', 'en', 'es', 'it', 'nl', 'ru'],
     defaultLocales: 'en',
-    directory: __dirname + '/locales',
+    directory: __dirname + '/../../locales',
     directoryPermissions: '755',
     extension: '.json',
     cookie: 'locale',

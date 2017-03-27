@@ -4,6 +4,29 @@ const _ = require('lodash');
 const router = require('express').Router();
 const User = require('./../models/User');
 
+const walk = function(dir, done) {
+  var results = [];
+  fs.readdir(dir, function(err, list) {
+    if (err) return done(err);
+    var pending = list.length;
+    if (!pending) return done(null, results);
+    list.forEach(function(file) {
+      file = path.resolve(dir, file);
+      fs.stat(file, function(err, stat) {
+        if (stat && stat.isDirectory()) {
+          walk(file, function(err, res) {
+            results = results.concat(res);
+            if (!--pending) done(null, results);
+          });
+        } else {
+          results.push(file);
+          if (!--pending) done(null, results);
+        }
+      });
+    });
+  });
+};
+
 function setupRouter(config, passport, userRole) {
   require('./../auth/jwt')(config, passport, User);
 
@@ -101,6 +124,20 @@ function setupRouter(config, passport, userRole) {
     }
   );
 
+  router.get(
+    '/locale',
+    (req, res) => {
+      let translations = {};
+      walk(path.join(__dirname, '/../../locales'), (err, files) => {
+        files.forEach((file) => {
+          if (file.indexOf(req.getLocale() !== -1)) {
+            translations = _.merge(translations, require(file));
+          }
+        });
+        res.json(translations);
+      });
+    }
+  );
   require('./users')(config, passport, User, router, userRole);
 
   return router;
