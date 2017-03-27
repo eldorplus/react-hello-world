@@ -7,9 +7,17 @@ const Example3App = (props) => {
       <h2>Example 3 -
         <small>login via google auth</small>
       </h2>
-      {props.children||<Home />}
+      {props.children}
     </div>
   );
+};
+
+Example3App.propTypes = {
+  children: React.PropTypes.node,
+};
+
+Example3App.defaultProps = {
+  children: <Home />,
 };
 
 module.exports = Example3App;

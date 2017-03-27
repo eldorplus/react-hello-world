@@ -8,34 +8,36 @@ class Users extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: ''
+      error: '',
     };
   }
 
   componentDidMount() {
-    let that = this;
     const token = cookie.load('jwt');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = 'JWT ' + token;
-      axios.get(`/users`)
-        .then(res => {
+      axios.defaults.headers.common.Authorization = `JWT ${token}`;
+      axios.get('/users')
+        .then((res) => {
           const users = res.data.users;
-          if (users) this.setState({users: [ ...users ]});
-          else this.setState({error: {
-            code: res.statusCode ? res.statusCode : null,
-            status: res.statusText ? res.statusText : null,
-            message: res.data.message ? res.data.message : null,
-          }})
+          if (users) {
+            this.setState({ users: [...users] });
+          } else {
+            this.setState({ error: {
+              code: res.statusCode ? res.statusCode : null,
+              status: res.statusText ? res.statusText : null,
+              message: res.data.message ? res.data.message : null,
+            } });
+          }
         })
-        .catch(function (error) {
-          if (error && error.response) {
-            that.setState({
+        .catch((e) => {
+          if (e && e.response) {
+            this.setState({
               error: {
-                code: error.response.statusCode ? error.response.statusCode : null,
-                status: error.response.statusText ? error.response.statusText : null,
-                message: error.response.data.message ? error.response.data.message : null,
-              }
-            })
+                code: e.response.statusCode ? e.response.statusCode : null,
+                status: e.response.statusText ? e.response.statusText : null,
+                message: e.response.data.message ? e.response.data.message : null,
+              },
+            });
           }
         });
     }
@@ -46,7 +48,7 @@ class Users extends React.Component {
       <div>
         <h2>Users</h2>
         {this.state.users ? this.state.users.map((user) => {
-          return <Profile profile={user} />;
+          return <Profile user={user} />;
         }) : null}
         {this.state.error ? <Error {...this.state.error} /> : null}
       </div>

@@ -45,12 +45,27 @@ const defaults = {
       },
     },
   },
-  logger: new (winston.Logger)({
+  logger: new winston.Logger({
     level: nconf.get('LOG_LEVEL') || 'info',
     transports: [
-      new (winston.transports.Console)({ colorize: true, timestamp: true }),
+      new winston.transports.Console({
+        colorize: true,
+        timestamp: false,
+        handleExceptions: true,
+      }),
+      new winston.transports.File({
+        filename: path.join(__dirname, '/../logs/server.log'),
+        timestamp: true,
+        handleExceptions: true,
+        maxsize: 5242880, //5MB
+        maxFiles: 5,
+      }),
     ],
+    exitOnError: false,
   }),
+  morgan: {
+    format: nconf.get('MORGAN_FORMAT') || 'tiny',
+  },
   i18n: {
     locales:['de', 'en', 'es', 'it', 'nl', 'ru'],
     defaultLocales: 'en',

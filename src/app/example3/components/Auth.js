@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import t from 'tcomb-form'
+import t from 'tcomb-form';
 import cookie from 'react-cookie';
 import Button from './../../components/Button';
 import NavLink from './NavLink';
@@ -21,15 +21,14 @@ const RegisterFormSchema = t.struct({
 const LoginFormSchema = t.struct({
   username_or_email: t.String,
   password: t.String,
-
 });
 
 const registerFormOpts = {
   fields: {
     password: {
-      type: 'password'
-    }
-  }
+      type: 'password',
+    },
+  },
 };
 
 const loginFormOpts = {
@@ -42,9 +41,9 @@ const loginFormOpts = {
       },
     },
     password: {
-      type: 'password'
-    }
-  }
+      type: 'password',
+    },
+  },
 };
 
 class Auth extends React.Component {
@@ -57,51 +56,57 @@ class Auth extends React.Component {
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
   }
 
-  onLoginFormChange(value) {
-    this.setState({loginForm: value})
+  componentWillMount() {
+    axios.get('/auth/providers')
+      .then((res) => {
+        const providers = res.data.providers;
+        const providerList = [];
+        providers.forEach((provider) => {
+          providerList.push(
+            <ul>
+              <li><Button onClick={this.login(provider, 'Admin')} text={`${providers[provider].name} as Admin`} /></li>
+              <li><Button onClick={this.login(provider, 'Manager')} text={`${providers[provider].name} as Manager`} /></li>
+              <li><Button onClick={this.login(provider, 'Developer')} text={`${providers[provider].name} as Developer`} /></li>
+            </ul>,
+          );
+        });
+        this.setState({ providerList });
+      });
   }
-  onRegisterFormChange(value) {
-    this.setState({registerForm: value})
-  }
+
   onLoginSubmit(evt) {
     evt.preventDefault();
     loginFormOpts.hasError = false;
     loginFormOpts.error = null;
-    const data = this.refs.loginForm.getValue();
-    const valid = this.refs.loginForm.validate().isValid();
-    console.log(valid);
+    const data = this.loginForm.getValue();
+    const valid = this.loginForm.validate().isValid();
     if (data && valid) {
-      axios.post(`/auth/login`, data)
-        .then(res => {
-          if(res.data.success) {
+      axios.post('/auth/login', data)
+        .then((res) => {
+          if (res.data.success) {
             window.location = '/';
           } else {
-            console.log(res.data.message);
-
             loginFormOpts.hasError = true;
             loginFormOpts.error = res.data.message;
           }
         });
     } else {
       loginFormOpts.hasError = true;
-      loginFormOpts.error = this.refs.loginForm.validate().firstError().message;
+      loginFormOpts.error = this.loginForm.validate().firstError().message;
     }
   }
   onRegisterSubmit(evt) {
     evt.preventDefault();
     registerFormOpts.hasError = false;
     registerFormOpts.error = null;
-    const data = this.refs.registerForm.getValue();
-    const valid = this.refs.registerForm.validate().isValid();
-    console.log(valid);
+    const data = this.registerForm.getValue();
+    const valid = this.registerForm.validate().isValid();
     if (data && valid) {
-      axios.post(`/auth/register`, data)
-        .then(res => {
-          console.log(res);
-          if(res.data.success) {
-            window.location = '/';
+      axios.post('/auth/register', data)
+        .then((res) => {
+          if (res.data.success) {
+            this.context.router.transitionTo('/');
           } else {
-            console.log(res.data.message);
             registerFormOpts.hasError = true;
             registerFormOpts.error = res.data.message;
           }
@@ -109,36 +114,25 @@ class Auth extends React.Component {
         });
     } else {
       registerFormOpts.hasError = true;
-      registerFormOpts.error = this.refs.registerForm.validate().firstError().message;
+      registerFormOpts.error = this.registerForm.validate().firstError().message;
     }
   }
 
-  componentWillMount() {
-    axios.get(`/auth/providers`)
-      .then(res => {
-        const providers = res.data.providers;
-        let providerList = [];
-        for( let provider in providers) {
-          providerList.push (
-            <ul>
-              <li><Button onClick={this.login(provider, 'Admin')} text={`${providers[provider].name} as Admin`} /></li>
-              <li><Button onClick={this.login(provider, 'Manager')} text={`${providers[provider].name} as Manager`} /></li>
-              <li><Button onClick={this.login(provider, 'Developer')} text={`${providers[provider].name} as Developer`} /></li>
-            </ul>
-          )
-        }
-        this.setState({ providerList });
-      });
+  onLoginFormChange(value) {
+    this.setState({ loginForm: value });
+  }
+  onRegisterFormChange(value) {
+    this.setState({ registerForm: value });
   }
 
   login(provider, role) {
     return () => {
-      window.location = `/auth/${provider}?role=${role}&success=/&failure=/`;
-    }
+      this.context.router.transitionTo(`/auth/${provider}?role=${role}&success=/&failure=/`);
+    };
   }
   logout() {
     cookie.remove('jwt'); // remove cookie on frontend and redirect to logout where does same thing possibly plus more
-    window.location = `/auth/logout?success=/&failure=/`
+    this.context.router.transitionTo('/auth/logout?success=/&failure=/');
   }
   render() {
     return (
@@ -150,14 +144,26 @@ class Auth extends React.Component {
         </ul>
         <div>
           <form onSubmit={this.onRegisterSubmit}>
-            <t.form.Form ref="registerForm" type={RegisterFormSchema} options={registerFormOpts} value={this.state.registerForm} onChange={this.onRegisterFormChange.bind(this)} />
+            <t.form.Form
+              ref={(c) => { this.registerForm = c; }}
+              type={RegisterFormSchema}
+              options={registerFormOpts}
+              value={this.state.registerForm}
+              onChange={this.onRegisterFormChange}
+            />
             <div className="form-group">
               <button type="submit" className="btn btn-primary">Register</button>
             </div>
           </form>
 
           <form onSubmit={this.onLoginSubmit}>
-            <t.form.Form ref="loginForm" type={LoginFormSchema} options={loginFormOpts} value={this.state.loginForm} onChange={this.onLoginFormChange.bind(this)} />
+            <t.form.Form
+              ref={(c) => { this.loginForm = c; }}
+              type={LoginFormSchema}
+              options={loginFormOpts}
+              value={this.state.loginForm}
+              onChange={this.onLoginFormChange}
+            />
             <div className="form-group">
               <button type="submit" className="btn btn-primary">Login</button>
             </div>

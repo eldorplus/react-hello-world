@@ -15,7 +15,7 @@ Error.propTypes = {
 Error.defaultProps = {
   code: 500,
   status: 'Exception',
-  message: 'Unknown Error'
+  message: 'Unknown Error',
 };
 
 module.exports = Error;

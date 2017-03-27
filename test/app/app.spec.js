@@ -4,6 +4,7 @@ import ReactTestUtils from 'react-addons-test-utils'; // eslint-disable-line imp
 import App from './../../src/app/app';
 import Example1 from './../../src/app/example1';
 import Example2 from './../../src/app/example2';
+import Example3 from './../../src/app/example3';
 
 const Renderer = ReactTestUtils.createRenderer();
 
@@ -16,6 +17,7 @@ describe('App', () => {
     expect(result.props.children).toEqual([
       <Example1 />,
       <Example2 numClicks={3} />,
+      <Example3 />
     ]);
   });
 });

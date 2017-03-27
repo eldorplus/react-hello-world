@@ -1,5 +1,6 @@
 const path = require('path');
 const i18n = require("i18n");
+const csrf = require('csurf');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -13,7 +14,6 @@ const config = require('./config');
 i18n.configure(config.i18n);
 
 const app = express();
-app.use(i18n.init);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -26,7 +26,9 @@ if (config.env !== 'production') {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(morgan('dev'));
+
+app.use(morgan(config.morgan.format, { stream: { write: message => config.logger.info(message) }}));
+
 app.use(cookieParser(config.session.secret));
 app.use(session({
   secret: config.session.secret,
@@ -35,6 +37,16 @@ app.use(session({
   saveUninitialized: false,
   // rolling: true,
 }));
+app.use(csrf({ cookie: true }));
+
+app.use(function (req, res, next) {
+  var lang = req.session.lang;
+  if(lang){
+    i18n.setLocale(req, lang);
+    next();
+  }else
+    i18n.init(req, res, next);
+});
 
 require('./_lib/mongoclient')(config);
 
@@ -47,9 +59,18 @@ passport.deserializeUser((user, done) => { done(null, user); });
 
 app.use('/', require('./routes')(config, passport, require('./auth/roles')));
 
+app.use(function (err, req, res, next) {
+  if (err.code !== 'EBADCSRFTOKEN') return next(err)
+
+  // handle CSRF token errors here
+  res.status(403);
+  res.send('form tampered with')
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   const error = {success: false, error: {status: req.t('error.404.Error 404:Error 404'), message: req.t('error.404.Not Found:Not Found')}};
+  config.logger.log('the error', error)
   if (req.headers.accept.indexOf('json') !== -1 || req.headers.accept.indexOf('javascript') !== -1) {
     res.status(404).json(error);
   } else if (req.headers.accept.indexOf('xml') !== -1 && req.headers.accept.indexOf('html') === -1) {
