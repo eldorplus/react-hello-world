@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import App from './app';
 import T from 'i18n-react';
 
-T.setTexts(require('./../locales/en.json'))
+try {
+  T.setTexts(require('./../locales/en.json'))
+} catch (err) {
+  console.log(err)
+}
 
 ReactDOM.render(<App />, document.querySelector('#root'));

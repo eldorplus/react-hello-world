@@ -70,7 +70,9 @@ const defaults = {
     },
     api: {
       '__': 't',  //now req.__ becomes req.t
-      '__n': 'tn' //and req.__n can be called as req.tn
+      '__n': 'tn', //and req.__n can be called as req.tn
+      '__l': 'tl',
+      '__h': 'th',
     },
     preserveLegacyCase: true,
     objectNotation: true,

@@ -49,14 +49,14 @@ app.use('/', require('./routes')(config, passport, require('./auth/roles')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  const error = {success: false, error: {status: req.t('error.404.Error 404'), message: req.t('error.404.Not Found')}};
+  const error = {success: false, error: {status: req.t('error.404.Error 404:Error 404'), message: req.t('error.404.Not Found:Not Found')}};
   if (req.headers.accept.indexOf('json') !== -1 || req.headers.accept.indexOf('javascript') !== -1) {
     res.status(404).json(error);
   } else if (req.headers.accept.indexOf('xml') !== -1 && req.headers.accept.indexOf('html') === -1) {
     const easyxml = require('easyxml');
     res.status(404).header('Content-Type', 'text/xml').send(new easyxml({}).render(error));
   } else if (req.headers.accept.indexOf('plain') !== -1) {
-    res.status(404).header('Content-Type', 'text/plain').send(req.t('error.404.Error 404\nNot Found'));
+    res.status(404).header('Content-Type', 'text/plain').send(req.t('error.404.Error 404\nNot Found:Error 404\nNot Found'));
   } else {
     res.status(404).render('error', error);
   }

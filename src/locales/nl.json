@@ -1,1 +1,9 @@
-{}
+{
+	"error": {
+		"404": {
+			"Error 404": "Error 404",
+			"Error 404\nNot Found": "Error 404\nNiet Gevonden",
+			"Not Found": "Niet Gevonden"
+		}
+	}
+}

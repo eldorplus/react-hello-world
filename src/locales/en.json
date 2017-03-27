@@ -1,9 +1,9 @@
 {
-	"balls": "smack",
 	"error": {
 		"404": {
-			"Error 404": "error.404.Error 404",
-			"Not Found": "error.404.Not Found"
+			"Error 404": "Error 404",
+			"Error 404\nNot Found": "Error 404\nNot Found",
+			"Not Found": "Not Found"
 		}
 	}
 }

@@ -130,7 +130,7 @@ function setupRouter(config, passport, userRole) {
       let translations = {};
       walk(path.join(__dirname, '/../../locales'), (err, files) => {
         files.forEach((file) => {
-          if (file.indexOf(req.getLocale() !== -1)) {
+          if (path.basename(file).replace('.json', '') === req.getLocale()) {
             translations = _.merge(translations, require(file));
           }
         });
