@@ -61,7 +61,7 @@ class Auth extends React.Component {
       .then((res) => {
         const providers = res.data.providers;
         const providerList = [];
-        providers.forEach((provider) => {
+        Object.keys(providers).map((provider) => {
           providerList.push(
             <ul>
               <li><Button onClick={this.login(provider, 'Admin')} text={`${providers[provider].name} as Admin`} /></li>
