@@ -34,7 +34,7 @@ class Profile extends React.Component {
     if (this.state.id) {
       children = (
         <div>
-          <h2>{this.state.name} {_.capitalize(this.state.provider)} Profile</h2>
+          <h2>{this.state.name} {_.capitalize(this.state.provider)} {T.translate('User.Profile')}</h2>
           <ul>
             <li>id: {this.state.id}</li>
             {this.state.name ? <li>{T.translate('User.name')}: {this.state.name}</li> : null }

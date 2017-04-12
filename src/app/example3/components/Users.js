@@ -47,7 +47,7 @@ class Users extends React.Component {
   render() {
     return (
       <div>
-        <h2>Users</h2>
+        <h2>{T.translate('auth.All Users')}</h2>
         {this.state.users ? this.state.users.map((user) => {
           return <Profile user={user} />;
         }) : null}
