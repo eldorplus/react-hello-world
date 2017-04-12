@@ -17,15 +17,6 @@
     "login via google auth": "Iniciar sesión a través de google auth",
     "Select a language": "Seleccione un idioma"
   },
-  "languages": {
-    "de": "Deutsche",
-    "en": "English",
-    "es": "Español",
-    "fr": "Français",
-    "it": "italiano",
-    "nl": "Nederlands",
-    "ru": "русский"
-  },
   "optional": "Opcional",
   "auth": {
     "Login": "Iniciar sesión",

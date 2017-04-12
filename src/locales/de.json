@@ -17,15 +17,6 @@
 		"login via google auth": "Login über Google Auth",
 		"Select a language": "Sprache auswählen"
   },
-	"languages": {
-		"de": "Deutsche",
-		"en": "English",
-		"es": "Español",
-		"fr": "Français",
-		"it": "italiano",
-		"nl": "Nederlands",
-		"ru": "русский"
-	},
 	"optional": "optional",
 	"auth": {
 		"Login": "Anmeldung",
