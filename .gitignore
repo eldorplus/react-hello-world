@@ -5,3 +5,5 @@ coverage/
 bundle.js*
 __snapshots__/
 .env
+heapdump-*
+**/logs/*
