@@ -14,7 +14,8 @@
     },
     "Toggle message": "Toggle message",
     "Hello World": "Hello World",
-    "login via google auth": "login via google auth"
+    "login via google auth": "login via google auth",
+    "Select a language": "Select a language"
   },
   "languages": {
     "de": "Deutsche",

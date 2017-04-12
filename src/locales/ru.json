@@ -14,7 +14,8 @@
     },
     "Toggle message": "Переключить сообщение",
     "Hello World": "Привет мир",
-    "login via google auth": "Войти через google auth"
+    "login via google auth": "Войти через google auth",
+    "Select a language": "Выберите язык"
   },
   "languages": {
     "de": "Deutsche",

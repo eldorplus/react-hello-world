@@ -39,7 +39,7 @@ class Example4 extends React.Component {
     });
     return (
       <div>
-        <h2><T.text text={{ key: "example.Select a language" }}/></h2>
+        <h2><T.text text={{ key: "example.Example {number}", number: 4 }}/> - <small><T.text text={{ key: "example.Select a language" }}/></small></h2>
         <ul>
           {buttons}
         </ul>

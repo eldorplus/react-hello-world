@@ -14,7 +14,8 @@
     },
     "Toggle message": "messaggio a ginocchiera",
     "Hello World": "Ciao mondo",
-    "login via google auth": "login tramite google autenticazione"
+    "login via google auth": "login tramite google autenticazione",
+    "Select a language": "Seleziona una lingua"
   },
   "languages": {
     "de": "Deutsche",
