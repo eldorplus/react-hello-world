@@ -16,6 +16,15 @@
     "Hello World": "Bonjour le monde",
     "login via google auth": "connexion via google auth"
   },
+  "languages": {
+    "de": "Deutsche",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "it": "italiano",
+    "nl": "Nederlands",
+    "ru": "русский"
+  },
   "optional": "optionnel",
   "auth": {
     "Login": "S'identifier",

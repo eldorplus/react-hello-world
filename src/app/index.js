@@ -10,9 +10,10 @@ import language from './language';
 axios.get(`/locale?l=${language()}`)
   .then((res) => {
     T.setTexts(res.data);
-    ReactDOM.render(<App />, document.querySelector('#root'));
+    // ReactDOM.render(<App />, document.querySelector('#root'));
   })
-  .catch((err) => {
-    ReactDOM.render(<Error {...err.response} />, document.querySelector('#root'));
-  });
+  // .catch((err) => {
+  //   ReactDOM.render(<Error {...err.response} />, document.querySelector('#root'));
+  // });
 
+ReactDOM.render(<App />, document.querySelector('#root'));

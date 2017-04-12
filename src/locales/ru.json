@@ -16,7 +16,7 @@
     "Hello World": "Привет мир",
     "login via google auth": "Войти через google auth"
   },
-  "lang": {
+  "languages": {
     "de": "Deutsche",
     "en": "English",
     "es": "Español",

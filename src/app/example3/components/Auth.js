@@ -107,7 +107,7 @@ class Auth extends React.Component {
       axios.post('/auth/login', data)
         .then((res) => {
           if (res.data.success) {
-            window.location = '/';
+            document.location.href = '/';
           } else {
             loginFormOpts.hasError = true;
             loginFormOpts.error = res.data.message;

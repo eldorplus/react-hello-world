@@ -16,7 +16,7 @@
     "Hello World": "Hola Mundo",
     "login via google auth": "Iniciar sesión a través de google auth"
   },
-  "lang": {
+  "languages": {
     "de": "Deutsche",
     "en": "English",
     "es": "Español",
