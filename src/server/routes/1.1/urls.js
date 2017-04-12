@@ -1,5 +1,6 @@
 // https://coligo.io/create-url-shortener-with-node-express-mongo/
 
+const validUrl = require('valid-url');
 const Url = require('./../../models/Url').Url;
 const urlCounter = require('./../../models/Url').urlCounter;
 const base58 = require('./../../_lib/base58');
@@ -14,40 +15,37 @@ module.exports = (config, passport, router, userRole) => {
           urls = urls.map((url) => {
             return url.toJSON()
           });
-          res.json({ urls, count: urls.length });
+          return res.json({ urls, count: urls.length });
         });
     });
   router.post('/shorten', function(req, res){
-    var longUrl = req.body.url;
-    var shortUrl = '';
+    var url = req.body.url;
 
-    if (longUrl) {
-      Url.findOne({long_url: longUrl}, function (err, doc){
-        if (doc){
-          shortUrl = '/' + base58.encode(doc._id);
-          res.send({'url': shortUrl});
-        } else {
-          urlCounter.collection.findAndModify({_id: 'value'}, [], {$inc: {seq: 1} }, {new: true, upsert: true, select: {next: 1}}, (error, counter) => {
-            if (error) return next(error);
-            var newUrl = new Url({
-              _id: counter.value.seq,
-              long_url: longUrl,
-              created_at: new Date()
-            });
+    if(!validUrl.isWebUri(url)) {
+      return res.status(600).send({error: 'Invalid URL'})
+    }
 
-            newUrl.save(function(err, url) {
-              if (err) throw err;
-
-              shortUrl = '/' + base58.encode(newUrl._id);
-              res.send({'url': shortUrl});
-            });
+    Url.findOne({long_url: url}, function (err, doc){
+      if (doc){
+        return res.send({url: `${config.schema}${req.headers.host}/${base58.encode(doc._id)}`});
+      } else {
+        urlCounter.collection.findAndModify({_id: 'value'}, [], {$inc: {seq: 1} }, {new: true, upsert: true, select: {next: 1}}, (error, counter) => {
+          if (error) return next(error);
+          var newUrl = new Url({
+            _id: counter.value.seq,
+            long_url: url,
+            created_at: new Date()
           });
 
-        }
-      });
-    } else {
-      res.status(600).send({error: 'Invalid request'})
-    }
+          newUrl.save(function(err, url) {
+            if (err) throw err;
+
+            return res.send({url: `${config.schema}${req.headers.host}/${base58.encode(newUrl._id)}`});
+          });
+        });
+
+      }
+    });
 
   });
 
@@ -58,9 +56,9 @@ module.exports = (config, passport, router, userRole) => {
     Url.findOne({_id: id}, function (err, doc){
       if (doc) {
         const redirectUrl = doc.long_url;
-        res.render('redirect', {url: redirectUrl});
+        return res.render('redirect', {url: redirectUrl});
       } else {
-        res.redirect('/');
+        return res.redirect('/');
       }
     });
   });

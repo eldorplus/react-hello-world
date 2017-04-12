@@ -14,6 +14,8 @@ const defaults = {
   name: 'react-hello-world',
   host: nconf.get('HOST') || '127.0.0.1',
   env: nconf.get('NODE_ENV') || nconf.get('APP_ENV') || 'development',
+  secure: !!nconf.get('APP_SECURE') || false,
+  schema: !!nconf.get('APP_SECURE') ? 'https://':'http://',
   version: packageJson.version, // eslint-disable-line global-require
   apiVersions: [1.1],
   jwt: {
