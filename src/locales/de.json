@@ -36,9 +36,10 @@
 		"Not logged in": "Nicht eingeloggt!"
 	},
 	"User": {
-		"id": "ich würde",
-		"name": "prénom",
+		"id": "Ich würde",
+		"name": "Prénom",
 		"username": "Benutzername",
+		"email": "Email",
 		"role": "Rolle",
 		"photo": "Foto",
 		"Admin": "Admin",

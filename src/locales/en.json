@@ -48,6 +48,7 @@
     "id": "id",
     "name": "name",
     "username": "username",
+    "email": "email",
     "role": "role",
     "photo": "photo",
     "Admin": "Admin",

@@ -39,6 +39,7 @@
     "id": "id",
     "name": "prénom",
     "username": "Nom d'utilisateur",
+    "email": "email",
     "role": "rôle",
     "photo": "photo",
     "Admin": "Admin",

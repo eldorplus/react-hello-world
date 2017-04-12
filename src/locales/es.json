@@ -48,6 +48,7 @@
     "id": "carné de identidad",
     "name": "nombre",
     "username": "Nombre de usuario",
+    "email": "correo electrónico",
     "role": "papel",
     "photo": "foto",
     "Admin": "Administración",
