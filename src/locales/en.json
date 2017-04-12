@@ -1,9 +1,58 @@
 {
-	"error": {
-		"404": {
-			"Error 404": "Error 404",
-			"Error 404\nNot Found": "Error 404\nNot Found",
-			"Not Found": "Not Found"
-		}
-	}
+  "error": {
+    "404": {
+      "Error 404": "Error 404",
+      "Error 404\nNot Found": "Error 404\nNot Found",
+      "Not Found": "Not Found"
+    }
+  },
+  "example": {
+    "Example {number}": "Example {number}",
+    "click {count} to toggle": {
+      "1": "click once to toggle",
+      "_": "click {context.count} times to toggle"
+    },
+    "Toggle message": "Toggle message",
+    "Hello World": "Hello World",
+    "login via google auth": "login via google auth"
+  },
+  "lang": {
+    "de": "Deutsche",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "it": "italiano",
+    "nl": "Nederlands",
+    "ru": "русский"
+  },
+  "optional": "optional",
+  "auth": {
+    "Login": "Login",
+    "Register": "Register",
+    "Login with": "Login with",
+    "Logout": "Logout",
+    "All Users": "All Users",
+    "Name": "Name",
+    "Email": "Email",
+    "Username": "Username",
+    "Password": "Password",
+    "Role": "Role",
+    "Type username or email": "Type username or email",
+    "Username or Email": "Username or Email",
+    "as Admin": "as Admin",
+    "as Manager": "as Manager",
+    "as Developer": "as Developer",
+    "Not logged in": "Not logged in!"
+  },
+  "User": {
+    "id": "id",
+    "name": "name",
+    "username": "username",
+    "role": "role",
+    "photo": "photo",
+    "Admin": "Admin",
+    "Manager": "Manager",
+    "Developer": "Developer",
+    "Profile": "Profile"
+  }
 }

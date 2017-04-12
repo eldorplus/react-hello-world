@@ -1,9 +1,58 @@
 {
-	"error": {
-		"404": {
-			"Error 404": "Error 404",
-			"Error 404\nNot Found": "Error 404\nNo Encontrado",
-			"Not Found": "No Encontrado"
-		}
-	}
+  "error": {
+    "404": {
+      "Error 404": "Error 404",
+      "Error 404\nNot Found": "Error 404\nNo Encontrado",
+      "Not Found": "No Encontrado"
+    }
+  },
+  "example": {
+    "Example {number}": "Ejemplo {number}",
+    "click {count} to toggle": {
+      "1": "Haga clic una vez para alternar",
+      "_": "Haga clic {context.count} veces para activar"
+    },
+    "Toggle message": "Cambiar mensaje",
+    "Hello World": "Hola Mundo",
+    "login via google auth": "Iniciar sesión a través de google auth"
+  },
+  "lang": {
+    "de": "Deutsche",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "it": "italiano",
+    "nl": "Nederlands",
+    "ru": "русский"
+  },
+  "optional": "Opcional",
+  "auth": {
+    "Login": "Iniciar sesión",
+    "Register": "Registro",
+    "Login with": "Inicia con",
+    "Logout": "Cerrar sesión",
+    "All Users": "Todos los usuarios",
+    "Name": "Nombre",
+    "Email": "Email",
+    "Username": "Nombre de usuario",
+    "Password": "Contraseña",
+    "Role": "Papel",
+    "Type username or email": "Escriba nombre de usuario o correo electrónico",
+    "Username or Email": "Nombre de usuario o correo electrónico",
+    "as Admin": "como Administrador",
+    "as Manager": "como Gerente",
+    "as Developer": "como Desarrollador",
+    "Not logged in": "¡Sin iniciar sesión!"
+  },
+  "User": {
+    "id": "carné de identidad",
+    "name": "nombre",
+    "username": "Nombre de usuario",
+    "role": "papel",
+    "photo": "foto",
+    "Admin": "Administración",
+    "Manager": "Gerente",
+    "Developer": "Desarrollador",
+    "Profile": "Perfil"
+  }
 }

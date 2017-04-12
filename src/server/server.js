@@ -28,7 +28,7 @@ exports.start = function start(options, readyCallback) {
       const instances = process.env.instances ? ` ${instance}/${process.env.instances}` : '';
 
       if (config.env !== 'production') {
-        require('heapdump');
+        require('heapdump'); // eslint-disable-line global-require,import/no-extraneous-dependencies
       }
       this.server = app.listen(port, host, () => {
         config.logger.info(`${name}${instances} listening on ${host}:${port} in ${config.env} mode`); // eslint-disable-line no-console

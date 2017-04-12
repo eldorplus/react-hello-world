@@ -57,10 +57,12 @@ app.use(passport.session());
 passport.serializeUser((user, done) => { done(null, user); });
 passport.deserializeUser((user, done) => { done(null, user); });
 
-app.use('/', require('./routes')(config, passport, require('./auth/roles')));
+const userRoles = require('./auth/roles');
+app.use('/', require('./routes')(config, passport, userRoles));
+app.use('/api/1.1/', require('./routes/1.1')(config, passport, userRoles));
 
 app.use(function (err, req, res, next) {
-  if (err.code !== 'EBADCSRFTOKEN') return next(err)
+  if (err.code !== 'EBADCSRFTOKEN') return next(err);
 
   // handle CSRF token errors here
   res.status(403);
@@ -70,7 +72,7 @@ app.use(function (err, req, res, next) {
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   const error = {success: false, error: {status: req.t('error.404.Error 404:Error 404'), message: req.t('error.404.Not Found:Not Found')}};
-  config.logger.log('the error', error)
+  config.logger.log('the error', error);
   if (req.headers.accept.indexOf('json') !== -1 || req.headers.accept.indexOf('javascript') !== -1) {
     res.status(404).json(error);
   } else if (req.headers.accept.indexOf('xml') !== -1 && req.headers.accept.indexOf('html') === -1) {

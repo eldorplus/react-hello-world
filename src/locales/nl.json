@@ -1,9 +1,58 @@
 {
-	"error": {
-		"404": {
-			"Error 404": "Error 404",
-			"Error 404\nNot Found": "Error 404\nNiet Gevonden",
-			"Not Found": "Niet Gevonden"
-		}
-	}
+  "error": {
+    "404": {
+      "Error 404": "Error 404",
+      "Error 404\nNot Found": "Error 404\nNiet Gevonden",
+      "Not Found": "Niet Gevonden"
+    }
+  },
+  "example": {
+    "Example {number}": "Voorbeeld {number}",
+    "click {count} to toggle": {
+      "1": "klik eenmaal om te schakelen",
+      "_": "klik {context.count} keer om te schakelen"
+    },
+    "Toggle message": "toggle bericht",
+    "Hello World": "Hallo Wereld",
+    "login via google auth": "login via google auth"
+  },
+  "lang": {
+    "de": "Deutsche",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "it": "italiano",
+    "nl": "Nederlands",
+    "ru": "русский"
+  },
+  "optional": "optioneel",
+  "auth": {
+    "Login": "Log in",
+    "Register": "Registreren",
+    "Login with": "Login met",
+    "Logout": "Uitloggen",
+    "All Users": "Alle gebruikers",
+    "Name": "Naam",
+    "Email": "E-mail",
+    "Username": "Gebruikersnaam",
+    "Password": "Wachtwoord",
+    "Role": "Rol",
+    "Type username or email": "Type gebruikersnaam of e-mail",
+    "Username or Email": "Gebruikersnaam of email",
+    "as Admin": "als Admin",
+    "as Manager": "als Manager",
+    "as Developer": "als Developer",
+    "Not logged in": "Niet ingelogd!"
+  },
+  "User": {
+    "id": "ID kaart",
+    "name": "naam",
+    "username": "gebruikersnaam",
+    "role": "rol",
+    "photo": "foto",
+    "Admin": "beheerder",
+    "Manager": "manager",
+    "Developer": "ontwikkelaar",
+    "Profile": "Profiel"
+  }
 }

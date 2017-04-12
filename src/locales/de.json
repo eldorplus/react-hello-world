@@ -1,9 +1,49 @@
 {
-	"error": {
-		"404": {
-			"Error 404": "Fehler 404",
-			"Error 404\nNot Found": "Fehler 404\nNicht Gefunden",
-			"Not Found": "Nicht Gefunden"
-		}
+  "error": {
+    "404": {
+      "Error 404": "Fehler 404",
+      "Error 404\nNot Found": "Fehler 404\nNicht Gefunden",
+      "Not Found": "Nicht Gefunden"
+    }
+  },
+  "example": {
+    "Example {number}": "Beispiel {number}",
+    "click {count} to toggle": {
+      "1": "klicken sie einmal, um zu wechseln",
+      "_": "Klick {context.count} mal zum Umschalten"
+    },
+    "Toggle message": "Nachricht umschalten",
+    "Hello World": "Hallo Welt",
+		"login via google auth": "Login über Google Auth"
+  },
+	"optional": "optional",
+	"auth": {
+		"Login": "Anmeldung",
+		"Register": "Registrieren",
+		"Login with": "Einloggen mit",
+		"Logout": "Ausloggen",
+		"All Users": "Alle Nutzer",
+		"Name": "Name",
+		"Email": "Email",
+		"Username": "Benutzername",
+		"Password": "Passwort",
+		"Role": "Rolle",
+		"Type username or email": "Geben Sie Benutzernamen oder E-Mail ein",
+		"Username or Email": "Benutzername oder E-Mail-Adresse",
+		"as Admin": "als Admin",
+		"as Manager": "als Manager",
+		"as Developer": "als Entwickler",
+		"Not logged in": "Nicht eingeloggt!"
+	},
+	"User": {
+		"id": "ich würde",
+		"name": "prénom",
+		"username": "Benutzername",
+		"role": "Rolle",
+		"photo": "Foto",
+		"Admin": "Admin",
+		"Manager": "Manager",
+		"Developer": "Entwickler",
+		"Profile": "Profil"
 	}
 }

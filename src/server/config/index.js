@@ -2,7 +2,7 @@ const _ = require('lodash');
 const path = require('path'); // eslint-disable-line no-unused-vars
 const nconf = require('nconf');
 const winston = require('winston');
-
+const walk = require('./../_lib/path').walk;
 nconf
   .argv()
   .env()
@@ -15,6 +15,7 @@ const defaults = {
   host: nconf.get('HOST') || '127.0.0.1',
   env: nconf.get('NODE_ENV') || nconf.get('APP_ENV') || 'development',
   version: packageJson.version, // eslint-disable-line global-require
+  apiVersions: [1.1],
   jwt: {
     tokenCookieName: nconf.get('JWT_COOKIENAME') || 'jwt',
     tokenSecret: nconf.get('JWT_SECRET') || 'a token secret',
@@ -51,6 +52,7 @@ const defaults = {
       new winston.transports.Console({
         colorize: true,
         timestamp: false,
+        json: true,
         handleExceptions: true,
       }),
       new winston.transports.File({
@@ -64,16 +66,16 @@ const defaults = {
     exitOnError: false,
   }),
   morgan: {
-    format: nconf.get('MORGAN_FORMAT') || 'tiny',
+    format: nconf.get('MORGAN_FORMAT') || 'compact',
   },
   i18n: {
-    locales:['de', 'en', 'es', 'it', 'nl', 'ru'],
+    locales:['de', 'en', 'es', 'fr', 'it', 'nl', 'ru'],
     defaultLocales: 'en',
     directory: __dirname + '/../../locales',
     directoryPermissions: '755',
     extension: '.json',
-    cookie: 'locale',
-    queryParameter: 'lang',
+    cookie: 'l',
+    queryParameter: 'l',
     logDebugFn: function (msg) {
       defaults.logger.debug(msg);
     },

@@ -1,4 +1,5 @@
 import React from 'react';
+import T from 'i18n-react';
 import Button from './components/Button';
 import Message from './components/Message';
 
@@ -26,9 +27,9 @@ class Example2 extends React.Component {
   render() {
     return (
       <div>
-        <h2>Example 2 - <small>{`click ${this.props.numClicks} times to toggle`}</small></h2>
-        <Button onClick={this.toggle} text="Toggle message" />
-        { this.state.showMessage ? <Message>Hello world!!!</Message> : null }
+        <h2><T.text text={{ key: "example.Example {number}", number: 2 }}/> - <small><T.text text={{ key: "example.click {count} to toggle", context: {count: this.props.numClicks} }}/></small></h2>
+        <Button onClick={this.toggle} text={T.translate('example.Toggle message')} />
+        { this.state.showMessage ? <Message><T.text text={{ key: "example.Hello World" }}/>!!!</Message> : null }
       </div>
     );
   }

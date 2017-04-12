@@ -1,9 +1,58 @@
 {
-	"error": {
-		"404": {
-			"Error 404": "Errore 404",
-			"Error 404\nNot Found": "Errore 404\nNon Trovato",
-			"Not Found": "Non Trovato"
-		}
-	}
+  "error": {
+    "404": {
+      "Error 404": "Errore 404",
+      "Error 404\nNot Found": "Errore 404\nNon Trovato",
+      "Not Found": "Non Trovato"
+    }
+  },
+  "example": {
+    "Example {number}": "Esempio {number}",
+    "click {count} to toggle": {
+      "1": "fare clic una volta per attivare",
+      "_": "clicca {context.count} volte per attivare o disattivare"
+    },
+    "Toggle message": "messaggio a ginocchiera",
+    "Hello World": "Ciao mondo",
+    "login via google auth": "login tramite google autenticazione"
+  },
+  "lang": {
+    "de": "Deutsche",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "it": "italiano",
+    "nl": "Nederlands",
+    "ru": "русский"
+  },
+  "optional": "optional",
+  "auth": {
+    "Login": "Accesso",
+    "Register": "Registrare",
+    "Login with": "Entra con",
+    "Logout": "Logout",
+    "All Users": "Tutti gli utenti",
+    "Name": "Nome",
+    "Email": "E-mail",
+    "Username": "Nome utente",
+    "Password": "Parola d'ordine",
+    "Role": "Ruolo",
+    "Type username or email": "Digitare il nome utente o e-mail",
+    "Username or Email": "Nome utente o email",
+    "as Admin": "come Admin",
+    "as Manager": "come Manager",
+    "as Developer": "come Developer",
+    "Not logged in": "Accesso non effettuato!"
+  },
+  "User": {
+    "id": "id",
+    "name": "nome",
+    "username": "nome utente",
+    "role": "ruolo",
+    "photo": "foto",
+    "Admin": "Admin",
+    "Manager": "Manager",
+    "Developer": "Sviluppatore",
+    "Profile": "Profilo"
+  }
 }

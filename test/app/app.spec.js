@@ -17,7 +17,7 @@ describe('App', () => {
     expect(result.props.children).toEqual([
       <Example1 />,
       <Example2 numClicks={3} />,
-      <Example3 />
+      <Example3 />,
     ]);
   });
 });

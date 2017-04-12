@@ -3,38 +3,17 @@ const path = require('path');
 const _ = require('lodash');
 const router = require('express').Router();
 const User = require('./../models/User');
-
-const walk = function(dir, done) {
-  var results = [];
-  fs.readdir(dir, function(err, list) {
-    if (err) return done(err);
-    var pending = list.length;
-    if (!pending) return done(null, results);
-    list.forEach(function(file) {
-      file = path.resolve(dir, file);
-      fs.stat(file, function(err, stat) {
-        if (stat && stat.isDirectory()) {
-          walk(file, function(err, res) {
-            results = results.concat(res);
-            if (!--pending) done(null, results);
-          });
-        } else {
-          results.push(file);
-          if (!--pending) done(null, results);
-        }
-      });
-    });
-  });
-};
+const walk = require('./../_lib/path').walk;
 
 function setupRouter(config, passport, userRole) {
-  require('./../auth/jwt')(config, passport, User);
+  require('./../auth/jwt')(config, passport, User); // eslint-disable-line global-require
 
   router.get('/version', (req, res) => {
     const data = {};
     data[`${config.name}`] = {
       version: config.version,
       env: config.env,
+      versions: config.apiVersions,
     };
     if (config.env !== 'production') {
       data[`${config.name}`].coverage = fs.readdirSync(path.join(__dirname, './../../../coverage'))
@@ -47,12 +26,10 @@ function setupRouter(config, passport, userRole) {
 
 // const rootUrl = config.protocol + config.subDomain;
 
-  const strategies = require('./auth/strategies').loader();
-  config.logger.info(`Loading passport strategies: ${strategies.map(strategy => strategy.type).join(', ')}`);
+  const strategies = require('./auth/strategies').loader(); // eslint-disable-line global-require
+  config.logger.info(`Loading passport strategies: ${strategies.map((strategy) => { return strategy.type; }).join(', ')}`);
 
-  strategies.forEach(strategy => {
-    passport.use(new strategy.Ctor(strategy.config, strategy.toUser));
-  });
+  strategies.map((strategy) => { passport.use(new strategy.Ctor(strategy.config, strategy.toUser)); return strategy; });
 
   if (strategies.length > 0) {
     const conf = {};
@@ -62,83 +39,53 @@ function setupRouter(config, passport, userRole) {
     conf.tokenCookieName = config.jwt.tokenCookieName;
     conf.tokenSecret = config.jwt.tokenSecret;
     conf.User = User;
-    const routes = require('./auth/index')(conf);
-    router.get(
-      '/auth/providers',
-      (req, res) => {
-        const s = strategies.map(strategy => strategy.type);
-        let p = {};
+    const routes = require('./auth/index')(conf); // eslint-disable-line global-require
+    router.get('/auth/providers', (req, res) => {
+      const s = strategies.map((strategy) => { return strategy.type; });
+      const p = {};
 
-        strategies.map(strategy => {
-          let enabled = (
-            (strategy.config.clientID && strategy.config.clientID !== 'ID') ||
-            (strategy.config.appID && strategy.config.appID !== 'ID') ||
-            (strategy.config.consumerKey && strategy.config.consumerKey !== 'KEY')
-          ) ? true: false;
-          if (enabled) {
-            p[strategy.type] = {
-              name: strategy.name,
-              callbackURL: strategy.config.callbackURL,
-            };
-          }
-        });
-        res.json({strategies: s, providers: p})
-      }
-    );
-    router.get(
-      strategies.map(strategy => `/auth/${strategy.type}`),
-      routes.onAuthenticationRequest
-    );
+      strategies.map((strategy) => {
+        if ((strategy.config.clientID && strategy.config.clientID !== 'ID') ||
+          (strategy.config.appID && strategy.config.appID !== 'ID') ||
+          (strategy.config.consumerKey && strategy.config.consumerKey !== 'KEY')
+        ) {
+          p[strategy.type] = {
+            name: strategy.name,
+            callbackURL: strategy.config.callbackURL,
+          };
+        }
+        return strategy;
+      });
+      res.json({ strategies: s, providers: p });
+    });
+    router.get(strategies.map((strategy) => { return `/auth/${strategy.type}`; }), routes.onAuthenticationRequest); // eslint-disable-line max-len
 
-    router.get(
-      strategies.map(strategy => `/auth/${strategy.type}/callback`),
-      routes.onAuthenticationCallback
-    );
+    router.get(strategies.map((strategy) => { return `/auth/${strategy.type}/callback`; }), routes.onAuthenticationCallback); // eslint-disable-line max-len
 
-    router.post(
-      '/auth/login',
-      routes.onLogin
-    );
+    router.post('/auth/login', routes.onLogin);
 
-    router.post(
-      '/auth/register',
-      routes.onRegister
-    );
+    router.post('/auth/register', routes.onRegister);
 
-    router.get(
-      '/auth/logout',
-      routes.onLogout
-    );
+    router.get('/auth/logout', routes.onLogout);
 
-    router.get(
-      '/auth/profile',
-      passport.authenticate('jwt'),
-      routes.onProfile
-    );
+    router.get('/auth/profile', passport.authenticate('jwt'), routes.onProfile);
   }
 
-  router.get(
-    '/auth/:view',
-    (req, res) => {
-      res.redirect('/#/auth/'+req.params.view);
-    }
-  );
+  router.get('/auth/:view', (req, res) => {
+    res.redirect(`/#/auth/${req.params.view}`);
+  });
 
-  router.get(
-    '/locale',
-    (req, res) => {
-      let translations = {};
-      walk(path.join(__dirname, '/../../locales'), (err, files) => {
-        files.forEach((file) => {
-          if (path.basename(file).replace('.json', '') === req.getLocale()) {
-            translations = _.merge(translations, require(file));
-          }
-        });
-        res.json(translations);
+  router.get('/locale', (req, res) => {
+    let translations = {};
+    walk(config.i18n.directory, (err, files) => {
+      files.map((file) => {
+        if (path.basename(file).replace(config.i18n.extension, '') === req.getLocale()) {
+          translations = _.merge(translations, require(file)); // eslint-disable-line global-require,import/no-dynamic-require,max-len
+        }
       });
-    }
-  );
-  require('./users')(config, passport, User, router, userRole);
+      return res.json(translations);
+    });
+  });
 
   return router;
 }

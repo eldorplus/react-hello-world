@@ -1,4 +1,6 @@
 import React from 'react';
+import T from 'i18n-react';
+import cookie from 'react-cookie';
 import { Router, Route, hashHistory, IndexRoute, Redirect } from 'react-router';
 import Example3App from './example3/app';
 import Home from './example3/components/Home';

@@ -1,11 +1,13 @@
 import React from 'react';
+import T from 'i18n-react';
+import cookie from 'react-cookie';
 import Home from './components/Home';
 
 const Example3App = (props) => {
   return (
     <div>
-      <h2>Example 3 -
-        <small>login via google auth</small>
+      <h2>
+        <T.text text={{ key: "example.Example {number}", number: 3 }}/> - <small><T.text text={{ key: "example.login via google auth" }}/></small>
       </h2>
       {props.children}
     </div>

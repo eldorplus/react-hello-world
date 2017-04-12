@@ -1,9 +1,58 @@
 {
-	"error": {
-		"404": {
-			"Error 404": "Ошибка 404",
-			"Error 404\nNot Found": "Ошибка 404\nНе Найдено",
-			"Not Found": "Не Найдено"
-		}
-	}
+  "error": {
+    "404": {
+      "Error 404": "Ошибка 404",
+      "Error 404\nNot Found": "Ошибка 404\nНе Найдено",
+      "Not Found": "Не Найдено"
+    }
+  },
+  "example": {
+    "Example {number}": "пример {number}",
+    "click {count} to toggle": {
+      "1": "Нажмите один раз, чтобы переключить",
+      "_": "Нажмите {context.count} раза, чтобы переключить"
+    },
+    "Toggle message": "Переключить сообщение",
+    "Hello World": "Привет мир",
+    "login via google auth": "Войти через google auth"
+  },
+  "lang": {
+    "de": "Deutsche",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "it": "italiano",
+    "nl": "Nederlands",
+    "ru": "русский"
+  },
+  "optional": "необязательно",
+  "auth": {
+    "Login": "Логин",
+    "Register": "Регистрация",
+    "Login with": "Войти с",
+    "Logout": "Выход",
+    "All Users": "Все пользователи",
+    "Name": "Имя",
+    "Email": "Электронная почта",
+    "Username": "Имя пользователя",
+    "Password": "Пароль",
+    "Role": "Роль",
+    "Type username or email": "Введите имя пользователя или адрес электронной почты",
+    "Username or Email": "Имя пользователя или адрес электронной почты",
+    "as Admin": "как администратор",
+    "as Manager": "как менеджер",
+    "as Developer": "как Разработчик",
+    "Not logged in": "Не авторизован!"
+  },
+  "User": {
+    "id": "id",
+    "name": "имя",
+    "username": "имя пользователя",
+    "role": "роль",
+    "photo": "фото",
+    "Admin": "Администратор",
+    "Manager": "Менеджер",
+    "Developer": "Разработчик",
+    "Profile": "Профиль"
+  }
 }

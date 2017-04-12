@@ -1,4 +1,5 @@
 import React from 'react';
+import T from 'i18n-react';
 import cookie from 'react-cookie';
 import axios from 'axios';
 import Profile from './Profile';
@@ -16,7 +17,7 @@ class Users extends React.Component {
     const token = cookie.load('jwt');
     if (token) {
       axios.defaults.headers.common.Authorization = `JWT ${token}`;
-      axios.get('/users')
+      axios.get('/api/1.1/users')
         .then((res) => {
           const users = res.data.users;
           if (users) {

@@ -25,8 +25,8 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css!sass')
-      }
+        loader: ExtractTextPlugin.extract('css!sass'),
+      },
     ],
   },
   devtool: 'source-map',

@@ -1,0 +1,49 @@
+{
+  "error": {
+    "404": {
+      "Error 404": "Erreur 404",
+      "Error 404\nNot Found": "Erreur 404\nPas Trouvé",
+      "Not Found": "Pas Trouvé"
+    }
+  },
+  "example": {
+    "Example {number}": "Exemple {number}",
+    "click {count} to toggle": {
+      "1": "cliquez une fois pour basculer",
+      "_": "cliquez {context.count} fois sur pour basculer"
+    },
+    "Toggle message": "Toggle message",
+    "Hello World": "Bonjour le monde",
+    "login via google auth": "connexion via google auth"
+  },
+  "optional": "optionnel",
+  "auth": {
+    "Login": "S'identifier",
+    "Register": "registre",
+    "Login with": "Connectez-vous avec",
+    "Logout": "Connectez - Out",
+    "All Users": "Tous les utilisateurs",
+    "Name": "prénom",
+    "Email": "Email",
+    "Username": "Nom d'utilisateur",
+    "Password": "Mot de passe",
+    "Role": "Rôle",
+    "Type username or email": "Type de nom d'utilisateur ou d'email",
+    "Username or Email": "Nom d'utilisateur ou email",
+    "as Admin": "en tant qu'administrateur",
+    "as Manager": "en tant que gestionnaire",
+    "as Developer": "en tant que développeur",
+    "Not logged in": "Pas connecté!"
+  },
+  "User": {
+    "id": "id",
+    "name": "prénom",
+    "username": "Nom d'utilisateur",
+    "role": "rôle",
+    "photo": "photo",
+    "Admin": "Admin",
+    "Manager": "Directeur",
+    "Developer": "Développeur",
+    "Profile": "Profil"
+  }
+}
