@@ -15,6 +15,14 @@ if (location.search) {
   lang = l
 }
 
+if (!lang) {
+  lang = languageWithoutRegionCode;
+  if (!lang) {
+    lang = 'en';
+  }
+  cookie.save('l', lang);
+}
+
 module.exports = () => {
   return lang;
 };
