@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
-
+/*
+* db.dropDatabase()
+* use hello-world
+* show collections
+* db.users.find()
+* */
 module.exports = (config) => {
   mongoose.connect(config.mongo.uri, config.mongo.auth, (err) => {
     if (err) config.logger.error(`Failed to connect to MongoDB with config ${JSON.stringify(config.mongo)}`); // eslint-disable-line no-console

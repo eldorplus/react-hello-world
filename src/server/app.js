@@ -37,7 +37,7 @@ app.use(session({
   saveUninitialized: false,
   // rolling: true,
 }));
-app.use(csrf({ cookie: true }));
+// app.use(csrf({ cookie: true }));
 
 app.use(function (req, res, next) {
   var lang = req.session.lang;
@@ -57,17 +57,25 @@ app.use(passport.session());
 passport.serializeUser((user, done) => { done(null, user); });
 passport.deserializeUser((user, done) => { done(null, user); });
 
+// const App = require('./../app');
+// app.get('/index.html', (req, res) => {
+//   const appHtml = ReactDOMServer.renderToString(
+//     <App radiumConfig={{userAgent: req.headers['user-agent']}} />,
+//   );
+//   res.write(indexHTML.replace('<!-- {{app}} -->', appHtml));
+//   res.end();
+// });
 const userRoles = require('./auth/roles');
 app.use('/', require('./routes')(config, passport, userRoles));
 app.use('/api/1.1/', require('./routes/1.1')(config, passport, userRoles));
 
-app.use(function (err, req, res, next) {
-  if (err.code !== 'EBADCSRFTOKEN') return next(err);
-
-  // handle CSRF token errors here
-  res.status(403);
-  res.send('form tampered with')
-});
+// app.use(function (err, req, res, next) {
+//   if (err.code !== 'EBADCSRFTOKEN') return next(err);
+//
+//   // handle CSRF token errors here
+//   res.status(403);
+//   res.send('form tampered with')
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
