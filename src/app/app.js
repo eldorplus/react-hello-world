@@ -4,6 +4,7 @@ import Example2 from './example2';
 import Example3 from './example3';
 import Example4 from './example4';
 import Example5 from './example5';
+import Example6 from './example6';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Example3 />
       <Example4 />
       <Example5 />
+      <Example6 />
     </div>
   );
 };
