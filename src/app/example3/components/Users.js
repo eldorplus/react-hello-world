@@ -17,7 +17,7 @@ class Users extends React.Component {
     const token = cookie.load('jwt');
     if (token) {
       axios.defaults.headers.common.Authorization = `JWT ${token}`;
-      axios.get('/api/1.1/users')
+      axios.get('/1.1/users')
         .then((res) => {
           const users = res.data.users;
           if (users) {

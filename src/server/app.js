@@ -67,7 +67,7 @@ passport.deserializeUser((user, done) => { done(null, user); });
 // });
 const userRoles = require('./auth/roles');
 app.use('/', require('./routes')(config, passport, userRoles));
-app.use('/api/1.1/', require('./routes/1.1')(config, passport, userRoles));
+app.use('/1.1/', require('./routes/1.1')(config, passport, userRoles));
 
 // app.use(function (err, req, res, next) {
 //   if (err.code !== 'EBADCSRFTOKEN') return next(err);
@@ -80,40 +80,20 @@ app.use('/api/1.1/', require('./routes/1.1')(config, passport, userRoles));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   const error = {success: false, error: {status: req.t('error.404.Error 404:Error 404'), message: req.t('error.404.Not Found:Not Found')}};
-  config.logger.log('the error', error);
-  if (req.headers.accept.indexOf('json') !== -1 || req.headers.accept.indexOf('javascript') !== -1) {
-    res.status(404).json(error);
-  } else if (req.headers.accept.indexOf('xml') !== -1 && req.headers.accept.indexOf('html') === -1) {
-    const easyxml = require('easyxml');
-    res.status(404).header('Content-Type', 'text/xml').send(new easyxml({}).render(error));
-  } else if (req.headers.accept.indexOf('plain') !== -1) {
-    res.status(404).header('Content-Type', 'text/plain').send(req.t('error.404.Error 404\nNot Found:Error 404\nNot Found'));
-  } else {
-    res.status(404).render('error', error);
-  }
-  next()
+  require('./_lib/error')(req, res, 404, error);
+  next();
 });
 
 // development error handler, show stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
-    config.logger.error(err);
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    require('./_lib/error')(req, res, err.status || 500, {success: false, error: {status: err.status, message: err.message, stack: err.stack}});
   });
 }
 
 // production error handler, no stacktrace
 app.use(function(err, req, res, next) {
-  config.logger.error(err);
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+  require('./_lib/error')(req, res, err.status || 500, {success: false, error: {status: req.t('error.500.Error 500:Error 500'), message: req.t('error.500.Internal Server Error:Internal Server Error')}});
 });
 
 module.exports = app;

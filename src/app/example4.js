@@ -2,6 +2,7 @@ import React from 'react';
 import T from 'i18n-react';
 import cookie from 'react-cookie';
 import Button from './components/Button';
+import language from './language';
 
 class Example4 extends React.Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class Example4 extends React.Component {
     return (
       <div>
         <h2><T.text text={{ key: "example.Example {number}", number: 4 }}/> - <small><T.text text={{ key: "example.Select a language" }}/></small></h2>
+        <p>LANGUAGE: {language()}</p>
         <ul>
           {buttons}
         </ul>

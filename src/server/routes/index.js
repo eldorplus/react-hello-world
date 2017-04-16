@@ -3,6 +3,8 @@ const path = require('path');
 const _ = require('lodash');
 const router = require('express').Router();
 const User = require('./../models/User');
+const Url = require('./../models/Url').Url;
+const base58 = require('./../_lib/base58');
 const walk = require('./../_lib/path').walk;
 
 function setupRouter(config, passport, userRole) {
@@ -86,6 +88,20 @@ function setupRouter(config, passport, userRole) {
       return res.json(translations);
     });
   });
+
+  router.get('/urls/:id',
+    (req, res) => {
+      var id = base58.decode(req.params.id);
+
+      Url.findOne({_id: id}, function (err, doc){
+        if (doc) {
+          const redirectUrl = doc.long_url;
+          return res.render('redirect', {url: redirectUrl});
+        } else {
+          return res.redirect('/');
+        }
+      });
+    });
 
   return router;
 }

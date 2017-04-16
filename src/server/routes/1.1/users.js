@@ -5,7 +5,7 @@ module.exports = (config, passport, User, router, userRole) => {
     (req, res) => {
       User.getAll({ role: req.user.role })
         .then((users) => {
-          res.json({ users, count: users.length });
+          res.json({ success: true, users, count: users.length });
         });
     });
 };

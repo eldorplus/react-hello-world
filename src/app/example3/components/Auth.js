@@ -164,7 +164,7 @@ class Auth extends React.Component {
     return (
       <div>
         <div><NavLink to="/users">{T.translate('auth.All Users')}</NavLink></div>
-        <p>{cookie.load('jwt')}</p>
+        <p>JWT: {cookie.load('jwt') || 'empty'}</p>
         <ul>
           <li><Button onClick={this.logout} text={T.translate('auth.Logout')} /></li>
         </ul>

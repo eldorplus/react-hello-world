@@ -23,6 +23,10 @@ if (!lang) {
   cookie.save('l', lang);
 }
 
+if (['de', 'en', 'es', 'fr', 'it', 'nl', 'ru'].indexOf(lang) === -1) {
+  lang = 'en'
+}
+
 module.exports = () => {
   return lang;
 };
