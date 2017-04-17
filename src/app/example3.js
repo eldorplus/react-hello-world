@@ -15,7 +15,9 @@ const Example3 = () => {
           <IndexRoute component={Home} />
           <Route path="/auth/:direction" component={Auth} />
           <Route path="/users" component={Users} />
+          <Redirect from="auth" to="/auth/login" />
           <Redirect from="_=_" to="/" />
+          <Redirect from="*" to="/" />
         </Route>
       </Router>
     </div>
